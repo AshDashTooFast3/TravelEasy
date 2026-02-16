@@ -30,11 +30,13 @@ class AuthenticatedSessionController extends Controller
 
         $role = strtolower($request->user()->RolNaam ?? '');
 
-        return redirect()->intended(match($role){
-            'praktijkmanagement' => route('praktijkmanagement.index'),
-            'tandarts' => route('dashboard'),
-            'patient' => route('dashboard'),
-            'gebruiker' => route('dashboard'),
+        return redirect()->intended(match ($role) {
+            'ReisAdviseur' => route('dashboard'),
+            'FinancieelMedewerker' => route('dashboard'),
+            'Manager' => route('dashboard'),
+            'Administrator' => route('dashboard'),
+            'Passagier' => route('dashboard'),
+            'Bezoeker' => route('welcome'),
             default => route('welcome'),
         });
     }
@@ -42,7 +44,6 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
