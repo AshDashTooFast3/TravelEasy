@@ -12,72 +12,14 @@
 
                 <!-- Navigation Links -->
 
-                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['Praktijkmanagement', 'Tandarts', 'Assistent', 'mondhygienist']))
-    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-        <x-nav-link :href="route('afspraken.index')" :active="request()->routeIs('afspraken.index')">
-            {{ _('Afspraken') }}
-        </x-nav-link>
-    </div>
-@endif
-@if (Auth::check() && Auth::user()->RolNaam === 'Patient')
-    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-        <x-nav-link :href="route('afspraken.index')" :active="request()->routeIs('afspraken.index')">
-            {{ _('Mijn Afspraken') }}
-        </x-nav-link>
-    </div>
-@endif
-                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['Praktijkmanagement']))
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('praktijkmanagement.index')" :active="request()->routeIs('praktijkmanagement.index')">
-                            {{ _('Praktijkmanagement') }}
-                        </x-nav-link>
-                    </div>
-
-                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('medewerkers.overzicht')" :active="request()->routeIs('medewerkers.overzicht')">
-                            {{ _('Medewerkers') }}
-                        </x-nav-link>
-                    </div>
-
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('overzicht-patienten.index')" :active="request()->routeIs('overzicht-patienten.index')">
-                            {{ _('Patienten') }}
-                        </x-nav-link>
-                    </div>
-
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('berichten.index')"
-                            :active="request()->routeIs('berichten.index')">
-                            {{ _('Berichten') }}
-                        </x-nav-link>
-                    </div>
-
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('factuur.index')" :active="request()->routeIs('factuur.index')">
-                            {{ _('Facturen') }}
-                        </x-nav-link>
-                    </div>
-                @endif
-
                 @if (Auth::check() && in_array(Auth::user()->RolNaam, ['Patient']))
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('factuur.factuurPatient')" :active="request()->routeIs('factuur.factuurPatient')">
+                        <x-nav-link :href="route('factuur.factuurPatient')"
+                            :active="request()->routeIs('factuur.factuurPatient')">
                             {{ _('Mijn Facturen') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('berichten.berichtenPatient')" :active="request()->routeIs('berichten.berichtenPatient')">
-                            {{ _('Mijn Berichten') }}
-                        </x-nav-link>
                     </div>
                 @endif
-
-                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['Tandarts', 'Assistent', 'mondhygienist']))
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('overzicht-patienten.index')" :active="request()->routeIs('overzicht-patienten.index')">
-                            {{ _('Patienten') }}
-                        </x-nav-link>
-                    </div>
-                @endif
-     
             </div>
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -107,8 +49,7 @@
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
 
-                            <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
+                            <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
@@ -141,50 +82,13 @@
             </x-responsive-nav-link>
         </div>
 
-        @if (Auth::check() && in_array(Auth::user()->RolNaam, ['Praktijkmanagement', 'Tandarts', 'Assistent', 'mondhygienist']))
+        @if (Auth::check() && in_array(Auth::user()->RolNaam, ['']))
             <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('overzicht-patienten.index')" :active="request()->routeIs('overzicht-patienten.index')">
-                    {{ _('patienten-overzicht') }}
+                <x-responsive-nav-link :href="route('')" :active="request()->routeIs('')">
+                    {{ _('') }}
                 </x-responsive-nav-link>
             </div>
         @endif
-
-@if (Auth::check() && in_array(Auth::user()->RolNaam, ['Praktijkmanagement', 'Tandarts', 'Assistent', 'mondhygienist']))
-    <div class="pt-2 pb-3 space-y-1">
-        <x-responsive-nav-link :href="route('afspraken.index')" :active="request()->routeIs('afspraken.index')">
-            {{ _('Afspraken') }}
-        </x-responsive-nav-link>
-    </div>
-@endif
-@if (Auth::check() && Auth::user()->RolNaam === 'Patient')
-    <div class="pt-2 pb-3 space-y-1">
-        <x-responsive-nav-link :href="route('afspraken.index')" :active="request()->routeIs('afspraken.index')">
-            {{ _('Mijn Afspraken') }}
-        </x-responsive-nav-link>
-    </div>
-@endif
-        @if (Auth::check() && in_array(Auth::user()->RolNaam, ['Praktijkmanagement']))
-            <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('praktijkmanagement.index')" :active="request()->routeIs('praktijkmanagement.index')">
-                    {{ _('Praktijkmanagement') }}
-                </x-responsive-nav-link>
-            </div>
-
-            <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('berichten.index')" :active="request()->routeIs('berichten.index')">
-                    {{ _('Berichten') }}
-                </x-responsive-nav-link>
-            </div>
-        @endif
-
-        @if (Auth::check() && in_array(Auth::user()->RolNaam, ['Praktijkmanagement']))
-                    <div class="pt-2 pb-3 space-y-1">
-                        <x-responsive-nav-link :href="route('medewerkers.overzicht')" :active="request()->routeIs('medewerkers.overzicht')">
-                            {{ _('Medewerkers') }}
-                        </x-responsive-nav-link>
-                    </div>
-                @endif
-
 
 
         <!-- Responsive Settings Options -->
@@ -203,8 +107,7 @@
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
 
-                    <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
+                    <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
