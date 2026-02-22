@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('Gebruikersnaam', 50);
             $table->string('Wachtwoord', 100);
             $table->string('RolNaam', 50);
-            $table->string('Email', 100)->unique();
+            $table->string('Email', 255)->unique();
             $table->dateTime('Ingelogd');
             $table->dateTime('Uitgelogd');
             $table->boolean('Isactief');
@@ -47,9 +47,9 @@ return new class extends Migration
             $table->integer('Nummer');
             $table->string('PassagierType', 100);
             $table->boolean('Isactief')->default(true);
-            $table->string('Opmerking', 255)->nullable();
-            $table->dateTime('Datumaangemaakt')->useCurrent();
-            $table->dateTime('Datumgewijzigd')->useCurrent();
+            $table->string('Opmerking', 225)->nullable();
+            $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
+            $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
             $table->foreign('PersoonId')->references('Id')->on('Persoon');
         });
 
@@ -72,7 +72,7 @@ return new class extends Migration
             $table->string('Land', 50);
             $table->string('Luchthaven', 20);
             $table->boolean('Isactief')->default(true);
-            $table->string('Opmerking', 255)->nullable();
+            $table->string('Opmerking', 225)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
         });
@@ -82,7 +82,7 @@ return new class extends Migration
             $table->string('Land', 50);
             $table->string('Luchthaven', 20);
             $table->boolean('Isactief')->default(true);
-            $table->string('Opmerking', 255)->nullable();
+            $table->string('Opmerking', 225)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
         });
@@ -98,7 +98,7 @@ return new class extends Migration
             $table->time('Aankomsttijd');
             $table->string('Vluchtstatus', 20);
             $table->boolean('Isactief')->default(true);
-            $table->string('Opmerking', 255)->nullable();
+            $table->string('Opmerking', 225)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
             $table->foreign('VertrekId')->references('Id')->on('Vertrek');
@@ -123,9 +123,26 @@ return new class extends Migration
             $table->decimal('PrijsPerNacht', 10, 2);
             $table->decimal('TotaalPrijs', 10, 2);
             $table->boolean('Isactief')->default(true);
-            $table->string('Opmerking', 255)->nullable();
+            $table->string('Opmerking', 225)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
+            $table->foreign('VluchtId')->references('Id')->on('Vlucht');
+        });
+
+        Schema::create('Boeking', function (Blueprint $table) {
+            $table->increments('Id');
+            $table->unsignedInteger('PassagierId');
+            $table->unsignedInteger('VluchtId');
+            $table->string('Boekingsnummer', 20);
+            $table->date('Boekingsdatum');
+            $table->time('Boekingstijd');
+            $table->string('Boekingsstatus', 20);
+            $table->decimal('TotaalPrijs', 10, 2);
+            $table->boolean('Isactief')->default(true);
+            $table->string('Opmerking', 225)->nullable();
+            $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
+            $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
+            $table->foreign('PassagierId')->references('Id')->on('Passagier');
             $table->foreign('VluchtId')->references('Id')->on('Vlucht');
         });
 
@@ -140,11 +157,27 @@ return new class extends Migration
             $table->tinyInteger('Aantal');
             $table->tinyInteger('Btw')->default(21);
             $table->boolean('Isactief')->default(true);
-            $table->string('Opmerking', 255)->nullable();
+            $table->string('Opmerking', 225)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
             $table->foreign('PassagierId')->references('Id')->on('Passagier');
             $table->foreign('VluchtId')->references('Id')->on('Vlucht');
+        });
+
+        Schema::create('Factuur', function (Blueprint $table) {
+            $table->increments('Id');
+            $table->unsignedInteger('TicketId');
+            $table->string('Factuurnummer', 20);
+            $table->date('Factuurdatum');
+            $table->time('Factuurtijd');
+            $table->decimal('TotaalBedrag', 10, 2);
+            $table->string('Betaalstatus', 20);
+            $table->string('Betaalmethode', 50)->nullable();
+            $table->boolean('Isactief')->default(true);
+            $table->string('Opmerking', 225)->nullable();
+            $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
+            $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
+            $table->foreign('TicketId')->references('Id')->on('Ticket');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
