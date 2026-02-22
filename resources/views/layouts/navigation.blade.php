@@ -49,12 +49,7 @@
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
 
-<<<<<<< HEAD
-                            <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
-=======
                             <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
->>>>>>> 85173c577d98866d3544a37d947d9d09843c8351
                                                 this.closest('form').submit();">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
@@ -87,61 +82,14 @@
             </x-responsive-nav-link>
         </div>
 
-<<<<<<< HEAD
-        @if (Auth::check() && in_array(Auth::user()->RolNaam, ['Praktijkmanagement', 'Tandarts', 'Assistent', 'mondhygienist']))
-            <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('overzicht-patienten.index')" :active="request()->routeIs('overzicht-patienten.index')">
-                    {{ _('patienten-overzicht') }}
-=======
         @if (Auth::check() && in_array(Auth::user()->RolNaam, ['']))
             <div class="pt-2 pb-3 space-y-1">
                 <x-responsive-nav-link :href="route('')" :active="request()->routeIs('')">
                     {{ _('') }}
->>>>>>> 85173c577d98866d3544a37d947d9d09843c8351
                 </x-responsive-nav-link>
             </div>
         @endif
 
-<<<<<<< HEAD
-@if (Auth::check() && in_array(Auth::user()->RolNaam, ['Praktijkmanagement', 'Tandarts', 'Assistent', 'mondhygienist']))
-    <div class="pt-2 pb-3 space-y-1">
-        <x-responsive-nav-link :href="route('afspraken.index')" :active="request()->routeIs('afspraken.index')">
-            {{ _('Afspraken') }}
-        </x-responsive-nav-link>
-    </div>
-@endif
-@if (Auth::check() && Auth::user()->RolNaam === 'Patient')
-    <div class="pt-2 pb-3 space-y-1">
-        <x-responsive-nav-link :href="route('afspraken.index')" :active="request()->routeIs('afspraken.index')">
-            {{ _('Mijn Afspraken') }}
-        </x-responsive-nav-link>
-    </div>
-@endif
-        @if (Auth::check() && in_array(Auth::user()->RolNaam, ['Praktijkmanagement']))
-            <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('praktijkmanagement.index')" :active="request()->routeIs('praktijkmanagement.index')">
-                    {{ _('Praktijkmanagement') }}
-                </x-responsive-nav-link>
-            </div>
-
-            <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('berichten.index')" :active="request()->routeIs('berichten.index')">
-                    {{ _('Berichten') }}
-                </x-responsive-nav-link>
-            </div>
-        @endif
-
-        @if (Auth::check() && in_array(Auth::user()->RolNaam, ['Praktijkmanagement']))
-                    <div class="pt-2 pb-3 space-y-1">
-                        <x-responsive-nav-link :href="route('medewerkers.overzicht')" :active="request()->routeIs('medewerkers.overzicht')">
-                            {{ _('Medewerkers') }}
-                        </x-responsive-nav-link>
-                    </div>
-                @endif
-
-
-=======
->>>>>>> 85173c577d98866d3544a37d947d9d09843c8351
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
@@ -159,12 +107,7 @@
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
 
-<<<<<<< HEAD
-                    <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
-=======
                     <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault();
->>>>>>> 85173c577d98866d3544a37d947d9d09843c8351
                                         this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
@@ -172,8 +115,4 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
 </nav>
-=======
-</nav>
->>>>>>> 85173c577d98866d3544a37d947d9d09843c8351
