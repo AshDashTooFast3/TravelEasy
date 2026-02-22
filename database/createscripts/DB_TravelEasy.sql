@@ -37,18 +37,18 @@ CREATE TABLE Persoon (
 -- TABEL: Passagier
 -- =====================================================
 CREATE TABLE Passagier (
-    Id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  	PersoonId INT UNSIGNED NOT NULL,
-  	Nummer INT NOT NULL,
- 	PassagierType VARCHAR (100) NOT NULL,
-    IsActief BIT NOT NULL DEFAULT 1,
-    Opmerking VARCHAR(225) NULL,
-    AangemaaktDatum DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    GewijzigdDatum DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    Id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+   ,PersoonId INT UNSIGNED NOT NULL
+   ,Nummer INT NOT NULL
+   ,PassagierType VARCHAR (100) NOT NULL
+   ,IsActief BIT NOT NULL DEFAULT 1
+   ,Opmerking VARCHAR(225) NULL
+   ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
+   ,Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6)
 ) ENGINE=InnoDB;
  
  CREATE TABLE Medewerker (
-    Id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+     Id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
     ,PersoonId INT UNSIGNED NOT NULL
     ,Nummer VARCHAR(20) NOT NULL
     ,Medewerkertype VARCHAR(255) NOT NULL
@@ -65,98 +65,93 @@ CREATE TABLE Passagier (
 -- TABEL: Vertrek
 -- =====================================================
 CREATE TABLE Vertrek (
-    Id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    Land VARCHAR(50) NOT NULL,
-    Luchthaven VARCHAR(20) NOT NULL,
-    IsActief BIT NOT NULL DEFAULT 1,
-    Opmerking VARCHAR(225) NULL,
-    Datumaangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6),
-    Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6)
+     Id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+    ,Land VARCHAR(50) NOT NULL
+    ,Luchthaven VARCHAR(20) NOT NULL
+    ,IsActief BIT NOT NULL DEFAULT 1
+    ,Opmerking VARCHAR(225) NULL
+    ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
+    ,Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6)
 ) ENGINE=InnoDB;
  
 -- =====================================================
 -- TABEL: Bestemming
 -- =====================================================
 CREATE TABLE Bestemming (
-    Id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    Land VARCHAR(50) NOT NULL,
-    Luchthaven VARCHAR(20) NOT NULL,
-    IsActief BIT NOT NULL DEFAULT 1,
-    Opmerking VARCHAR(225) NULL,
-   	Datumaangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6),
-   	Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6)
+     Id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+    ,Land VARCHAR(50) NOT NULL
+    ,Luchthaven VARCHAR(20) NOT NULL
+    ,IsActief BIT NOT NULL DEFAULT 1
+    ,Opmerking VARCHAR(225) NULL
+    ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
+    ,Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6)
 ) ENGINE=InnoDB;
  
-
-
 -- =====================================================
 -- TABEL: Vlucht
 -- =====================================================
 CREATE TABLE Vlucht (
-    Id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    VertrekId INT UNSIGNED NOT NULL,
-    BestemmingId INT UNSIGNED NOT NULL,
-    Vluchtnummer VARCHAR(5) NOT NULL,
-    Vertrekdatum DATE NOT NULL,
-    Vertrektijd TIME NOT NULL,
-    Aankomstdatum DATE NOT NULL,
-    Aankomsttijd TIME NOT NULL,
-    Vluchtstatus VARCHAR(20) NOT NULL,
-    IsActief BIT NOT NULL DEFAULT 1,
-    Opmerking VARCHAR(225) NULL,
-    Datumaangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6),
-    Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6),
-    FOREIGN KEY (VertrekId) REFERENCES Vertrek(Id),
-    FOREIGN KEY (BestemmingId) REFERENCES Bestemming(Id)
+     Id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+    ,VertrekId INT UNSIGNED NOT NULL
+    ,BestemmingId INT UNSIGNED NOT NULL
+    ,Vluchtnummer VARCHAR(5) NOT NULL
+    ,Vertrekdatum DATE NOT NULL
+    ,Vertrektijd TIME NOT NULL
+    ,Aankomstdatum DATE NOT NULL
+    ,Aankomsttijd TIME NOT NULL
+    ,Vluchtstatus VARCHAR(20) NOT NULL
+    ,IsActief BIT NOT NULL DEFAULT 1
+    ,Opmerking VARCHAR(225) NULL
+    ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
+    ,Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6)
+    ,FOREIGN KEY (VertrekId) REFERENCES Vertrek(Id)
+    ,FOREIGN KEY (BestemmingId) REFERENCES Bestemming(Id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE Accommodatie (
-    Id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY ,
-    VluchtId INT UNSIGNED NOT NULL,
-    Naam VARCHAR(255) NOT NULL,
-    Type VARCHAR(100) NOT NULL,          -- Hotel, Appartement, Hostel, etc.   
-    Straat VARCHAR(255) NOT NULL,
-    Huisnummer VARCHAR(10) NOT NULL,
-    Toevoeging VARCHAR(5) NULL,
-    Postcode VARCHAR(20) NOT NULL,
-    Stad VARCHAR(100) NOT NULL,
-    Land VARCHAR(100) NOT NULL,
-    CheckInDatum DATE NOT NULL,
-    CheckOutDatum DATE NOT NULL,
-    AantalKamers TINYINT DEFAULT 1,
-    AantalPersonen SMALLINT,
-    PrijsPerNacht DECIMAL(10,2),
-    TotaalPrijs DECIMAL(10,2),
-    IsActief BIT NOT NULL DEFAULT 1,
-    Opmerking VARCHAR(225) NULL,
-    Datumaangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6),
-    Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6),
-    FOREIGN KEY (VluchtId) REFERENCES Vlucht(Id)
-)ENGINE=InnoDB;
+     Id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+    ,VluchtId INT UNSIGNED NOT NULL
+    ,Naam VARCHAR(255) NOT NULL
+    ,Type VARCHAR(100) NOT NULL
+    ,Straat VARCHAR(255) NOT NULL
+    ,Huisnummer VARCHAR(10) NOT NULL
+    ,Toevoeging VARCHAR(5) NULL
+    ,Postcode VARCHAR(20) NOT NULL
+    ,Stad VARCHAR(100) NOT NULL
+    ,Land VARCHAR(100) NOT NULL
+    ,CheckInDatum DATE NOT NULL
+    ,CheckOutDatum DATE NOT NULL
+    ,AantalKamers TINYINT DEFAULT 1
+    ,AantalPersonen SMALLINT
+    ,PrijsPerNacht DECIMAL(10,2)
+    ,TotaalPrijs DECIMAL(10,2)
+    ,IsActief BIT NOT NULL DEFAULT 1
+    ,Opmerking VARCHAR(225) NULL
+    ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
+    ,Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6)
+    ,FOREIGN KEY (VluchtId) REFERENCES Vlucht(Id)
+) ENGINE=InnoDB;
  
 -- =====================================================
 -- TABEL: Ticket
 -- =====================================================
 CREATE TABLE Ticket (
-    Id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    PassagierId INT UNSIGNED NOT NULL,
-    VluchtId INT UNSIGNED NOT NULL,
-    Stoelnummer VARCHAR(4) NOT NULL,
-    Aankoopdatum DATE NOT NULL,
-    Aankooptijd TIME NOT NULL,
-    Prijs DECIMAL(6,2) NOT NULL,
-    Aantal TINYINT NOT NULL,
-    Btw TINYINT NOT NULL DEFAULT 21,
- 
-    BedragIncBtw DECIMAL(8,2)
-	AS (Prijs * Aantal * (1 + (Btw / 100.0))) STORED,
- 
-    IsActief BIT NOT NULL DEFAULT 1,
-    Opmerking VARCHAR(225) NULL,
-    Datumaangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6),
-    Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6),
-    FOREIGN KEY (PassagierId) REFERENCES Passagier(Id),
-    FOREIGN KEY (VluchtId) REFERENCES Vlucht(Id)
+     Id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+    ,PassagierId INT UNSIGNED NOT NULL
+    ,VluchtId INT UNSIGNED NOT NULL
+    ,Stoelnummer VARCHAR(4) NOT NULL
+    ,Aankoopdatum DATE NOT NULL
+    ,Aankooptijd TIME NOT NULL
+    ,Prijs DECIMAL(6,2) NOT NULL
+    ,Aantal TINYINT NOT NULL
+    ,Btw TINYINT NOT NULL DEFAULT 21
+    ,BedragIncBtw DECIMAL(8,2) AS (Prijs * Aantal * (1 + (Btw / 100.0))) STORED
+    ,IsActief BIT NOT NULL DEFAULT 1
+    ,Opmerking VARCHAR(225) NULL
+    ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
+    ,Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6)
+    ,FOREIGN KEY (PassagierId) REFERENCES Passagier(Id)
+    ,FOREIGN KEY (VluchtId) REFERENCES Vlucht(Id)
 ) ENGINE=InnoDB;
  
 
