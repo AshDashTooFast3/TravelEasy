@@ -131,6 +131,23 @@ CREATE TABLE Accommodatie (
     ,Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6)
     ,FOREIGN KEY (VluchtId) REFERENCES Vlucht(Id)
 ) ENGINE=InnoDB;
+
+CREATE TABLE Boeking (
+    Id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
+   ,PassagierId INT UNSIGNED NOT NULL
+   ,VluchtId INT UNSIGNED NOT NULL
+   ,Boekingsnummer VARCHAR(20) NOT NULL
+   ,Boekingsdatum DATE NOT NULL
+   ,Boekingstijd TIME NOT NULL
+   ,Boekingsstatus VARCHAR(20) NOT NULL
+   ,TotaalPrijs DECIMAL(10,2) NOT NULL
+   ,IsActief BIT NOT NULL DEFAULT 1
+   ,Opmerking VARCHAR(225) NULL
+   ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
+   ,Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6)
+   ,FOREIGN KEY (PassagierId) REFERENCES Passagier(Id)
+   ,FOREIGN KEY (VluchtId) REFERENCES Vlucht(Id)
+) ENGINE=InnoDB;
  
 -- =====================================================
 -- TABEL: Ticket
