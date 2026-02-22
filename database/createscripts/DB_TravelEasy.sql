@@ -154,6 +154,20 @@ CREATE TABLE Ticket (
     ,FOREIGN KEY (VluchtId) REFERENCES Vlucht(Id)
 ) ENGINE=InnoDB;
  
-
+CREATE TABLE Factuur (
+    Id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    TicketId INT UNSIGNED NOT NULL,
+    Factuurnummer VARCHAR(20) NOT NULL,
+    Factuurdatum DATE NOT NULL,
+    Factuurtijd TIME NOT NULL,
+    TotaalBedrag DECIMAL(10,2) NOT NULL,
+    Betaalstatus VARCHAR(20) NOT NULL,
+    Betaalmethode VARCHAR(50) NULL,
+    IsActief BIT NOT NULL DEFAULT 1,
+    Opmerking VARCHAR(225) NULL,
+    Datumaangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6),
+    Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6),
+    FOREIGN KEY (TicketId) REFERENCES Ticket(Id)
+) ENGINE=InnoDB;
  
  
