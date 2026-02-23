@@ -31,12 +31,10 @@ class AuthenticatedSessionController extends Controller
         $role = strtolower($request->user()->RolNaam ?? '');
 
         return redirect()->intended(match ($role) {
-            'Reisadviseur' => route('dashboard'),
-            'Financieelmedewerker' => route('dashboard'),
-            'Manager' => route('dashboard'),
-            'Administrator' => route('dashboard'),
-            'Passagier' => route('welcome'),
-            'Bezoeker' => route('welcome'),
+            'medewerker' => route('dashboard'),
+            'administrator' => route('dashboard'),
+            'passagier' => route('welcome'),
+            'bezoeker' => route('welcome'),
             default => route('welcome'),
         });
     }

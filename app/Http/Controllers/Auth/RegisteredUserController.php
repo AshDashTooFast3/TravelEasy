@@ -32,24 +32,25 @@ class RegisteredUserController extends Controller
         $request->validate([
             'Gebruikersnaam' => ['required', 'string', 'max:255', 'unique:Gebruiker,Gebruikersnaam'],
             'Wachtwoord' => ['required', 'confirmed', Rules\Password::defaults()],
-            'RolNaam' => ['required', 'string', 'max:20'],
             'Email'=> ['required', 'string','max:255'],
         ]);
 
         $user = Gebruiker::create([
             'Gebruikersnaam' => $request->Gebruikersnaam,
             'Wachtwoord' => Hash::make($request->Wachtwoord),
-            'RolNaam' => $request->RolNaam,
+            'RolNaam' => 'Passagier',
             'Email' => $request->Email,
             'Isactief' => true,
+            'Ingelogd' => now(),
+            'Uitgelogd' => null,
             'Datumaangemaakt' => now(),
-            'Datumgewijzigd' => now(),
+            'Datumgewijzigd' => null,
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('welcome', absolute: false));
     }
 }
