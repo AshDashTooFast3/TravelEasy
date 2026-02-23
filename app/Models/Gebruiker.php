@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable; // ✅ Correct base class
+use Illuminate\Foundation\Auth\User as Authenticatable; 
 use Illuminate\Notifications\Notifiable;
 
 class Gebruiker extends Authenticatable
@@ -12,9 +12,13 @@ class Gebruiker extends Authenticatable
 
     protected $table = 'Gebruiker';
 
-    protected $primaryKey = 'Id'; // ← add this
+    protected $primaryKey = 'Id';
 
     public $timestamps = false;
+
+    const CREATED_AT = 'Datumaangemaakt';
+
+    const UPDATED_AT = 'Datumgewijzigd';
 
     protected $fillable = [
         'Gebruikersnaam',
@@ -44,13 +48,13 @@ class Gebruiker extends Authenticatable
         return $this->hasMany(Persoon::class, 'GebruikerId');
     }
 
-    public function patient()
+    public function passagier()
     {
         return $this->hasOneThrough(
-            Patient::class,
+            Passagier::class,
             Persoon::class,
             'GebruikerId', // Persoon.GebruikerId
-            'PersoonId',   // Patient.PersoonId
+            'PersoonId',   // Passagier.PersoonId
             'Id',          // Gebruiker.Id
             'Id'           // Persoon.Id
         );

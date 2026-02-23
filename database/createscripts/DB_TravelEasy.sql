@@ -39,12 +39,13 @@ CREATE TABLE Persoon (
 CREATE TABLE Passagier (
     Id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
    ,PersoonId INT UNSIGNED NOT NULL
-   ,Nummer INT NOT NULL
+   ,Nummer VARCHAR(20) NOT NULL
    ,PassagierType VARCHAR (100) NOT NULL
    ,IsActief BIT NOT NULL DEFAULT 1
    ,Opmerking VARCHAR(225) NULL
    ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
    ,Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6)
+   ,FOREIGN KEY (PersoonId) REFERENCES Persoon(Id)
 ) ENGINE=InnoDB;
  
  CREATE TABLE Medewerker (
@@ -174,6 +175,7 @@ CREATE TABLE Ticket (
 CREATE TABLE Factuur (
     Id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
    ,TicketId INT UNSIGNED NOT NULL
+   ,PassagierId INT UNSIGNED NOT NULL
    ,Factuurnummer VARCHAR(20) NOT NULL
    ,Factuurdatum DATE NOT NULL
    ,Factuurtijd TIME NOT NULL
@@ -185,6 +187,7 @@ CREATE TABLE Factuur (
    ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
    ,Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6)
    ,FOREIGN KEY (TicketId) REFERENCES Ticket(Id)
+   ,FOREIGN KEY (PassagierId) REFERENCES Passagier(Id)
 ) ENGINE=InnoDB;
  
  

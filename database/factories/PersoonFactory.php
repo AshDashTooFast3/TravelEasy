@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use \App\Models\Gebruiker;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Persoon>
@@ -17,7 +18,7 @@ class PersoonFactory extends Factory
     public function definition(): array
     {
         return [
-            'GebruikerId' => \App\Models\Gebruiker::factory(),
+            'GebruikerId' => Gebruiker::factory(),
             'Voornaam' => $this->faker->firstName(),
             'Tussenvoegsel' => $this->faker->optional()->randomElement(['van', 'de', 'der', 'den', 'ter']),
             'Achternaam' => $this->faker->lastName(),

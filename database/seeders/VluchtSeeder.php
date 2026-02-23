@@ -2,17 +2,17 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Medewerker;
+use \App\Models\Vlucht;
 
-
-class MedewerkerSeeder extends Seeder
+class VluchtSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Medewerker::factory()->count(5)->create();
+        Vlucht::factory(3)->create();
     }
 }

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use \App\Models\Persoon;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Medewerker>
@@ -17,10 +18,13 @@ class MedewerkerFactory extends Factory
     public function definition(): array
     {
         return [
-            'PersoonId' => \App\Models\Persoon::factory(),
+            'PersoonId' => Persoon::factory(),
             'Nummer' => $this->faker->unique()->numerify('M####'),
-
-          
+            'Medewerkertype' => $this->faker->word(),
+            'Specialisatie' => $this->faker->word(),
+            'Beschikbaarheid' => $this->faker->boolean(),
+            'Isactief' => $this->faker->boolean(),
+            'Opmerking' => $this->faker->sentence(),
             'Datumaangemaakt' => now(),
             'Datumgewijzigd' => now(),
         ];

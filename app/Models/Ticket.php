@@ -5,42 +5,47 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Factuur extends Model
+class Ticket extends Model
 {
+    /** @use HasFactory<\Database\Factories\TicketFactory> */
     use HasFactory;
-
-    protected $table = 'Factuur';
+    protected $table = 'Ticket';
 
     protected $primaryKey = 'Id';
 
     public $timestamps = false;
 
     const CREATED_AT = 'Datumaangemaakt';
-
     const UPDATED_AT = 'Datumgewijzigd';
 
     protected $fillable = [
-        'TicketId',
         'PassagierId',
-        'Factuurnummer',
-        'Factuurdatum',
-        'Factuurtijd',
-        'TotaalBedrag',
-        'Betaalstatus',
-        'Betaalmethode',
-        'Isactief',
+        'VluchtId',
+        'Stoelnummer',
+        'Aankoopdatum',
+        'Aankooptijd',
+        'Aantal',
+        'BedragInclBtw',
+        'IsActief',
         'Opmerking',
         'Datumaangemaakt',
         'Datumgewijzigd',
     ];
 
-    public function ticket()
-    {
-        return $this->belongsTo(Ticket::class, 'TicketId', 'Id');
-    }
+    protected $casts = [
+        'IsActief' => 'boolean',
+        'Datumaangemaakt' => 'datetime',
+        'Datumgewijzigd' => 'datetime',
+    ];
 
     public function passagier()
     {
         return $this->belongsTo(Passagier::class, 'PassagierId', 'Id');
     }
+
+    public function vlucht()
+    {
+        return $this->belongsTo(Vlucht::class, 'VluchtId', 'Id');
+    }
+    
 }

@@ -3,16 +3,16 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Medewerker;
+use Mockery\Generator\StringManipulation\Pass\Pass;
+use App\Models\Passagier;
 
-
-class MedewerkerSeeder extends Seeder
+class PassagierSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Medewerker::factory()->count(5)->create();
+      Passagier::factory()->count(5)->create();
     }
 }

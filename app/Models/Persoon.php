@@ -11,7 +11,13 @@ class Persoon extends Model
     use HasFactory;
     protected $table = 'Persoon';
 
+    protected $primaryKey = 'Id';
+
     public $timestamps = false;
+
+    const CREATED_AT = 'Datumaangemaakt';
+
+    const UPDATED_AT = 'Datumgewijzigd';
 
     protected $fillable = [
         'GebruikerId',
@@ -32,11 +38,11 @@ class Persoon extends Model
 
     public function patient()
     {
-        return $this->hasOne(Patient::class, 'PersoonId', 'Id');
+        return $this->hasOne(Passagier::class, 'PersoonId', 'Id');
     }
     public function medewerker()
-{
-    return $this->hasOne(MedewerkerOverzichtModel::class, 'PersoonId', 'Id');
-}
+    {
+        return $this->hasOne(Medewerker::class, 'PersoonId', 'Id');
+    }
 
 }

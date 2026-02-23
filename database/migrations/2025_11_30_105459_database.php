@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('RolNaam', 50);
             $table->string('Email', 255)->unique();
             $table->dateTime('Ingelogd');
-            $table->dateTime('Uitgelogd');
+            $table->dateTime('Uitgelogd')->nullable();
             $table->boolean('Isactief');
             $table->string('Opmerking', 255)->nullable();
             $table->string('remember_token', 100)->nullable();
@@ -44,7 +44,7 @@ return new class extends Migration
         Schema::create('Passagier', function (Blueprint $table) {
             $table->increments('Id');
             $table->unsignedInteger('PersoonId');
-            $table->integer('Nummer');
+            $table->string('Nummer', 20);
             $table->string('PassagierType', 100);
             $table->boolean('Isactief')->default(true);
             $table->string('Opmerking', 225)->nullable();
@@ -153,7 +153,7 @@ return new class extends Migration
             $table->string('Stoelnummer', 4);
             $table->date('Aankoopdatum');
             $table->time('Aankooptijd');
-            $table->decimal('Prijs', 6, 2);
+            $table->decimal('BedragInclBtw', 6, 2);
             $table->tinyInteger('Aantal');
             $table->tinyInteger('Btw')->default(21);
             $table->boolean('Isactief')->default(true);
@@ -167,6 +167,7 @@ return new class extends Migration
         Schema::create('Factuur', function (Blueprint $table) {
             $table->increments('Id');
             $table->unsignedInteger('TicketId');
+            $table->unsignedInteger('PassagierId');
             $table->string('Factuurnummer', 20);
             $table->date('Factuurdatum');
             $table->time('Factuurtijd');
@@ -178,6 +179,7 @@ return new class extends Migration
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
             $table->foreign('TicketId')->references('Id')->on('Ticket');
+            $table->foreign('PassagierId')->references('Id')->on('Passagier');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

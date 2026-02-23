@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Behandeling;
-use App\Models\Patient;
+use App\Models\Ticket;
+use App\Models\Passagier;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,19 +19,18 @@ class FactuurFactory extends Factory
     public function definition(): array
     {
         return [
-            'PatientId' => Patient::factory(),
-            'BehandelingId' => Behandeling::factory(),
-            'Nummer' => $this->faker->unique()->bothify('FCT-#####'),
-            'Omschrijving' => $this->faker->sentence(),
-            'Datum' => $this->faker->date(),
-            'Tijd' => $this->faker->time('H:i'),
-            'Bedrag' => $this->faker->randomFloat(2, 50, 1000),
-            'Status' => $this->faker->randomElement(['Verzonden', 'Niet-Verzonden', 'Betaald', 'Onbetaald']),
+            'TicketId' => Ticket::factory(),
+            'PassagierId' => Passagier::factory(),
+            'Factuurnummer' => $this->faker->unique()->numerify('FAC-####'),
+            'Factuurdatum' => $this->faker->date(),
+            'Factuurtijd' => $this->faker->time(),
+            'TotaalBedrag' => $this->faker->randomFloat(2, 10, 1000),
+            'Betaalstatus' => $this->faker->randomElement(['Betaald', 'Openstaand', 'Geannuleerd']),
+            'Betaalmethode' => $this->faker->randomElement(['Creditcard', 'Pinnen', 'Overschrijving']),
             'Isactief' => $this->faker->boolean(),
-            'Opmerking' => $this->faker->optional()->sentence(),
+            'Opmerking' => $this->faker->sentence(),
             'Datumaangemaakt' => $this->faker->dateTime(),
-            'Datumgewijzigd' => $this->faker->optional()->dateTime(),
-
+            'Datumgewijzigd' => $this->faker->dateTime(),
         ];
     }
 }

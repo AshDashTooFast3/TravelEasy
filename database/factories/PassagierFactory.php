@@ -3,12 +3,12 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use \App\Models\Persoon;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Gebruiker>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Passagier>
  */
-
-class PatientFactory extends Factory
+class PassagierFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,15 +18,13 @@ class PatientFactory extends Factory
     public function definition(): array
     {
         return [
-
-            'PersoonId' => \App\Models\Persoon::factory(),
-            'Nummer' => $this->faker->unique()->numerify('P####'),
-            'MedischDossier' => $this->faker->optional()->text(100),
-            'Isactief' => true,
+            'PersoonId' => Persoon::factory(),
+            'Nummer' => $this->faker->unique()->numerify('P###'),
+            'PassagierType' => $this->faker->randomElement(['Kind', 'Volwassen', 'Baby']),
+            'IsActief' => $this->faker->boolean(890), 
             'Opmerking' => $this->faker->optional()->sentence(),
             'Datumaangemaakt' => now(),
             'Datumgewijzigd' => now(),
-
         ];
     }
 }

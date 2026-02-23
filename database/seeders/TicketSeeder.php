@@ -2,17 +2,17 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Medewerker;
+use \App\Models\Ticket;
 
-
-class MedewerkerSeeder extends Seeder
+class TicketSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Medewerker::factory()->count(5)->create();
+        Ticket::factory(3)->create();
     }
 }

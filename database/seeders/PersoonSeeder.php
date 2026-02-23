@@ -13,6 +13,13 @@ class PersoonSeeder extends Seeder
      */
     public function run(): void
     {
-        Persoon::factory()->count(1)->create();
+        Persoon::factory()->create([
+            'GebruikerId' => 2,
+            'Voornaam' => 'Achraf',
+            'Tussenvoegsel' => 'El',
+            'Achternaam' => 'Arrasi',
+            'Geboortedatum' => '2006-01-01',
+            'Isactief' => true,
+        ]);
     }
 }

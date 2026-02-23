@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class Medewerker extends Model
+class Passagier extends Model
 {
+    /** @use HasFactory<\Database\Factories\PassagierFactory> */
     use HasFactory;
-    protected $table = 'Medewerker';
+
+    protected $table = 'Passagier';
 
     protected $primaryKey = 'Id';
 
@@ -21,19 +23,21 @@ class Medewerker extends Model
     protected $fillable = [
         'PersoonId',
         'Nummer',
-        'Medewerkertype',
-        'Specialisatie',
-        'Beschikbaarheid',
-        'Isactief',
+        'PassagierType',
+        'IsActief',
         'Opmerking',
         'Datumaangemaakt',
         'Datumgewijzigd',
     ];
 
-    // A Medewerker belongs to a Persoon
+    protected $casts = [
+        'IsActief' => 'boolean',
+        'Datumaangemaakt' => 'datetime',
+        'Datumgewijzigd' => 'datetime',
+    ];
+
     public function persoon()
     {
         return $this->belongsTo(Persoon::class, 'PersoonId');
     }
-
 }
