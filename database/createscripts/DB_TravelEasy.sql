@@ -135,8 +135,8 @@ CREATE TABLE Accommodatie (
 
 CREATE TABLE Boeking (
     Id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
-   ,PassagierId INT UNSIGNED NOT NULL
    ,VluchtId INT UNSIGNED NOT NULL
+   ,AccommodatieId INT UNSIGNED NOT NULL
    ,Boekingsnummer VARCHAR(20) NOT NULL
    ,Boekingsdatum DATE NOT NULL
    ,Boekingstijd TIME NOT NULL
@@ -146,7 +146,7 @@ CREATE TABLE Boeking (
    ,Opmerking VARCHAR(225) NULL
    ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
    ,Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6)
-   ,FOREIGN KEY (PassagierId) REFERENCES Passagier(Id)
+   ,FOREIGN KEY (AccommodatieId) REFERENCES Accommodatie(Id)
    ,FOREIGN KEY (VluchtId) REFERENCES Vlucht(Id)
 ) ENGINE=InnoDB;
  
@@ -174,7 +174,7 @@ CREATE TABLE Ticket (
  
 CREATE TABLE Factuur (
     Id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY
-   ,TicketId INT UNSIGNED NOT NULL
+   ,BoekingId INT UNSIGNED NOT NULL
    ,PassagierId INT UNSIGNED NOT NULL
    ,Factuurnummer VARCHAR(20) NOT NULL
    ,Factuurdatum DATE NOT NULL
@@ -186,7 +186,7 @@ CREATE TABLE Factuur (
    ,Opmerking VARCHAR(225) NULL
    ,Datumaangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
    ,Datumgewijzigd DATETIME(6) NULL DEFAULT NOW(6)
-   ,FOREIGN KEY (TicketId) REFERENCES Ticket(Id)
+   ,FOREIGN KEY (BoekingId) REFERENCES Boeking(Id)
    ,FOREIGN KEY (PassagierId) REFERENCES Passagier(Id)
 ) ENGINE=InnoDB;
  

@@ -131,8 +131,8 @@ return new class extends Migration
 
         Schema::create('Boeking', function (Blueprint $table) {
             $table->increments('Id');
-            $table->unsignedInteger('PassagierId');
             $table->unsignedInteger('VluchtId');
+            $table->unsignedInteger('AccommodatieId');
             $table->string('Boekingsnummer', 20);
             $table->date('Boekingsdatum');
             $table->time('Boekingstijd');
@@ -142,7 +142,7 @@ return new class extends Migration
             $table->string('Opmerking', 225)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
-            $table->foreign('PassagierId')->references('Id')->on('Passagier');
+            $table->foreign('AccommodatieId')->references('Id')->on('Accommodatie');
             $table->foreign('VluchtId')->references('Id')->on('Vlucht');
         });
 
@@ -166,7 +166,7 @@ return new class extends Migration
 
         Schema::create('Factuur', function (Blueprint $table) {
             $table->increments('Id');
-            $table->unsignedInteger('TicketId');
+            $table->unsignedInteger('BoekingId');
             $table->unsignedInteger('PassagierId');
             $table->string('Factuurnummer', 20);
             $table->date('Factuurdatum');
@@ -178,7 +178,7 @@ return new class extends Migration
             $table->string('Opmerking', 225)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
-            $table->foreign('TicketId')->references('Id')->on('Ticket');
+            $table->foreign('BoekingId')->references('Id')->on('Boeking');
             $table->foreign('PassagierId')->references('Id')->on('Passagier');
         });
 
