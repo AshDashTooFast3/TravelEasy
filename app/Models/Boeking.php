@@ -49,14 +49,15 @@ class Boeking extends Model
     {
         try {
             $result = DB::select('CALL sp_getBoekingenCount()');
-
             if (empty($result)) {
                 Log::info('sp_getBoekingenCount retourneerde een lege result omdat er geen data kon opgehaald worden.');
 
                 return -1;
             }
 
-            return $result[0]->count ?? -1;
+            $count = $result[0]->count ?? -1;
+
+            return $count;
 
         } catch (\Exception $e) {
             Log::error('Fout in sp_getBoekingenCount: '.$e->getMessage());

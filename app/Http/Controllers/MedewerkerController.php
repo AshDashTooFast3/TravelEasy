@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\Models\Boeking;
+use Illuminate\Support\Facades\Log;
 
 class MedewerkerController extends Controller
 {
@@ -23,6 +24,10 @@ class MedewerkerController extends Controller
     public function ManagementDashboard() {
 
         $aantalBoekingen = $this->BoekingModel->sp_getBoekingenCount();
+
+        if($aantalBoekingen > 0) {
+          Log::info('Aantal boekingen opgehaald: '.$aantalBoekingen);
+        }
 
         return view('management-dashboard', [
             'title' => 'Management Dashboard',
