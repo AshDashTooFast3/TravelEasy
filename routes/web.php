@@ -11,7 +11,17 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified', 'role:administrator,medewerker'])->name('dashboard');
+})->middleware(['auth', 'verified', 'role:medewerker'])->name('dashboard');
+
+// alle medewerkers kunnen deze pagina zien
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified', 'role:medewerker'])->name('dashboard');
+
+// Alleen Administrators en Managers kunnen deze pagina zien
+Route::get('/management-dashboard', function () {
+    return view('management-dashboard');
+})->middleware(['auth', 'verified', 'role:administrator,manager'])->name('management-dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
