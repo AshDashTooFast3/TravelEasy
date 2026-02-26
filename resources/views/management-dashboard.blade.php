@@ -13,9 +13,9 @@
                 </div>
 
                 <div
-                    class="p-8 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 text-gray-100 text-2xl">
+                    class="p-8 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white text-2xl">
                     <strong>
-                        <p class="text-white p-4">
+                        <p class="p-4">
                             Aantal gemaakte boekingen:
                             @if (!empty($aantalBoekingen) && $aantalBoekingen > 0)
                                 <span
@@ -27,7 +27,7 @@
                                     style="display: inline-block; width: 40px; height: 40px; border-radius: 50%; background: #ffa600ff; color: #fff; text-align: center; line-height: 40px; font-weight: bold; margin-left: 10px;">
                                     0
                                 </span>
-                                <span style="margin-left: 10px; color: #ffa600ff;">
+                                <span style="margin-left: 10px; color: #ffa600ff; dark:text-gray-400;">
                                     er zijn nog geen boekingen gemaakt
                                 </span>
                             @endif
