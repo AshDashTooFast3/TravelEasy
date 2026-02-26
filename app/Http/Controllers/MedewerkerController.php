@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use \App\Models\Medewerker;
+use \App\Models\Boekingen;
 
 class MedewerkerController extends Controller
 {
-    private $MedewerkerModel;
+    private $BoekingModel;
+
     public function __construct() {
-        $this->MedewerkerModel = new Medewerker();
+        $this->BoekingModel = new Boekingen();
     }
+    
     //pagina voor alle medewerkers
     public function index() {
 
