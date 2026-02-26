@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Boeking extends Model
 {
     use HasFactory;
+
     protected $table = 'Boeking';
 
     protected $primaryKey = 'Id';
@@ -15,7 +18,9 @@ class Boeking extends Model
     public $timestamps = false;
 
     const CREATED_AT = 'Datumaangemaakt';
+
     const UPDATED_AT = 'Datumgewijzigd';
+
     protected $fillable = [
         'VluchtId',
         'AccommodatieId',
@@ -27,7 +32,7 @@ class Boeking extends Model
         'IsActief',
         'Opmerking',
         'Datumaangemaakt',
-        'Datumgewijzigd'
+        'Datumgewijzigd',
     ];
 
     public function vlucht()
@@ -40,4 +45,23 @@ class Boeking extends Model
         return $this->belongsTo(Accommodatie::class, 'AccommodatieId');
     }
 
+    public function sp_getBoekingenCount(): int
+    {
+        try {
+            $result = DB::select('CALL sp_getBoekingenCount()');
+
+            if (empty($result)) {
+                Log::info('sp_getBoekingenCount retourneerde een lege result omdat er geen data kon opgehaald worden.');
+
+                return -1;
+            }
+
+            return $result[0]->count ?? -1;
+
+        } catch (\Exception $e) {
+            Log::error('Fout in sp_getBoekingenCount: '.$e->getMessage());
+
+            return -1;
+        }
+    }
 }

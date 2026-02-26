@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
 
         return redirect()->intended(match ($role) {
             'medewerker' => route('dashboard'),
-            'administrator' => route('dashboard'),
+            'administrator' => route('management-dashboard'),
             'passagier' => route('welcome'),
             'bezoeker' => route('welcome'),
             default => route('welcome'),
