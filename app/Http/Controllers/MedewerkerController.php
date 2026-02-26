@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use \App\Models\Boekingen;
+use \App\Models\Boeking;
 
 class MedewerkerController extends Controller
 {
     private $BoekingModel;
 
     public function __construct() {
-        $this->BoekingModel = new Boekingen();
+        $this->BoekingModel = new Boeking();
     }
     
     //pagina voor alle medewerkers
