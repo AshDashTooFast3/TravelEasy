@@ -22,8 +22,11 @@ class MedewerkerController extends Controller
     // Alleen Administrators en Managers kunnen deze pagina zien
     public function ManagementDashboard() {
 
+        $aantalBoekingen = $this->BoekingModel->sp_getBoekingenCount();
 
-
-        return view('management-dashboard');
+        return view('management-dashboard', [
+            'title' => 'Management Dashboard',
+            'aantalBoekingen' => $aantalBoekingen
+        ]);
     }
 }

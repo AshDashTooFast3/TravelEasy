@@ -1,25 +1,21 @@
 <?php
 
+use App\Http\Controllers\MedewerkerController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\HomeController; // ← toegevoegd
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-// Vervang de oude '/' route met HomeController
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified', 'role:medewerker'])->name('dashboard');
 
 // alle medewerkers kunnen deze pagina zien
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified', 'role:medewerker'])->name('dashboard');
+})->middleware(['auth', 'verified', 'role:administrator,medewerker,manager'])->name('dashboard');
 
 // Alleen Administrators en Managers kunnen deze pagina zien
-Route::get('/management-dashboard', function () {
-    return view('management-dashboard');
-})->middleware(['auth', 'verified', 'role:administrator,manager'])->name('management-dashboard');
+Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
+    Route::get('/management-dashboard', [MedewerkerController::class, 'ManagementDashboard'])->name('management-dashboard');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

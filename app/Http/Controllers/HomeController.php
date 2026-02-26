@@ -8,7 +8,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Tijdelijke data zodat je niemand in conflict brengt
         $reizen = [
             [
                 'titel' => 'Zomervakantie Spanje',
@@ -30,6 +29,6 @@ class HomeController extends Controller
             ]
         ];
 
-        return view('home', compact('reizen'));
+        return view('welcome', compact('reizen')); // <-- stuur $reizen door
     }
 }
