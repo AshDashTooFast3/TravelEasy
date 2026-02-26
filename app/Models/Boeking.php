@@ -2,12 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Boeking extends Model
 {
-    protected $table = 'boekingen';
+    use HasFactory;
+    protected $table = 'Boeking';
 
+    protected $primaryKey = 'Id';
+
+    public $timestamps = false;
+
+    const CREATED_AT = 'Datumaangemaakt';
+    const UPDATED_AT = 'Datumgewijzigd';
     protected $fillable = [
         'VluchtId',
         'AccommodatieId',

@@ -104,8 +104,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PassagierSeeder::class,
             MedewerkerSeeder::class,
-            AccommodatieSeeder::class,
             VluchtSeeder::class,
+            AccommodatieSeeder::class,
             TicketSeeder::class,
             FactuurSeeder::class,
         ]);

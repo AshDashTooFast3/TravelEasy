@@ -20,7 +20,7 @@ class Factuur extends Model
     const UPDATED_AT = 'Datumgewijzigd';
 
     protected $fillable = [
-        'TicketId',
+        'BoekingId',
         'PassagierId',
         'Factuurnummer',
         'Factuurdatum',
@@ -34,9 +34,9 @@ class Factuur extends Model
         'Datumgewijzigd',
     ];
 
-    public function ticket()
+    public function boeking()
     {
-        return $this->belongsTo(Ticket::class, 'TicketId', 'Id');
+        return $this->belongsTo(Boeking::class, 'BoekingId', 'Id');
     }
 
     public function passagier()
