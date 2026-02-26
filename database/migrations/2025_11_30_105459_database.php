@@ -91,7 +91,7 @@ return new class extends Migration
             $table->increments('Id');
             $table->unsignedInteger('VertrekId');
             $table->unsignedInteger('BestemmingId');
-            $table->string('Vluchtnummer', 5);
+            $table->string('Vluchtnummer', 20);
             $table->date('Vertrekdatum');
             $table->time('Vertrektijd');
             $table->date('Aankomstdatum');

@@ -21,10 +21,10 @@ class BoekingFactory extends Factory
         return [
             'VluchtId' => Vlucht::factory(),
             'AccommodatieId' => Accommodatie::factory(),
-            'Boekingsnummer' => $this->faker->unique()->regexify('[A-Z]{2}[0-9]{6}'),
+            'Boekingsnummer' => $this->faker->unique()->numerify('BN-######'),
             'Boekingsdatum' => $this->faker->date(),
             'Boekingstijd' => $this->faker->time(),
-            'Boekingsstatus' => $this->faker->randomElement(['confirmed', 'pending', 'cancelled']),
+            'Boekingsstatus' => $this->faker->randomElement(['Open', 'In behandeling', 'Bevestigd', 'Geannuleerd']),
             'TotaalPrijs' => $this->faker->randomFloat(2, 100, 5000),
             'IsActief' => $this->faker->boolean(90),
             'Opmerking' => $this->faker->optional()->sentence(),

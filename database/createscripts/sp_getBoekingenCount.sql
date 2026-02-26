@@ -7,7 +7,8 @@ DELIMITER $$
 CREATE PROCEDURE sp_getBoekingenCount()
 BEGIN
     SELECT COUNT(*) AS count
-    FROM Boeking;
+    FROM Boeking
+    WHERE Boekingsstatus = 'Bevestigd';
 END $$
 
 DELIMITER ;
