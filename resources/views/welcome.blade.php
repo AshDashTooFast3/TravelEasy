@@ -46,7 +46,7 @@
                 Account aanmaken
             </a>
         </div>
-        <img src="{{ asset('img/traveleasy-logo-groot.png') }}" alt="TravelEasy-logo" class="mx-auto h-25 w-auto" />
+        <x-application-logo class="mx-auto mt-10" />
     </div>
 
     <!-- Sectie met extra info -->
