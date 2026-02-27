@@ -355,22 +355,27 @@
 <section id="bestemmingen">
     <h2>Populaire Bestemmingen</h2>
     <div class="bestemmingen">
+
         <div class="bestemming">
-            <img src="https://source.unsplash.com/600x400/?paris" alt="">
+            <img src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=800&q=80" alt="Parijs">
             <div class="overlay">Parijs</div>
         </div>
+
         <div class="bestemming">
-            <img src="https://source.unsplash.com/600x400/?newyork" alt="">
+            <img src="https://images.unsplash.com/photo-1485738422979-f5c462d49f74?auto=format&fit=crop&w=800&q=80" alt="New York">
             <div class="overlay">New York</div>
         </div>
+
         <div class="bestemming">
-            <img src="https://source.unsplash.com/600x400/?tokyo" alt="">
+            <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80" alt="Tokyo">
             <div class="overlay">Tokyo</div>
         </div>
+
         <div class="bestemming">
-            <img src="https://source.unsplash.com/600x400/?rome" alt="">
+            <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80" alt="Rome">
             <div class="overlay">Rome</div>
         </div>
+
     </div>
 </section>
 
@@ -379,7 +384,15 @@
     <div class="reizen">
         @foreach($reizen as $reis)
             <div class="reis">
-                <img src="https://source.unsplash.com/600x400/?{{ strtolower($reis['type']) }}" alt="{{ $reis['titel'] }}">
+                @php
+    $images = [
+        'vliegtuig' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+        'cruise' => 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=800&q=80',
+        'bus' => 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80',
+    ];
+@endphp
+
+<img src="{{ $images[strtolower($reis['type'])] ?? 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80' }}" alt="{{ $reis['titel'] }}">
                 <div class="reis-content">
                     <h3>{{ $reis['titel'] }}</h3>
                     <p class="type">{{ $reis['type'] }}</p>
