@@ -317,6 +317,8 @@
 
 <body>
 
+    <x-navbar />
+
 <header>
     <div class="hero-content">
         <h1>Ontdek de Wereld met TravelEasy</h1>
