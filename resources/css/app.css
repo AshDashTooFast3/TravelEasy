@@ -2,3 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+.logo-groot {
+    margin: 20px auto 0;
+    display: flex;
+    justify-content: center;
+    height: 500px;
+    width: auto;
+}
+
+.logo-klein {
+    margin: 20px auto 0;
+    display: flex;
+    justify-content: center;
+    height: 250px;
+    width: auto;
+}
+
+.logo-dashboard {
+    margin: 20px auto 0;
+    display: flex;
+    justify-content: center;
+    height: 100px;
+    width: auto;
+}

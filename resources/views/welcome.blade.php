@@ -46,7 +46,7 @@
                 Account aanmaken
             </a>
         </div>
-        <img src="{{ asset('img/smilepro-logo.png') }}" alt="SmilePro-logo" class="mx-auto h-25 w-auto" />
+        <img src="{{ asset('img/traveleasy-logo-groot.png') }}" alt="TravelEasy-logo" class="mx-auto h-25 w-auto" />
     </div>
 
     <!-- Sectie met extra info -->
