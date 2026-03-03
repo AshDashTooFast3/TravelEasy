@@ -13,6 +13,6 @@ class VluchtSeeder extends Seeder
      */
     public function run(): void
     {
-        Vlucht::factory(30)->create();
+        Vlucht::factory(3)->create();
     }
 }

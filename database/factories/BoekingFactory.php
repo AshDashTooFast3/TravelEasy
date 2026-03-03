@@ -24,7 +24,7 @@ class BoekingFactory extends Factory
             'Boekingsnummer' => $this->faker->unique()->regexify('[A-Z]{2}[0-9]{6}'),
             'Boekingsdatum' => $this->faker->date(),
             'Boekingstijd' => $this->faker->time(),
-            'Boekingsstatus' => $this->faker->randomElement(['confirmed', 'pending', 'cancelled']),
+            'Boekingsstatus' => $this->faker->randomElement(['Bevestigd', 'In behandeling', 'Geannuleerd']),
             'TotaalPrijs' => $this->faker->randomFloat(2, 100, 5000),
             'IsActief' => $this->faker->boolean(90),
             'Opmerking' => $this->faker->optional()->sentence(),

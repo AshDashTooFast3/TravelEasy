@@ -108,6 +108,7 @@ class DatabaseSeeder extends Seeder
             AccommodatieSeeder::class,
             TicketSeeder::class,
             FactuurSeeder::class,
+            BoekingSeeder::class,
         ]);
 
     }
