@@ -1,65 +1,121 @@
-@vite('resources/css/app.css')
+@vite(['resources/css/app.css', 'resources/js/app.js'])
 
-<nav
-    class="relative bg-gray-800/50 after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10">
+<nav class="relative dark:bg-gray-800 border-b border-white/10 dark:text-white">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div class="relative flex h-16 items-center justify-between">
+
+            {{-- Mobile menu button --}}
             <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                <!-- Mobile menu button-->
-                <button type="button" command="--toggle" commandfor="mobile-menu"
-                    class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-white/5 hover:text-white focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-500">
+                <button type="button" id="mobile-menu-button" aria-controls="mobile-menu" aria-expanded="false"
+                    onclick="toggleMobileMenu()"
+                    class="relative inline-flex items-center justify-center rounded-md p-2 dark:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                     <span class="absolute -inset-0.5"></span>
                     <span class="sr-only">Open main menu</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon"
-                        aria-hidden="true" class="size-6 in-aria-expanded:hidden">
-                        <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round"
-                            stroke-linejoin="round" />
+
+                    {{-- Hamburger icon --}}
+                    <svg id="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        aria-hidden="true" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                     </svg>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon"
-                        aria-hidden="true" class="size-6 not-in-aria-expanded:hidden">
-                        <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+
+                    {{-- Close icon --}}
+                    <svg id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        aria-hidden="true" class="size-6 hidden">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
+
+            {{-- Logo + Desktop nav links --}}
             <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div class="flex shrink-0 items-center">
-                    <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                        alt="Your Company" class="h-8 w-auto" />
-                </div>
-                <div class="hidden sm:ml-6 sm:block">
-                    <div class="flex space-x-4">
-                        <a href="#" aria-current="page"
-                            class="rounded-md bg-gray-950/50 px-3 py-2 text-sm font-medium text-white">Home</a>
-                        <a href="#"
-                            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Afspraken</a>
+                <div class="flex items-center gap-6">
+                    <a href="/" class="flex-shrink-0">
+                        <x-application-logo class="h-8 w-auto fill-current text-gray-500" />
+                    </a>
+
+                    {{-- Desktop links --}}
+                    <div class="hidden sm:flex items-center gap-3">
+                        <a href="/"
+                            class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                            Home
+                        </a>
+                        <a href="/reis"
+                            class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                            Reis
+                        </a>
                     </div>
                 </div>
             </div>
-            <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+
+            {{-- Right side: auth buttons --}}
+            <div class="hidden sm:ml-6 sm:flex sm:items-center">
                 @guest
                     <a href="{{ route('login') }}"
-                        class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Login</a>
+                        class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                        Inloggen
+                    </a>
                     <a href="{{ route('register') }}"
-                        class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Register</a>
+                        class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                        Registreren
+                    </a>
                 @else
-                    <span class="rounded-md px-3 py-2 text-sm font-medium text-white">{{ Auth::user()->name }}</span>
-                    <a href="{{ route('dashboard') }}"
-                        class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Dashboard</a>
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
+                    <form method="POST" action="{{ route('logout') }}" class="mb-0">
                         @csrf
                         <button type="submit"
-                            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Logout</button>
+                            class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                            Uitloggen
+                        </button>
                     </form>
                 @endguest
-            </div>
         </div>
     </div>
-    <el-disclosure id="mobile-menu" hidden class="block sm:hidden">
+
+    {{-- Mobile menu --}}
+    <div id="mobile-menu" class="hidden sm:hidden border-t border-white/10">
         <div class="space-y-1 px-2 pt-2 pb-3">
-            <a href="#" aria-current="page"
-                class="block rounded-md bg-gray-950/50 px-3 py-2 text-base font-medium text-white">Home</a>
-            <a href="#"
-                class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">Afspraken</a>
+            <a href="/"
+                class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                Home
+            </a>
+            <a href="/reis"
+                class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                Reis
+            </a>
+            @guest
+                <a href="{{ route('login') }}"
+                    class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                    Inloggen
+                </a>
+                <a href="{{ route('register') }}"
+                    class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                    Registreren
+                </a>
+            @else
+                <form method="POST" action="{{ route('logout') }}" class="mb-0">
+                    @csrf
+                    <button type="submit"
+                        class="block w-full text-left rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                        Uitloggen
+                    </button>
+                </form>
+            @endguest
         </div>
-    </el-disclosure>
+    </div>
 </nav>
+
+<script>
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobile-menu');
+        const button = document.getElementById('mobile-menu-button');
+        const iconOpen = document.getElementById('icon-open');
+        const iconClose = document.getElementById('icon-close');
+
+        const isOpen = !menu.classList.contains('hidden');
+
+        menu.classList.toggle('hidden', isOpen);
+        button.setAttribute('aria-expanded', String(!isOpen));
+        iconOpen.classList.toggle('hidden', !isOpen);
+        iconClose.classList.toggle('hidden', isOpen);
+    }
+</script>

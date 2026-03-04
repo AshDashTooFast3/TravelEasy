@@ -69,8 +69,8 @@ return new class extends Migration
 
         Schema::create('Vertrek', function (Blueprint $table) {
             $table->increments('Id');
-            $table->string('Land', 50);
-            $table->string('Luchthaven', 20);
+            $table->string('Land', 200);
+            $table->string('Luchthaven', 200);
             $table->boolean('Isactief')->default(true);
             $table->string('Opmerking', 225)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
@@ -79,8 +79,8 @@ return new class extends Migration
 
         Schema::create('Bestemming', function (Blueprint $table) {
             $table->increments('Id');
-            $table->string('Land', 50);
-            $table->string('Luchthaven', 20);
+            $table->string('Land', 200);
+            $table->string('Luchthaven', 200);
             $table->boolean('Isactief')->default(true);
             $table->string('Opmerking', 225)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
@@ -91,7 +91,7 @@ return new class extends Migration
             $table->increments('Id');
             $table->unsignedInteger('VertrekId');
             $table->unsignedInteger('BestemmingId');
-            $table->string('Vluchtnummer', 5);
+            $table->string('Vluchtnummer', 20);
             $table->date('Vertrekdatum');
             $table->time('Vertrektijd');
             $table->date('Aankomstdatum');

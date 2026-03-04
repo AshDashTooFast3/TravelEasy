@@ -34,7 +34,7 @@
                 <h1>Ontdek de Wereld met TravelEasy</h1>
                 <p>Van luxe cruises tot avontuurlijke busreizen – wij brengen je overal.</p>
 
-                <div class="search-bar">
+                <div class="search-bar dark:text-white">
                     <input type="text" placeholder="Waar wil je naartoe?">
                     <button>Zoeken</button>
                 </div>
@@ -133,7 +133,7 @@
         </section>
 
         <section>
-            <div class="cta-banner">
+            <div class="cta-banner text-white">
                 <h2>Klaar voor jouw volgende avontuur?</h2>
                 <p>Boek vandaag nog en profiteer van onze speciale aanbiedingen.</p>
                 <a href="#reizen">Bekijk reizen</a>

@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         Gebruiker::factory()->create([
             'Gebruikersnaam' => 'Admin',
             'Wachtwoord' => bcrypt('achraf123'),
-            'RolNaam' => 'Administrator',
+            'RolNaam' => 'administrator',
             'Email' => 'admin@traveleasy.com',
             'Ingelogd' => now(),
             'Uitgelogd' => null,
@@ -46,7 +46,7 @@ class DatabaseSeeder extends Seeder
         Gebruiker::factory()->create([
             'Gebruikersnaam' => 'Passagier',
             'Wachtwoord' => bcrypt('achraf123'),
-            'RolNaam' => 'Passagier',
+            'RolNaam' => 'passagier',
             'Email' => 'passagier@traveleasy.com',
             'Ingelogd' => now(),
             'Uitgelogd' => null,
@@ -74,7 +74,7 @@ class DatabaseSeeder extends Seeder
         Gebruiker::factory()->create([
             'Gebruikersnaam' => 'Medewerker',
             'Wachtwoord' => bcrypt('achraf123'),
-            'RolNaam' => 'Medewerker',
+            'RolNaam' => 'reisadviseur',
             'Email' => 'medewerker@traveleasy.com',
             'Ingelogd' => now(),
             'Uitgelogd' => null,
@@ -104,10 +104,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PassagierSeeder::class,
             MedewerkerSeeder::class,
-            AccommodatieSeeder::class,
             VluchtSeeder::class,
+            AccommodatieSeeder::class,
             TicketSeeder::class,
             FactuurSeeder::class,
+            BoekingSeeder::class,
         ]);
 
     }

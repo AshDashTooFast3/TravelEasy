@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Vlucht;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,7 @@ class AccommodatieFactory extends Factory
     public function definition(): array
     {
         return [
-            'VluchtId' => $this->faker->numberBetween(1, 10),
+            'VluchtId' => Vlucht::factory(),
             'Naam' => $this->faker->word(),
             'Type' => $this->faker->randomElement(['Hotel', 'Hostel', 'Apartment', 'Resort']),
             'Straat' => $this->faker->streetName(),

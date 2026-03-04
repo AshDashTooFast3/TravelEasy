@@ -10,7 +10,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        
+        DB::statement('DROP PROCEDURE IF EXISTS sp_getBoekingenCount');
+
+        DB::statement("
+            CREATE PROCEDURE sp_getBoekingenCount()
+            BEGIN
+                SELECT COUNT(*) AS count
+                FROM Boeking
+                WHERE Boekingsstatus = 'Bevestigd';
+            END
+        ");
     }
 
     /**

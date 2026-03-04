@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Ticket;
+use App\Models\Boeking;
 use App\Models\Passagier;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,7 +19,7 @@ class FactuurFactory extends Factory
     public function definition(): array
     {
         return [
-            'TicketId' => Ticket::factory(),
+            'BoekingId' => Boeking::factory(),
             'PassagierId' => Passagier::factory(),
             'Factuurnummer' => $this->faker->unique()->numerify('FAC-####'),
             'Factuurdatum' => $this->faker->date(),
