@@ -18,8 +18,15 @@
                             :active="request()->routeIs('factuur.factuurPatient')">
                             {{ _('Mijn Facturen') }}
                         </x-nav-link>
+
+                        <x-nav-link :href="route('factuur.factuurPatient')"
+                            :active="request()->routeIs('factuur.factuurPatient')">
+                            {{ _('Accomodaties') }}
+                        </x-nav-link>
                     </div>
+
                 @endif
+
             </div>
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
