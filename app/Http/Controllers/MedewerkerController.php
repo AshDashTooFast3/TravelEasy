@@ -43,6 +43,10 @@ class MedewerkerController extends Controller
             Log::info('Boekingen voor meest voorkomende reis bestaan' );
         }
 
+        if($data['AantalBoekingen'] > 0) {
+          Log::info('Aantal boekingen opgehaald: '.$data['AantalBoekingen']);
+        }
+
         return view('management-dashboard', [
             'title' => 'Management Dashboard',
             'AantalBoekingen' => $data['AantalBoekingen'],

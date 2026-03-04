@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ _('Dashboard') }}
+            {{ _('Management Dashboard') }}
         </h2>
     </x-slot>
 
@@ -24,11 +24,11 @@
                                 </span>
                             @else
                                 <span
-                                    style="display: inline-block; width: 40px; height: 40px; border-radius: 50%; background: #ffa600ff; color: #fff; text-align: center; line-height: 40px; font-weight: bold; margin-left: 10px;">
+                                    style="display: inline-block; width: 40px; height: 40px; border-radius: 50%; background: red; dark:background: #ffa600ff; color: #fff; text-align: center; line-height: 40px; font-weight: bold; margin-left: 10px;">
                                     0
                                 </span>
-                                <span style="margin-left: 10px; color: #ffa600ff; dark:text-gray-400;">
-                                    er zijn nog geen boekingen gemaakt
+                                <span style="margin-left: 10px; color: red; dark:color: #ffa600ff; dark:text-gray-400;">
+                                    er zijn nog geen bevestigde boekingen
                                 </span>
                             @endif
                         </p>

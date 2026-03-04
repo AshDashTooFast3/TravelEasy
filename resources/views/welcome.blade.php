@@ -46,7 +46,7 @@
                 Account aanmaken
             </a>
         </div>
-        <img src="{{ asset('img/smilepro-logo.png') }}" alt="SmilePro-logo" class="mx-auto h-25 w-auto" />
+        <x-application-logo class="mx-auto mt-10" />
     </div>
 
     <!-- Sectie met extra info -->
