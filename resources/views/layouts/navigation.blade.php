@@ -37,11 +37,6 @@
                             :active="request()->routeIs('management-dashboard')">
                             {{ _('Management Dashboard') }}
                         </x-nav-link>
-
-                        <x-nav-link :href="route('factuur.factuurPatient')"
-                            :active="request()->routeIs('factuur.factuurPatient')">
-                            {{ _('Accomodaties') }}
-                        </x-nav-link>
                     </div>
 
                 @endif

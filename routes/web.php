@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BoekingController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AccommodatieController;
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
@@ -13,6 +14,12 @@ Route::get('/', [HomeController::class, 'index'])->name('welcome');
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified', 'role:administrator,medewerker,manager'])->name('dashboard');
+
+Route::get('/accommodatie', [AccommodatieController::class, 'index'])->name('accommodatie.index');
+Route::get('/accommodatie/{id}/edit', [AccommodatieController::class, 'edit'])->name('accommodaties.edit');
+Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
+    Route::patch('/accommodatie/{id}', [AccommodatieController::class, 'update'])->name('accommodaties.update');
+});
 
 // Alleen Administrators en Managers kunnen deze pagina zien
 Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
