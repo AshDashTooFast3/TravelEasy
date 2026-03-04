@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Factuur extends Model
 {
@@ -42,5 +44,26 @@ class Factuur extends Model
     public function passagier()
     {
         return $this->belongsTo(Passagier::class, 'PassagierId', 'Id');
+    }
+
+    public function sp_getAllFactuurs()
+    {
+        try {
+            $result = DB::select('CALL sp_getAllFactuurs()');
+
+            if (empty($result)) {
+                Log::info('sp_getAllFactuurs retourneerde een lege result omdat er geen data kon worden opgehaald.');
+
+                return [];
+            }
+            Log::info('sp_getAllFactuurs retourneerde '.count($result).' resultaten.');
+
+            return $result;
+
+        } catch (\Exception $e) {
+            Log::error('Fout in sp_getAllFactuurs: '.$e->getMessage());
+
+            return [];
+        }
     }
 }

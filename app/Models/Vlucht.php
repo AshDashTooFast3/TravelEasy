@@ -44,4 +44,10 @@ class Vlucht extends Model
     {
         return $this->belongsTo(Bestemming::class, 'BestemmingId');
     }
+
+    public function accommodaties()
+{
+    return $this->hasMany(Accommodatie::class, 'VluchtId');
+}
+
 }

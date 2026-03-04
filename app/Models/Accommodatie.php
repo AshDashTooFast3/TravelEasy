@@ -46,4 +46,10 @@ class Accommodatie extends Model
         'Datumgewijzigd' => 'datetime',
         'IsActief' => 'boolean',
     ];
+
+    public function accommodaties()
+{
+    return $this->hasMany(Accommodatie::class, 'VluchtId');
+}
+
 }
