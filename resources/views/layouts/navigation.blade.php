@@ -24,6 +24,10 @@
                             :active="request()->routeIs('facturatie.index')">
                             {{ _('Facturatie') }}
                         </x-nav-link>
+
+                        <x-nav-link :href="route('boekingen.index')" :active="request()->routeIs('boekingen.index')">
+                            {{ _('Boekingen') }}
+                        </x-nav-link>
                     </div>
                 @endif
 

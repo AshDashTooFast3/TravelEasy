@@ -69,6 +69,7 @@
         .search-bar input {
             flex: 1;
             padding: 15px 20px;
+            color: black;
             border: none;
             font-size: 1em;
         }
