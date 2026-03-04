@@ -98,8 +98,8 @@
             </a>
             <a href="/afspraken"
                 class="block rounded-md px-3 py-2 text-base font-medium
-                    {{ request()->is('afspraken*') ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' }}">
-                Afspraken
+                    {{ request()->is('reis*') ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' }}">
+                Reis
             </a>
 
             @auth
