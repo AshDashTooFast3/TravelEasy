@@ -18,7 +18,7 @@ class VertrekFactory extends Factory
     {
         return [
             'Land' => $this->faker->country(),
-            'Luchthaven' => $this->faker->word(),
+            'Luchthaven' => $this->faker->city(),
             'IsActief' => $this->faker->boolean(),
             'Opmerking' => $this->faker->sentence(),
             'Datumaangemaakt' => $this->faker->dateTime(),

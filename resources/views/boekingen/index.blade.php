@@ -1,0 +1,117 @@
+{{-- <!-- Header sectie met titelbalk --> --}}
+<x-app-layout>
+    <x-slot name="header">
+        {{-- <!-- Titelbalk: toont "Boekingen" pagina titel --> --}}
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Boekingen') }}
+        </h2>
+    </x-slot>
+
+    {{-- <!-- Hoofdcontainer met padding en responsieve breedte --> --}}
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+            {{-- <!-- Witte kaart met schaduw --> --}}
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+
+                    {{-- <!-- Pagina titel --> --}}
+                    <span class="text-gray-900 dark:text-gray-100 text-lg font-semibold">
+                        Overzicht van alle boekingen
+                    </span>
+
+                    {{-- <!-- Verticale ruimte --> --}}
+                    {!! str_repeat('<br>', 2) !!}
+
+                    {{-- <!-- Controle: toon bericht als geen boekingen beschikbaar --> --}}
+                    @if($boekingen->isEmpty())
+                        <div class="text-center text-gray-400 py-6">
+                            Geen boekingen gevonden.
+                        </div>
+                    @else
+
+                        {{-- <!-- Scrollbare tabel container --> --}}
+                        <div class="mt-5 overflow-x-auto rounded-lg border border-gray-700">
+                            {{-- <!-- Boekingen tabel --> --}}
+                            <table class="min-w-full table-fixed border-collapse">
+                                {{-- <!-- Tabelkop met kolom titels --> --}}
+                                <thead class="bg-gray-700">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left text-sm font-semibold text-white w-40">Boekingsnr</th>
+                                        <th class="px-4 py-3 text-left text-sm font-semibold text-white w-32">Vlucht</th>
+                                        <th class="px-4 py-3 text-left text-sm font-semibold text-white w-48">Bestemming</th>
+                                        <th class="px-4 py-3 text-left text-sm font-semibold text-white w-48">Accommodatie</th>
+                                        <th class="px-4 py-3 text-left text-sm font-semibold text-white w-40">Datum</th>
+                                        <th class="px-4 py-3 text-left text-sm font-semibold text-white w-32">Status</th>
+                                        <th class="px-4 py-3 text-left text-sm font-semibold text-white w-32">Prijs</th>
+                                    </tr>
+                                </thead>
+
+                                {{-- <!-- Tabelrijen met boekingsgegevens --> --}}
+                                <tbody class="bg-gray-800 divide-y divide-gray-700">
+                                    @foreach($boekingen as $boeking)
+                                        {{-- <!-- Elke rij vertegenwoordigt één boeking --> --}}
+                                        <tr class="hover:bg-gray-700/50 transition">
+
+                                            {{-- <!-- Boekingsnummer --> --}}
+                                            <td class="px-4 py-3 text-sm text-gray-100">
+                                                {{ $boeking->Boekingsnummer }}
+                                            </td>
+
+                                            {{-- <!-- Vluchtnummer --> --}}
+                                            <td class="px-4 py-3 text-sm text-gray-100">
+                                                {{ $boeking->vlucht->Vluchtnummer }}
+                                            </td>
+
+                                            {{-- <!-- Bestemming land en luchthaven --> --}}
+                                            <td class="px-4 py-3 text-sm text-gray-100">
+                                                {{ $boeking->vlucht->bestemming->Land }}
+                                                ({{ $boeking->vlucht->bestemming->Luchthaven }})
+                                            </td>
+
+                                            {{-- <!-- Accommodatienaam met stad en land --> --}}
+                                            <td class="px-4 py-3 text-sm text-gray-100">
+                                                {{ $boeking->accommodatie->Naam }}<br>
+                                                <span class="text-gray-400 text-xs">
+                                                    {{ $boeking->accommodatie->Stad }},
+                                                    {{ $boeking->accommodatie->Land }}
+                                                </span>
+                                            </td>
+
+                                            {{-- <!-- Boekingsdatum en tijd --> --}}
+                                            <td class="px-4 py-3 text-sm text-gray-100">
+                                                {{ \Carbon\Carbon::parse($boeking->Boekingsdatum)->format('d-m-Y') }}<br>
+                                                <span class="text-gray-400 text-xs">
+                                                    {{ $boeking->Boekingstijd }}
+                                                </span>
+                                            </td>
+
+                                            {{-- <!-- Status badge met kleur (groen=bevestigd, geel=wachtend, grijs=anders) --> --}}
+                                            <td class="px-4 py-3 text-sm text-gray-100">
+                                                <span class="px-3 py-1 rounded-full text-xs text-white
+                                                    @if(strtolower($boeking->Boekingsstatus) === 'confirmed') bg-green-600
+                                                    @elseif(strtolower($boeking->Boekingsstatus) === 'pending') bg-yellow-600
+                                                    @else bg-gray-600 @endif">
+                                                    {{ ucfirst($boeking->Boekingsstatus) }}
+                                                </span>
+                                            </td>
+
+                                            {{-- <!-- Totale prijs in euro met decimalen --> --}}
+                                            <td class="px-4 py-3 text-sm text-gray-100">
+                                                €{{ number_format($boeking->TotaalPrijs, 2, ',', '.') }}
+                                            </td>
+
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                    @endif
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</x-app-layout>
