@@ -3,11 +3,10 @@
 use App\Http\Controllers\MedewerkerController;
 use App\Http\Controllers\FactuurController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
 // alle medewerkers kunnen deze pagina zien
 Route::get('/dashboard', function () {
