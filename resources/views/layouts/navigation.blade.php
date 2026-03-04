@@ -6,30 +6,36 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        <x-application-logo
+                            class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200 mx-auto" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ _('Dashboard') }}
+                    </x-nav-link>
+                </div>
 
-                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator']))
+                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'financieelmedewerker', 'manager']))
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('boekingen.index')"
-                            :active="request()->routeIs('boekingen.index')">
-                            {{ _('Boekingen') }}
+                        <x-nav-link :href="route('facturatie.index')"
+                            :active="request()->routeIs('facturatie.index')">
+                            {{ _('Facturatie') }}
+                        </x-nav-link>
+                    </div>
+                @endif
+
+                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'manager']))
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('management-dashboard')"
+                            :active="request()->routeIs('management-dashboard')">
+                            {{ _('Management Dashboard') }}
                         </x-nav-link>
                     </div>
                 @endif
             </div>
-
-            @if (Auth::check() && Auth::user()->RolNaam === 'passagier')
-    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-        <x-nav-link :href="route('reis.index')"
-            :active="request()->routeIs('reis.*')">
-            {{ _('Mijn Reizen') }}
-        </x-nav-link>
-    </div>
-@endif
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
