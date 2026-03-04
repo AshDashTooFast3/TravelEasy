@@ -12,15 +12,24 @@
 
                 <!-- Navigation Links -->
 
-                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['Patient']))
+                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator']))
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('factuur.factuurPatient')"
-                            :active="request()->routeIs('factuur.factuurPatient')">
-                            {{ _('Mijn Facturen') }}
+                        <x-nav-link :href="route('boekingen.index')"
+                            :active="request()->routeIs('boekingen.index')">
+                            {{ _('Boekingen') }}
                         </x-nav-link>
                     </div>
                 @endif
             </div>
+
+            @if (Auth::check() && Auth::user()->RolNaam === 'passagier')
+    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+        <x-nav-link :href="route('reis.index')"
+            :active="request()->routeIs('reis.*')">
+            {{ _('Mijn Reizen') }}
+        </x-nav-link>
+    </div>
+@endif
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
