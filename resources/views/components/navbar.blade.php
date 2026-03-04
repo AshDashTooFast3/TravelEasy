@@ -41,10 +41,10 @@
                                 {{ request()->is('/') ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' }}">
                             Home
                         </a>
-                        <a href="/afspraken"
+                        <a href="/reis"
                             class="rounded-md px-3 py-2 text-sm font-medium
-                                {{ request()->is('afspraken*') ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' }}">
-                            Afspraken
+                                {{ request()->is('reis*') ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' }}">
+                            Reis
                         </a>
                     </div>
                 </div>
