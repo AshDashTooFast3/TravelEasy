@@ -80,8 +80,95 @@
         </div>
     </div>
 
+<<<<<<< Updated upstream
     <!-- TailwindPlus Script -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+=======
+        <section id="reizen">
+            <h2>Onze Populaire Reizen</h2>
+            <div class="reizen">
+            @foreach($reizen as $reis)
+            
+                    <div class="reis">
+                        @php
+                            $images = [
+                                'vliegtuig' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+                                'cruise' => 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=800&q=80',
+                                'bus' => 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80',
+                            ];
+                        @endphp
+
+                        <img src="{{ $images[strtolower($reis['type'])] ?? 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80' }}" alt="{{ $reis['titel'] }}">
+                        <div class="reis-content">
+                            <h3>{{ $reis['titel'] }}</h3>
+                            <p class="type">{{ $reis['type'] }}</p>
+                            <p>{{ $reis['beschrijving'] }}</p>
+                            <p><strong>Vanaf €{{ $reis['prijs'] }}</strong></p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </section>
+
+        <section id="reviews">
+            <h2>Wat onze reizigers zeggen</h2>
+            <div class="testimonials">
+                <div class="testimonial">
+                    <p>"Fantastische service! Onze cruise was perfect geregeld."</p>
+                    <div class="name">– Sophie uit Utrecht</div>
+                </div>
+                <div class="testimonial">
+                    <p>"De busreis naar Italië was super comfortabel en goed georganiseerd."</p>
+                    <div class="name">– Mark uit Eindhoven</div>
+                </div>
+                <div class="testimonial">
+                    <p>"Snelle communicatie en geweldige hotels. Zeker een aanrader!"</p>
+                    <div class="name">– Lisa uit Rotterdam</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="cta-banner">
+                <h2>Klaar voor jouw volgende avontuur?</h2>
+                <p>Boek vandaag nog en profiteer van onze speciale aanbiedingen.</p>
+                <a href="#reizen">Bekijk reizen</a>
+            </div>
+        </section>
+
+        <footer id="contact">
+            <div class="footer-grid">
+                <div>
+                    <h3>TravelEasy</h3>
+                    <p>Jouw partner voor onvergetelijke reizen.</p>
+                </div>
+
+                <div>
+                    <h3>Links</h3>
+                    <ul>
+                        <li><a href="#bestemmingen">Bestemmingen</a></li>
+                        <li><a href="#reizen">Reizen</a></li>
+                        <li><a href="#reviews">Reviews</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Contact</h3>
+                    <ul>
+                        <li>info@traveleasy.nl</li>
+                        <li>030 - 123 4567</li>
+                        <li>Utrecht, Nederland</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                © 2026 TravelEasy – Alle rechten voorbehouden
+            </div>
+        </footer>
+
+    @endif
+>>>>>>> Stashed changes
 
 </body>
 
