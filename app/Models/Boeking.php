@@ -51,7 +51,7 @@ class Boeking extends Model
         try {
             $result = DB::select('CALL sp_getBoekingenCount()');
             if (empty($result)) {
-                Log::info('sp_getBoekingenCount retourneerde een lege result omdat er geen data kon opgehaald worden.');
+                Log::info('sp_getBoekingenCount retourneerde een lege result omdat er geen data kon worden opgehaald.');
 
                 return -1;
             }
@@ -72,7 +72,7 @@ class Boeking extends Model
             $result = DB::select('CALL sp_MeestVoorkomendReis()');
 
             if (empty($result)) {
-                Log::info('sp_MeestVoorkomendReis retourneerde een lege result omdat er geen data kon opgehaald worden.');
+                Log::info('sp_MeestVoorkomendReis retourneerde een lege result omdat er geen data kon worden opgehaald.');
 
                 return [];
             }
