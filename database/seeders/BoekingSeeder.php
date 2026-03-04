@@ -13,7 +13,7 @@ class BoekingSeeder extends Seeder
     public function run(): void
     {
         Boeking::create([
-            'VluchtId' => 1,
+            'VluchtId' => 19,
             'AccommodatieId' => 1,
             'Boekingsnummer' => 'BK001',
             'Boekingsdatum' => now(),
@@ -27,7 +27,7 @@ class BoekingSeeder extends Seeder
         ]);
 
             Boeking::create([
-                'VluchtId' => 1,
+                'VluchtId' => 19,
                 'AccommodatieId' => 1,
                 'Boekingsnummer' => 'BK002',
                 'Boekingsdatum' => now(),
@@ -41,7 +41,7 @@ class BoekingSeeder extends Seeder
             ]);
 
             Boeking::create([
-                'VluchtId' => 1,
+                'VluchtId' => 19,
                 'AccommodatieId' => 1,
                 'Boekingsnummer' => 'BK003',
                 'Boekingsdatum' => now(),
@@ -54,7 +54,7 @@ class BoekingSeeder extends Seeder
                 'Datumgewijzigd' => now(),
             ]);
              Boeking::create([
-                'VluchtId' => 1,
+                'VluchtId' => 19,
                 'AccommodatieId' => 1,
                 'Boekingsnummer' => 'BK003',
                 'Boekingsdatum' => now(),
@@ -66,7 +66,6 @@ class BoekingSeeder extends Seeder
                 'Datumaangemaakt' => now(),
                 'Datumgewijzigd' => now(),
             ]);
-
-        Boeking::factory()->count(5)->create();
+            Boeking::factory()->count(30)->create();
     }
 }

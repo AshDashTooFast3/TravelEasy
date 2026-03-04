@@ -69,7 +69,7 @@ return new class extends Migration
 
         Schema::create('Vertrek', function (Blueprint $table) {
             $table->increments('Id');
-            $table->string('Land', 50);
+            $table->string('Land', 100);
             $table->string('Luchthaven', 20);
             $table->boolean('Isactief')->default(true);
             $table->string('Opmerking', 225)->nullable();
@@ -79,7 +79,7 @@ return new class extends Migration
 
         Schema::create('Bestemming', function (Blueprint $table) {
             $table->increments('Id');
-            $table->string('Land', 50);
+            $table->string('Land', 100);
             $table->string('Luchthaven', 20);
             $table->boolean('Isactief')->default(true);
             $table->string('Opmerking', 225)->nullable();
