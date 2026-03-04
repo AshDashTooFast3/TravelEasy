@@ -49,32 +49,25 @@
             </div>
 
             {{-- Right side: auth buttons --}}
-            @guest
-                <div
-                    class="absolute inset-y-0 right-0 hidden sm:flex items-center gap-1 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                @guest
                     <a href="{{ route('login') }}"
                         class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                        Login
+                        Inloggen
                     </a>
                     <a href="{{ route('register') }}"
                         class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                        Register
-
+                        Registreren
                     </a>
-                </div>
-            @else
-
-                <div
-                    class="absolute inset-y-0 right-0 flex items-center gap-1 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                @else
                     <form method="POST" action="{{ route('logout') }}" class="mb-0">
                         @csrf
                         <button type="submit"
                             class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                            Logout
+                            Uitloggen
                         </button>
                     </form>
-                </div>
-            @endguest
+                @endguest
         </div>
     </div>
 
@@ -89,45 +82,24 @@
                 class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
                 Reis
             </a>
-
-            @auth
-                @if(auth()->user()->role === 'administrator' || auth()->user()->role === 'manager' || auth()->user()->role === 'financieelmedewerker' || auth()->user()->role === 'reisadviseur')
-                    <div class="border-t border-white/10 pt-2 mt-2">
-                        <a href="{{ route('dashboard') }}"
-                            class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                            Dashboard
-                        </a>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit"
-                                class="w-full text-left block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                                Logout
-                            </button>
-                        </form>
-                    </div>
-                @else
-                    <div class="border-t border-white/10 pt-2 mt-2">
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit"
-                                class="w-full text-left block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                                Logout
-                            </button>
-                        </form>
-                    </div>
-                @endif
+            @guest
+                <a href="{{ route('login') }}"
+                    class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                    Inloggen
+                </a>
+                <a href="{{ route('register') }}"
+                    class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                    Registreren
+                </a>
             @else
-                <div class="border-t border-white/10 pt-2 mt-2">
-                    <a href="{{ route('login') }}"
-                        class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                        Login
-                    </a>
-                    <a href="{{ route('register') }}"
-                        class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                        Register
-                    </a>
-                </div>
-            @endauth
+                <form method="POST" action="{{ route('logout') }}" class="mb-0">
+                    @csrf
+                    <button type="submit"
+                        class="block w-full text-left rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                        Uitloggen
+                    </button>
+                </form>
+            @endguest
         </div>
     </div>
 </nav>
