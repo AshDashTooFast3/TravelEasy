@@ -64,14 +64,6 @@
             @else
                 <div
                     class="absolute inset-y-0 right-0 hidden sm:flex items-center gap-1 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-
-                    {{-- Dashboard --}}
-                    <a href="{{ route('dashboard') }}"
-                        class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                        Dashboard
-                    </a>
-                    
-
                     {{-- Logout --}}
                     <form method="POST" action="{{ route('logout') }}" class="inline m-0 p-0">
                         @csrf
@@ -100,10 +92,6 @@
 
             @auth
                 <div class="border-t border-white/10 pt-2 mt-2">
-                    <a href="{{ route('dashboard') }}"
-                        class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                        Dashboard
-                    </a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit"
