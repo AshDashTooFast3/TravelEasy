@@ -20,6 +20,10 @@ Route::get('/accommodatie/{id}/edit', [AccommodatieController::class, 'edit'])->
 Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
     Route::patch('/accommodatie/{id}', [AccommodatieController::class, 'update'])->name('accommodaties.update');
 });
+Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
+    Route::get('/accommodatie/create', [AccommodatieController::class, 'create'])->name('accommodaties.create');
+    Route::post('/accommodatie', [AccommodatieController::class, 'store'])->name('accommodaties.store');
+});
 
 // Alleen Administrators en Managers kunnen deze pagina zien
 Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
