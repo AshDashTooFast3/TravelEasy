@@ -55,7 +55,7 @@ class Boeking extends Model
 
                 return -1;
             }
-
+            Log::info('sp_getBoekingenCount retourneerde een count van '.$result[0]->count.'.');
             return $result[0]->count ?? -1;
 
         } catch (\Exception $e) {
@@ -75,7 +75,7 @@ class Boeking extends Model
 
                 return [];
             }
-
+            Log::info('sp_MeestVoorkomendReis retourneerde '.count($result).' resultaten.');
             return $result;
 
         } catch (\Exception $e) {
