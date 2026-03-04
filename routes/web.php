@@ -27,7 +27,6 @@ Route::middleware(['auth', 'verified', 'role:passagier'])->group(function () {
     Route::get('/reis/map', [KlantBoekingController::class, 'map'])->name('reis.map');
     Route::get('/reis/nieuw', [KlantBoekingController::class, 'create'])->name('reis.create');
     Route::post('/reis', [KlantBoekingController::class, 'store'])->name('reis.store');
-    Route::get('/reis/{id}', [KlantBoekingController::class, 'show'])->name('reis.show');
     Route::delete('/reis/{id}', [KlantBoekingController::class, 'destroy'])->name('reis.destroy');
 });
 Route::middleware('auth')->group(function () {

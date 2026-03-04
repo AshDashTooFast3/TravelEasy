@@ -25,19 +25,6 @@ class KlantBoekingController extends Controller
         return view('reis.map', compact('boekingen'));
     }
 
-    // Reis details (ENIGE show()!)
-    public function show($id)
-    {
-        $boekingen = KlantBoekingen::get();
-
-        $boeking = $boekingen->where('Id', $id)->first();
-
-        if (!$boeking) {
-            abort(404);
-        }
-
-        return view('reis.show', compact('boeking'));
-    }
 
     // Nieuwe reis boeken
     public function create()
@@ -74,7 +61,7 @@ class KlantBoekingController extends Controller
             'IsActief'       => 1,
         ]);
 
-        return redirect()->route('reis.show', $boeking->Id)
+        return redirect()->route('reis.index', $boeking->Id)
             ->with('success', 'Reis succesvol geboekt!');
     }
 
@@ -91,4 +78,6 @@ class KlantBoekingController extends Controller
         ->with('success', 'Reis verwijderd!');
 
 }
+
+
 }

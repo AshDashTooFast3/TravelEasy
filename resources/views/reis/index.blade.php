@@ -53,10 +53,7 @@
                             <td class="flex gap-3 py-2">
 
                                 {{-- FIXED ROUTE --}}
-                                <a href="{{ route('reis.show', $reis->Id) }}"
-                                   class="text-blue-400 hover:text-blue-300">
-                                    Bekijken
-                                </a>
+
 
                                 {{-- FIXED ROUTE --}}
                                 <form action="{{ route('reis.destroy', $reis->Id) }}"
