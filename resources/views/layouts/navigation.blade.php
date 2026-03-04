@@ -5,46 +5,25 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-<<<<<<< HEAD
                     <a href="{{ route('dashboard') }}">
-=======
-                    <a href="{{ route('welcome') }}">
->>>>>>> 2697c3f08bab4ce0948cb544fb3d6962ab473304
                         <x-application-logo
                             class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200 mx-auto" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-<<<<<<< HEAD
-=======
-                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['passagier']))
->>>>>>> 2697c3f08bab4ce0948cb544fb3d6962ab473304
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ _('Dashboard') }}
-                    </x-nav-link>
-                </div>
-<<<<<<< HEAD
 
-                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'financieelmedewerker', 'manager']))
-=======
-                @endif
 
                 @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'financieelmedewerker', 'manager', 'reisadviseur']))
->>>>>>> 2697c3f08bab4ce0948cb544fb3d6962ab473304
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('facturatie.index')"
                             :active="request()->routeIs('facturatie.index')">
                             {{ _('Facturatie') }}
                         </x-nav-link>
-<<<<<<< HEAD
-=======
 
                         <x-nav-link :href="route('boekingen.index')" :active="request()->routeIs('boekingen.index')">
                             {{ _('Boekingen') }}
                         </x-nav-link>
->>>>>>> 2697c3f08bab4ce0948cb544fb3d6962ab473304
                     </div>
                 @endif
 

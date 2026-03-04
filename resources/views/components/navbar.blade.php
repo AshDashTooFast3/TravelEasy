@@ -78,7 +78,7 @@
                 class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
                 Home
             </a>
-            <a href="/reis"
+            <a href="{{route('reis.index')}}"
                 class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
                 Reis
             </a>

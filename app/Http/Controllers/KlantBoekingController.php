@@ -1,39 +1,48 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\Boeking;
 use App\Models\Vlucht;
 use App\Models\Accommodatie;
+use App\Models\KlantBoekingen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class KlantBoekingController extends Controller
 {
-   
+    // Reis overzicht
     public function index()
     {
-        $boekingen = Boeking::with(['vlucht', 'accommodatie'])
-            ->where('GebruikerId', Auth::id())
-            ->get();
-
-        return view('klant.boekingen.index', compact('boekingen'));
+        $boekingen = KlantBoekingen::get();
+        return view('reis.index', compact('boekingen'));
     }
 
-    
+    // Reis kaart
+    public function map()
+    {
+        $boekingen = KlantBoekingen::get();
+        return view('reis.map', compact('boekingen'));
+    }
+
+    // Reis details (ENIGE show()!)
     public function show($id)
     {
-        $boeking = Boeking::with(['vlucht', 'accommodatie', 'facturen'])
-            ->where('GebruikerId', Auth::id())
-            ->findOrFail($id);
+        $boekingen = KlantBoekingen::get();
 
-        return view('klant.boekingen.show', compact('boeking'));
+        $boeking = $boekingen->where('Id', $id)->first();
+
+        if (!$boeking) {
+            abort(404);
+        }
+
+        return view('reis.show', compact('boeking'));
     }
 
-    // Nieuwe boeking
+    // Nieuwe reis boeken
     public function create()
     {
-        return view('klant.boekingen.create', [
+        return view('reis.create', [
             'vluchten' => Vlucht::all(),
             'accommodaties' => Accommodatie::all(),
         ]);
@@ -45,52 +54,41 @@ class KlantBoekingController extends Controller
         $request->validate([
             'VluchtId' => 'required',
             'AccommodatieId' => 'required',
-            'Boekingsnummer' => 'required',
-            'Boekingsdatum' => 'required',
-            'Boekingstijd' => 'required',
-            'Boekingsstatus' => 'required',
-            'TotaalPrijs' => 'required|numeric',
+            'AantalPassagiers' => 'required|integer|min:1',
         ]);
 
+        $acc = Accommodatie::findOrFail($request->AccommodatieId);
+
+        // Prijsberekening
+        $totaalPrijs = $acc->TotaalPrijs * $request->AantalPassagiers;
+
+        // Boeking aanmaken
         $boeking = Boeking::create([
-            'VluchtId' => $request->VluchtId,
+            'VluchtId'       => $request->VluchtId,
             'AccommodatieId' => $request->AccommodatieId,
-            'Boekingsnummer' => $request->Boekingsnummer,
-            'Boekingsdatum' => $request->Boekingsdatum,
-            'Boekingstijd' => $request->Boekingstijd,
-            'Boekingsstatus' => $request->Boekingsstatus,
-            'TotaalPrijs' => $request->TotaalPrijs,
-            'GebruikerId' => Auth::id(),
-            'IsActief' => 1,
+            'Boekingsnummer' => 'BK-' . now()->format('YmdHis'),
+            'Boekingsdatum'  => now()->toDateString(),
+            'Boekingstijd'   => now()->toTimeString(),
+            'Boekingsstatus' => 'In behandeling',
+            'TotaalPrijs'    => $totaalPrijs,
+            'IsActief'       => 1,
         ]);
 
-        return redirect()->route('klant.boekingen.show', $boeking->Id)
-            ->with('success', 'Boeking succesvol aangemaakt!');
+        return redirect()->route('reis.show', $boeking->Id)
+            ->with('success', 'Reis succesvol geboekt!');
     }
 
-   
-    public function destroy($id)
-    {
-        $boeking = Boeking::where('Id', $id)
-            ->where('GebruikerId', Auth::id())
-            ->firstOrFail();
+    // Verwijderen
+   public function destroy($id)
+{
+    // Verwijder eerst facturen die gekoppeld zijn aan deze boeking
+    DB::table('factuur')->where('BoekingId', $id)->delete();
 
-        $boeking->delete();
+    // Verwijder daarna de boeking zelf
+    Boeking::where('Id', $id)->delete();
 
-        return redirect()->route('klant.boekingen.index')
-            ->with('success', 'Boeking verwijderd!');
-    }
+    return redirect()->route('reis.index')
+        ->with('success', 'Reis verwijderd!');
 
-    
-    public function addFactuur($boekingId)
-    {
-        $boeking = Boeking::where('Id', $boekingId)
-            ->where('GebruikerId', Auth::id())
-            ->firstOrFail();
-
-     
-
-        return redirect()->route('klant.boekingen.show', $boekingId)
-            ->with('success', 'Factuur toegevoegd!');
-    }
+}
 }
