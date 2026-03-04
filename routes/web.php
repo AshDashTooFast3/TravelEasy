@@ -16,7 +16,9 @@ Route::get('/dashboard', function () {
 // Alleen Administrators en Managers kunnen deze pagina zien
 Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
     Route::get('/management-dashboard', [MedewerkerController::class, 'ManagementDashboard'])->name('management-dashboard');
+    Route::get('/facturatie', [MedewerkerController::class, 'Facturatie'])->name('facturatie.index');
 });
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
