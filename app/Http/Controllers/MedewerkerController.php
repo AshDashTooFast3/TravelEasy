@@ -25,21 +25,27 @@ class MedewerkerController extends Controller
     public function ManagementDashboard()
     {
         $data = [
-            'aantalBoekingen' => $this->BoekingModel->sp_getBoekingenCount(),
+            'AantalBoekingen' => $this->BoekingModel->sp_getBoekingenCount(),
             'MeestVoorkomendeReis' => $this->BoekingModel->sp_getMeestVoorkomendeReis(),
         ];
 
-        if (! $data['aantalBoekingen']) {
-            Log::info('Er is een fout opgetreden bij de aantalBoekingen stored procedure');
+        // kijkt of er resultaten zijn voor de AantalBoekingen stored procedure
+        if (! $data['AantalBoekingen']) {
+            Log::info('Er is een fout opgetreden bij de AantalBoekingen stored procedure');
+        } else {
+            Log::info('AantalBoekingen: '.$data['AantalBoekingen']);
         }
 
+        // kijkt of er resultaten zijn voor de MeestVoorkomendeReis stored procedure
         if (! $data['MeestVoorkomendeReis']) {
             Log::info('Er is een fout opgetreden bij de MeestVoorkomendeReis stored procedure');
+        } else {
+            Log::info('Boekingen voor meest voorkomende reis bestaan' );
         }
 
         return view('management-dashboard', [
             'title' => 'Management Dashboard',
-            'aantalBoekingen' => $data['aantalBoekingen'],
+            'AantalBoekingen' => $data['AantalBoekingen'],
             'MeestVoorkomendeReis' => $data['MeestVoorkomendeReis'],
         ]);
     }

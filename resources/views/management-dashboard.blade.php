@@ -17,10 +17,10 @@
                     <strong>
                         <p class="p-4">
                             Aantal gemaakte boekingen:
-                            @if (!empty($aantalBoekingen) && $aantalBoekingen > 0)
+                            @if (!empty($AantalBoekingen) && $AantalBoekingen > 0)
                                 <span
                                     style="display: inline-block; width: 40px; height: 40px; border-radius: 50%; background: #4F46E5; color: #fff; text-align: center; line-height: 40px; font-weight: bold; margin-left: 10px;">
-                                    {{ $aantalBoekingen }}
+                                    {{ $AantalBoekingen }}
                                 </span>
                             @else
                                 <span

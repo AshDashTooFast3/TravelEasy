@@ -45,6 +45,7 @@ class Boeking extends Model
         return $this->belongsTo(Accommodatie::class, 'AccommodatieId');
     }
 
+    // Stored procedure om het totaal aantal boekingen op te halen
     public function sp_getBoekingenCount(): int
     {
         try {
@@ -65,6 +66,7 @@ class Boeking extends Model
         }
     }
 
+    // Stored procedure om de meest voorkomende reis op te halen
     public function sp_getMeestVoorkomendeReis()
     {
         try {
