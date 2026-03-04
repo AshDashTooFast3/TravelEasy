@@ -23,10 +23,13 @@ class MedewerkerController extends Controller
     public function ManagementDashboard() {
 
         $aantalBoekingen = $this->BoekingModel->sp_getBoekingenCount();
+        $MeestVoorkomendeReis = $this->BoekingModel->sp_getMeestVoorkomendeReis();
+        
 
         return view('management-dashboard', [
             'title' => 'Management Dashboard',
-            'aantalBoekingen' => $aantalBoekingen
+            'aantalBoekingen' => $aantalBoekingen,
+            'MeestVoorkomendeReis' => $MeestVoorkomendeReis
         ]);
     }
 }

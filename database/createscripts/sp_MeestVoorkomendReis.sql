@@ -5,13 +5,19 @@ DELIMITER $$
 
 CREATE PROCEDURE sp_MeestVoorkomendReis()
 BEGIN
-    SELECT v.Id, v.BestemmingId, COUNT(bo.Id) AS AantalBoekingen
+    SELECT 
+    ver.Luchthaven AS VertrekLuchthaven, 
+    ver.Land AS VertrekLand,
+    bes.Luchthaven AS BestemmingLuchthaven, 
+    bes.Land AS BestemmingLand,
+    COUNT(boe.Id) AS AantalBoekingen
     FROM Vlucht v
-    JOIN Accommodatie a ON v.Id = a.VluchtId
-    JOIN Boeking bo ON a.Id = bo.AccommodatieId
-    WHERE bo.Boekingsstatus != 'Geannuleerd'
+    JOIN Boeking boe ON v.Id = boe.VluchtId
+    JOIN Bestemming bes ON v.BestemmingId = bes.Id
+    JOIN Vertrek ver ON v.VertrekId = ver.Id
+    WHERE boe.Boekingsstatus != 'Geannuleerd'
     AND v.Vluchtstatus != 'Geannuleerd'
-    GROUP BY v.Id, v.BestemmingId
+    GROUP BY ver.Luchthaven, ver.Land, bes.Luchthaven, bes.Land
     ORDER BY AantalBoekingen DESC
     LIMIT 5;
 END $$

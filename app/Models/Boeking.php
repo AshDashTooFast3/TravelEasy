@@ -64,4 +64,24 @@ class Boeking extends Model
             return -1;
         }
     }
+
+    public function sp_getMeestVoorkomendeReis()
+    {
+        try {
+            $result = DB::select('CALL sp_MeestVoorkomendReis()');
+
+            if (empty($result)) {
+                Log::info('sp_MeestVoorkomendReis retourneerde een lege result omdat er geen data kon opgehaald worden.');
+
+                return [];
+            }
+
+            return $result;
+
+        } catch (\Exception $e) {
+            Log::error('Fout in sp_MeestVoorkomendReis: '.$e->getMessage());
+
+            return [];
+        }
+    }
 }
