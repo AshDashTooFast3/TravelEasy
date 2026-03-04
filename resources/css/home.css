@@ -100,11 +100,10 @@
             margin: auto;
         }
 
-        section h2 {
+        section h2{
             text-align: center;
             font-size: 2.6em;
             margin-bottom: 50px;
-            color: var(--primary);
         }
 
         /* ---------- USP's ---------- */
@@ -240,7 +239,6 @@
         /* ---------- CTA BANNER ---------- */
         .cta-banner {
             background: var(--primary);
-            color: white;
             padding: 60px 20px;
             text-align: center;
             border-radius: 12px;
@@ -252,7 +250,6 @@
             margin-top: 20px;
             padding: 14px 36px;
             background: var(--accent);
-            color: white;
             border-radius: 6px;
             font-size: 1.1em;
             font-weight: bold;
@@ -265,43 +262,55 @@
 
         /* ---------- FOOTER ---------- */
         footer {
-            background: var(--dark);
+            background: linear-gradient(135deg, var(--dark) 0%, #0d0d0d 100%);
             color: white;
-            padding: 60px 20px;
+            padding: 80px 20px 40px;
             margin-top: 80px;
+            border-top: 3px solid var(--accent);
         }
 
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 40px;
+            max-width: 1300px;
+            margin: auto;
         }
 
         footer h3 {
             margin-bottom: 15px;
+            font-size: 1.2em;
+            color: var(--accent);
         }
 
         footer ul {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
 
         footer ul li {
-            margin-bottom: 10px;
-            color: #ccc;
-        }
-
-        footer ul li a {
-            color: #ccc;
+            margin-bottom: 12px;
+            color: #bbb;
             transition: 0.3s;
         }
 
-        footer ul li a:hover {
-            color: white;
+        footer ul li a {
+            color: #bbb;
+            transition: 0.3s;
+        }
+
+        footer ul li a:hover,
+        footer ul li:hover {
+            color: var(--accent);
+            padding-left: 5px;
         }
 
         .footer-bottom {
             text-align: center;
-            margin-top: 40px;
-            color: #aaa;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #888;
+            font-size: 0.95em;
         }

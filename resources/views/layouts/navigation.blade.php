@@ -12,11 +12,13 @@
                 </div>
 
                 <!-- Navigation Links -->
+                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['passagier']))
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ _('Dashboard') }}
                     </x-nav-link>
                 </div>
+                @endif
 
                 @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'financieelmedewerker', 'manager']))
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">

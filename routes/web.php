@@ -12,7 +12,7 @@ Route::get('/', [HomeController::class, 'index'])->name('welcome');
 // alle medewerkers kunnen deze pagina zien
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified', 'role:administrator,medewerker,manager'])->name('dashboard');
+})->middleware(['auth', 'verified', 'role:passagier'])->name('dashboard');
 
 // Alleen Administrators en Managers kunnen deze pagina zien
 Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {

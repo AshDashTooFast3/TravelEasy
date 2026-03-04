@@ -1,6 +1,6 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-<nav class="relative dark:bg-gray-800/50 border-b border-white/10">
+<nav class="relative dark:bg-gray-800 border-b border-white/10 dark:text-white">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div class="relative flex h-16 items-center justify-between">
 
@@ -8,7 +8,7 @@
             <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 <button type="button" id="mobile-menu-button" aria-controls="mobile-menu" aria-expanded="false"
                     onclick="toggleMobileMenu()"
-                    class="relative inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-white/5 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                    class="relative inline-flex items-center justify-center rounded-md p-2 dark:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                     <span class="absolute -inset-0.5"></span>
                     <span class="sr-only">Open main menu</span>
 
@@ -35,15 +35,13 @@
                     </a>
 
                     {{-- Desktop links --}}
-                    <div class="hidden sm:flex items-center gap-1">
+                    <div class="hidden sm:flex items-center gap-3">
                         <a href="/"
-                            class="rounded-md px-3 py-2 text-sm font-medium
-                                {{ request()->is('/') ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' }}">
+                            class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
                             Home
                         </a>
                         <a href="/reis"
-                            class="rounded-md px-3 py-2 text-sm font-medium
-                                {{ request()->is('reis*') ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' }}">
+                            class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
                             Reis
                         </a>
                     </div>
@@ -55,11 +53,11 @@
                 <div
                     class="absolute inset-y-0 right-0 hidden sm:flex items-center gap-1 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                     <a href="{{ route('login') }}"
-                        class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
+                        class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
                         Login
                     </a>
                     <a href="{{ route('register') }}"
-                        class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
+                        class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
                         Register
                     </a>
                 </div>
@@ -69,7 +67,7 @@
 
                     {{-- Dashboard --}}
                     <a href="{{ route('dashboard') }}"
-                        class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
+                        class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
                         Dashboard
                     </a>
                     
@@ -78,7 +76,7 @@
                     <form method="POST" action="{{ route('logout') }}" class="inline m-0 p-0">
                         @csrf
                         <button type="submit"
-                            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
+                            class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
                             Logout
                         </button>
                     </form>
@@ -92,26 +90,24 @@
     <div id="mobile-menu" class="hidden sm:hidden border-t border-white/10">
         <div class="space-y-1 px-2 pt-2 pb-3">
             <a href="/"
-                class="block rounded-md px-3 py-2 text-base font-medium
-                    {{ request()->is('/') ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' }}">
+                class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
                 Home
             </a>
-            <a href="/afspraken"
-                class="block rounded-md px-3 py-2 text-base font-medium
-                    {{ request()->is('reis*') ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white' }}">
+            <a href="/reis"
+                class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
                 Reis
             </a>
 
             @auth
                 <div class="border-t border-white/10 pt-2 mt-2">
                     <a href="{{ route('dashboard') }}"
-                        class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">
+                        class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
                         Dashboard
                     </a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit"
-                            class="w-full text-left block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">
+                            class="w-full text-left block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
                             Logout
                         </button>
                     </form>
@@ -119,15 +115,15 @@
             @else
             <div class="border-t border-white/10 pt-2 mt-2">
                 <a href="{{ route('login') }}"
-                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">
+                    class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
                     Login
                 </a>
                 <a href="{{ route('register') }}"
-                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">
+                    class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
                     Register
                 </a>
             </div>
-            @endguest
+            @endauth
         </div>
     </div>
 </nav>

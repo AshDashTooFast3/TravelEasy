@@ -133,7 +133,7 @@
         </section>
 
         <section>
-            <div class="cta-banner">
+            <div class="cta-banner text-white">
                 <h2>Klaar voor jouw volgende avontuur?</h2>
                 <p>Boek vandaag nog en profiteer van onze speciale aanbiedingen.</p>
                 <a href="#reizen">Bekijk reizen</a>
