@@ -52,38 +52,37 @@
 
             {{-- Right side: auth buttons --}}
             @guest
-            <div class="absolute inset-y-0 right-0 hidden sm:flex items-center gap-1 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <a href="{{ route('login') }}"
-                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
-                    Login
-                </a>
-                <a href="{{ route('register') }}"
-                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
-                    Register
-                </a>
-            </div>
+                <div
+                    class="absolute inset-y-0 right-0 hidden sm:flex items-center gap-1 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                    <a href="{{ route('login') }}"
+                        class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
+                        Login
+                    </a>
+                    <a href="{{ route('register') }}"
+                        class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
+                        Register
+                    </a>
+                </div>
             @else
-            <div class="absolute inset-y-0 right-0 hidden sm:flex items-center gap-1 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {{-- Username display --}}
-                <span class="hidden lg:block rounded-md px-3 py-2 text-sm font-medium text-white">
-                    {{ Auth::user()?->name ?? 'User' }}
-                </span>
+                <div
+                    class="absolute inset-y-0 right-0 hidden sm:flex items-center gap-1 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
 
-                {{-- Dashboard --}}
-                <a href="{{ route('dashboard') }}"
-                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
-                    Dashboard
-                </a>
+                    {{-- Dashboard --}}
+                    <a href="{{ route('dashboard') }}"
+                        class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
+                        Dashboard
+                    </a>
+                    
 
-                {{-- Logout --}}
-                <form method="POST" action="{{ route('logout') }}" class="inline">
-                    @csrf
-                    <button type="submit"
-                        class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-colors cursor-pointer">
-                        Logout
-                    </button>
-                </form>
-            </div>
+                    {{-- Logout --}}
+                    <form method="POST" action="{{ route('logout') }}" class="inline m-0 p-0">
+                        @csrf
+                        <button type="submit"
+                            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
+                            Logout
+                        </button>
+                    </form>
+                </div>
             @endguest
 
         </div>
@@ -105,7 +104,6 @@
 
             @auth
                 <div class="border-t border-white/10 pt-2 mt-2">
-                    <p class="px-3 py-1 text-xs text-gray-500">Ingelogd als {{ Auth::user()?->name }}</p>
                     <a href="{{ route('dashboard') }}"
                         class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">
                         Dashboard
