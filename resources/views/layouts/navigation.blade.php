@@ -20,7 +20,7 @@
                 </div>
                 @endif
 
-                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'financieelmedewerker', 'manager']))
+                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'financieelmedewerker', 'manager', 'reisadviseur']))
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('facturatie.index')"
                             :active="request()->routeIs('facturatie.index')">

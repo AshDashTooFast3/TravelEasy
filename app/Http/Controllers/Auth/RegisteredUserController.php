@@ -38,7 +38,7 @@ class RegisteredUserController extends Controller
         $user = Gebruiker::create([
             'Gebruikersnaam' => $request->Gebruikersnaam,
             'Wachtwoord' => Hash::make($request->Wachtwoord),
-            'RolNaam' => 'Passagier',
+            'RolNaam' => 'passagier',
             'Email' => $request->Email,
             'Isactief' => true,
             'Ingelogd' => now(),

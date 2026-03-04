@@ -74,7 +74,7 @@ class DatabaseSeeder extends Seeder
         Gebruiker::factory()->create([
             'Gebruikersnaam' => 'Medewerker',
             'Wachtwoord' => bcrypt('achraf123'),
-            'RolNaam' => 'medewerker',
+            'RolNaam' => 'reisadviseur',
             'Email' => 'medewerker@traveleasy.com',
             'Ingelogd' => now(),
             'Uitgelogd' => null,
