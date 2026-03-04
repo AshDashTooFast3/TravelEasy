@@ -12,11 +12,11 @@
 
                 <!-- Navigation Links -->
 
-                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['Patient']))
+                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator']))
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('factuur.factuurPatient')"
-                            :active="request()->routeIs('factuur.factuurPatient')">
-                            {{ _('Mijn Facturen') }}
+                        <x-nav-link :href="route('boekingen.index')"
+                            :active="request()->routeIs('boekingen.index')">
+                            {{ _('Boekingen') }}
                         </x-nav-link>
                     </div>
                 @endif
