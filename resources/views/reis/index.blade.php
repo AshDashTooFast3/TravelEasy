@@ -6,12 +6,14 @@
     </x-slot>
 
     @if (session('success'))
+        <meta http-equiv="refresh" content="3">
         <div class="bg-green-600 text-white px-4 py-3 rounded-lg mb-4">
             {{ session('success') }}
         </div>
     @endif
 
     @if (session('error'))
+        <meta http-equiv="refresh" content="3">
         <div class="bg-red-600 text-white px-4 py-3 rounded-lg mb-4">
             {{ session('error') }}
         </div>
