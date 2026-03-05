@@ -37,18 +37,22 @@
 
                     {{-- Desktop links --}}
                     <div class="hidden sm:flex items-center gap-3">
-                        <a href="/"
-                            class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                        <a href="{{route('welcome')}}"
+                            class=" rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
                             Home
                         </a>
-            <a href="{{route('reis.index')}}"
-                class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                Reis overzicht
-            </a>
+                        <a href="{{route('reis.index')}}"
+                            class=" rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                            Reis overzicht
+                        </a>
                         <a href="{{route('ticket.index')}}"
-                class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                Tickets overzicht
-            </a>
+                            class=" rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                            Tickets
+                        </a>
+                        <a href="{{route('accommodatie.index')}}"
+                            class=" rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                            Accommodaties
+                        </a>
                     </div>
                 </div>
             </div>
@@ -73,44 +77,48 @@
                         </button>
                     </form>
                 @endguest
+            </div>
         </div>
-    </div>
 
-    {{-- Mobile menu --}}
-    <div id="mobile-menu" class="hidden sm:hidden border-t border-white/10">
-        <div class="space-y-1 px-2 pt-2 pb-3">
-            <a href="/"
-                class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                Home
-            </a>
-            <a href="{{route('reis.index')}}"
-                class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                Reis overzicht
-            </a>
-                        <a href="{{route('ticket.index')}}"
-                class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                Tickets overzicht
-            </a>
-            @guest
-                <a href="{{ route('login') }}"
+        {{-- Mobile menu --}}
+        <div id="mobile-menu" class="hidden sm:hidden border-t border-white/10">
+            <div class="space-y-1 px-2 pt-2 pb-3">
+                <a href="/"
                     class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                    Inloggen
+                    Home
                 </a>
-                <a href="{{ route('register') }}"
+                <a href="{{route('reis.index')}}"
                     class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                    Registreren
+                    Reis
                 </a>
-            @else
-                <form method="POST" action="{{ route('logout') }}" class="mb-0">
-                    @csrf
-                    <button type="submit"
-                        class="block w-full text-left rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                        Uitloggen
-                    </button>
-                </form>
-            @endguest
+                <a href="{{route('ticket.index')}}"
+                    class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                    Tickets
+                </a>
+                <a href="{{route('accommodatie.index')}}"
+                    class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                    Accommodaties
+                </a>
+                @guest
+                    <a href="{{ route('login') }}"
+                        class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                        Inloggen
+                    </a>
+                    <a href="{{ route('register') }}"
+                        class="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                        Registreren
+                    </a>
+                @else
+                    <form method="POST" action="{{ route('logout') }}" class="mb-0">
+                        @csrf
+                        <button type="submit"
+                            class="block w-full text-left rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                            Uitloggen
+                        </button>
+                    </form>
+                @endguest
+            </div>
         </div>
-    </div>
 </nav>
 
 <script>

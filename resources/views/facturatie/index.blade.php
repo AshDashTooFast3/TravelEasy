@@ -15,34 +15,61 @@
 
                     <div class="mt-5 overflow-x-auto rounded-lg border border-gray-700">
                         <table class="min-w-full table-fixed border-collapse">
-                            <thead class="bg-gray-700">
+                            <thead class="bg-gray-200 dark:bg-gray-700">
                                 <tr>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-white w-32">Boeking</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-white w-48">Passagier</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-white w-32">Factuurnummer</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-white w-40">Factuurdatum</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-white w-28">Bedrag</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-white w-32">Status</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-white w-32">Betaalmethode</th>
+                                    <th
+                                        class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-32">
+                                        Boeking</th>
+                                    <th
+                                        class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-48">
+                                        Passagier</th>
+                                    <th
+                                        class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-32">
+                                        Factuurnummer</th>
+                                    <th
+                                        class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-40">
+                                        Factuurdatum</th>
+                                    <th
+                                        class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-28">
+                                        Bedrag</th>
+                                    <th
+                                        class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-32">
+                                        Status</th>
+                                    <th
+                                        class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-32">
+                                        Betaalmethode</th>
                                 </tr>
                             </thead>
 
-                            <tbody class="bg-gray-800 divide-y divide-gray-700">
+                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                 @forelse($facturen as $factuur)
-                                    <tr class="hover:bg-gray-700/50 transition">
-                                        <td class="px-4 py-3 text-sm text-gray-100">{{ $factuur->Boekingsnummer }}</td>
-                                        <td class="px-4 py-3 text-sm text-gray-100">{{ $factuur->PassagierNaam }}</td>
-                                        <td class="px-4 py-3 text-sm text-gray-100">{{ $factuur->Factuurnummer }}</td>
-                                        <td class="px-4 py-3 text-sm text-gray-100">
-                                            {{ \Carbon\Carbon::parse($factuur->Factuurdatum)->format('d-m-Y H:i') }}</td>
-                                        <td class="px-4 py-3 text-sm text-gray-100">€
-                                            {{ number_format($factuur->TotaalBedrag, 2, ',', '.') }}</td>
-                                        <td class="px-4 py-3 text-sm text-gray-100">{{ $factuur->Betaalstatus }}</td>
-                                        <td class="px-4 py-3 text-sm text-gray-100">{{ $factuur->Betaalmethode }}</td>
+                                    <tr class="hover:bg-gray-100 dark:hover:bg-gray-700/50 transition">
+                                        <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                                            {{ $factuur->Boekingsnummer }}
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                                            {{ $factuur->PassagierNaam }}
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                                            {{ $factuur->Factuurnummer }}
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                                            {{ \Carbon\Carbon::parse($factuur->Factuurdatum)->format('d-m-Y H:i') }}
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">€
+                                            {{ number_format($factuur->TotaalBedrag, 2, ',', '.') }}
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                                            {{ $factuur->Betaalstatus }}
+                                        </td>
+                                        <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                                            {{ $factuur->Betaalmethode }}
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="8" class="px-4 py-6 text-center text-gray-400">Geen facturen gevonden.
+                                        <td colspan="8" class="px-4 py-6 text-center text-gray-500 dark:text-gray-400">Geen
+                                            facturen gevonden.
                                         </td>
                                     </tr>
                                 @endforelse
