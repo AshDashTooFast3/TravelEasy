@@ -43,7 +43,7 @@
                         </a>
                         <a href="{{route('reis.index')}}"
                             class=" rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
-                            Reis overzicht
+                            Reis
                         </a>
                         <a href="{{route('ticket.index')}}"
                             class=" rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
