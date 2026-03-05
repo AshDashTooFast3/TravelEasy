@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-white leading-tight">
+        <h2 class="font-semibold text-xl text-gray-900 dark:text-white leading-tight">
             Mijn Reizen
         </h2>
     </x-slot>
@@ -19,19 +19,18 @@
         </div>
     @endif
 
-    <div class="py-8 max-w-7xl mx-auto space-y-8">
+    <div class="py-8 max-w-7xl mx-auto space-y-8 px-4">
 
         {{-- MAP SECTIE --}}
-        <div class="bg-gray-800 p-6 rounded-lg shadow">
-            <h3 class="text-lg font-semibold text-white mb-4">Reiskaart</h3>
-
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Reiskaart</h3>
             <div id="reisMap" class="w-full h-96 rounded-lg"></div>
         </div>
 
         {{-- REIS OVERZICHT --}}
-        <div class="bg-gray-800 p-6 rounded-lg shadow">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-semibold text-white">Overzicht van mijn reizen</h3>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Overzicht van mijn reizen</h3>
                 @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'manager']))
                     <a href="{{ route('reis.create') }}"
                         class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md">
@@ -40,34 +39,34 @@
                 @endif
             </div>
 
-            <table class="w-full text-left text-white">
-                <thead>
-                    <tr class="border-b border-gray-700">
-                        <th class="py-2">Bestemming</th>
-                        <th>Vlucht</th>
-                        <th>Datum</th>
-                        <th>Prijs</th>
-                        <th>Acties</th>
-                    </tr>
-                </thead>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-gray-900 dark:text-gray-100">
+                    <thead>
+                        <tr class="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700">
+                            <th class="py-2 px-4">Bestemming</th>
+                            <th class="px-4">Vlucht</th>
+                            <th class="px-4">Datum</th>
+                            <th class="px-4">Prijs</th>
+                            <th class="px-4">Acties</th>
+                        </tr>
+                    </thead>
 
-                <tbody>
-                    @forelse ($boekingen as $reis)
-                        <tr class="border-b border-gray-700">
-                            <td class="py-2">
-                                {{ $reis->accommodatie->Naam ?? 'Onbekend' }},
-                                {{ $reis->accommodatie->Stad ?? '' }}
-                            </td>
+                    <tbody>
+                        @forelse ($boekingen as $reis)
+                            <tr
+                                class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="py-2 px-4">
+                                    {{ $reis->accommodatie->Naam ?? 'Onbekend' }},
+                                    {{ $reis->accommodatie->Stad ?? '' }}
+                                </td>
 
-                            <td>{{ $reis->vlucht->Vluchtnummer ?? 'Onbekend' }}</td>
+                                <td class="px-4">{{ $reis->vlucht->Vluchtnummer ?? 'Onbekend' }}</td>
 
-                            <td>{{ $reis->Boekingsdatum }}</td>
+                                <td class="px-4">{{ $reis->Boekingsdatum }}</td>
 
-                            <td>€{{ number_format($reis->TotaalPrijs, 2, ',', '.') }}</td>
+                                <td class="px-4">€{{ number_format($reis->TotaalPrijs, 2, ',', '.') }}</td>
 
-                            <td class="flex gap-3 py-2">
-                                <div class="flex items-center gap-2">
-
+                                <td class="flex gap-3 py-2 px-4">
                                     {{-- Verwijderen --}}
                                     <form action="{{ route('reis.destroy', $reis->Id) }}" method="POST"
                                         onsubmit="return confirm('Weet je zeker dat je deze reis wilt verwijderen?');">
@@ -77,7 +76,7 @@
                                         @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'manager']))
                                             <button type="submit"
                                                 class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded-md text-sm">
-                                               Annuleren
+                                                Annuleren
                                             </button>
                                         @endif
                                     </form>
@@ -88,18 +87,18 @@
                                             Boeken
                                         </button>
                                     </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="py-4 text-center text-gray-400">
-                                Je hebt nog geen reizen geboekt.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="py-4 text-center text-gray-500 dark:text-gray-400">
+                                    Je hebt nog geen reizen geboekt.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
