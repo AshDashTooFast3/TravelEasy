@@ -18,10 +18,13 @@
                             {{ _('Homepagina') }}
                         </x-nav-link>
                         <x-nav-link :href="route('reis.index')" :active="request()->routeIs('reis.index')">
-                            {{ _('Reis Overzicht') }}
+                            {{ _('Reis') }}
                         </x-nav-link>
                         <x-nav-link :href="route('ticket.index')" :active="request()->routeIs('ticket.index')">
-                            {{ _('Ticket Overzicht') }}
+                            {{ _('Tickets') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('accommodatie.index')" :active="request()->routeIs('accommodatie.index')">
+                            {{ _('Accommodatie') }}
                         </x-nav-link>
                     </div>
                 @endif
