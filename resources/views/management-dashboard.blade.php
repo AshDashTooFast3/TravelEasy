@@ -42,7 +42,7 @@
                                     <div
                                         class="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-md transition">
                                         <div
-                                            class="flex-shrink-0 w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                            class="flex-shrink-0 w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
                                             @if ($index === 0)
                                                 1 🔥
                                             @else
