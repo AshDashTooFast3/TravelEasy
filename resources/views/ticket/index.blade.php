@@ -7,12 +7,12 @@
 
     <div class="py-8 max-w-5xl mx-auto">
 
-        <div class="bg-gray-800 p-6 rounded-lg shadow text-white">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow dark:text-white">
             <h3 class="text-lg font-semibold mb-4">Overzicht van mijn tickets</h3>
 
             <table class="w-full text-left">
                 <thead>
-                    <tr class="border-b border-gray-700">
+                    <tr class="border-b border-gray-700 dark:border-gray-300">
                         <th class="py-2">Ticket</th>
                         <th>Vlucht</th>
                         <th>Datum</th>
@@ -23,11 +23,16 @@
 
                 <tbody>
                     @forelse($tickets as $ticket)
-@foreach(explode('|', $ticket->Stoelnummer) as $stoel)
-    <span class="bg-gray-700 px-2 py-1 rounded text-sm mr-1">
-        {{ $stoel }}
-    </span>
-@endforeach
+                        <tr>
+                            <td>
+                                @foreach(explode('|', $ticket->Stoelnummer) as $stoel)
+                                    <span
+                                        class="bg-gray-700 dark:bg-gray-200 px-2 py-1 rounded text-sm mr-1 text-white dark:text-gray-900">
+                                        {{ $stoel }}
+                                    </span>
+                                @endforeach
+                            </td>
+
                             <td>
                                 {{ $ticket->vlucht->Vluchtnummer ?? 'Onbekend' }}
                             </td>
@@ -42,14 +47,14 @@
 
                             <td class="py-2">
                                 <a href="{{ route('ticket.show', $ticket->Id) }}"
-                                   class="bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded-md text-sm">
+                                    class="bg-green-600 hover:bg-green-500 dark:bg-green-500 dark:hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm">
                                     Bekijken
                                 </a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="py-4 text-center text-gray-400">
+                            <td colspan="5" class="py-4 text-center text-gray-400 dark:text-gray-600">
                                 Je hebt nog geen tickets.
                             </td>
                         </tr>
