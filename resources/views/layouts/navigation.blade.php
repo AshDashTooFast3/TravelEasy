@@ -15,16 +15,16 @@
                 @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'financieelmedewerker', 'manager', 'reisadviseur', 'passagier']))
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
-                            {{ _('Homepagina') }}
+                            {{ ('Homepagina') }}
                         </x-nav-link>
                         <x-nav-link :href="route('reis.index')" :active="request()->routeIs('reis.index')">
-                            {{ _('Reis') }}
+                            {{ ('Reis') }}
                         </x-nav-link>
                         <x-nav-link :href="route('ticket.index')" :active="request()->routeIs('ticket.index')">
-                            {{ _('Tickets') }}
+                            {{ ('Tickets') }}
                         </x-nav-link>
                         <x-nav-link :href="route('accommodatie.index')" :active="request()->routeIs('accommodatie.index')">
-                            {{ _('Accommodatie') }}
+                            {{ ('Accommodatie') }}
                         </x-nav-link>
                     </div>
                 @endif
@@ -113,7 +113,7 @@
         @if (Auth::check() && in_array(Auth::user()->RolNaam, ['passagier']))
             <div class="pt-2 pb-3 space-y-1">
                 <x-responsive-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
-                    {{ _('Home') }}
+                    {{ ('Home') }}
                 </x-responsive-nav-link>
             </div>
         @endif
