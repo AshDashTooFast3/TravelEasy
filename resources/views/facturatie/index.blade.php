@@ -13,7 +13,7 @@
 
                     {!! str_repeat('<br>', 2) !!}
 
-                    <div class="mt-5 overflow-x-auto rounded-lg border border-gray-700">
+                    <div class="mt-5 overflow-x-auto rounded-lg shadow border border-gray-200 dark:border-gray-700">
                         <table class="min-w-full table-fixed border-collapse">
                             <thead class="bg-gray-200 dark:bg-gray-700">
                                 <tr>
