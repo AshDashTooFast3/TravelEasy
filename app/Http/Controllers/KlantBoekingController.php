@@ -11,6 +11,7 @@ use App\Models\Vlucht;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class KlantBoekingController extends Controller
 {
@@ -124,9 +125,11 @@ class KlantBoekingController extends Controller
             'Boekingsstatus' => 'Bevestigd',
             'Datumgewijzigd' => now(),
         ]);
+        
+        Log::info("BoekingId: {$boeking->Id} is bevestigd. Factuurnummer: {$factuurId}");
 
         return redirect()->route('reis.index')
-            ->with('success', 'Reis succesvol geboekt! Factuurnummer: FAC-'.now()->format('YmdHis'));
+            ->with('success', 'Reis succesvol geboekt!');
     }
 
     public function maakFactuur($boekingId, $passagierId)
@@ -145,6 +148,7 @@ class KlantBoekingController extends Controller
 
         $factuurnummer = 'FAC-'.now()->format('YmdHis').'-'.$boekingId;
 
+        // maakt een nieuwe factuur aan
         DB::table('Factuur')->insert([
             'BoekingId' => $boekingId,
             'PassagierId' => $passagier->Id,
@@ -153,11 +157,13 @@ class KlantBoekingController extends Controller
             'Factuurtijd' => now()->toTimeString(),
             'TotaalBedrag' => $boeking->TotaalPrijs,
             'Betaalstatus' => 'Openstaand',
-            'Betaalmethode' => 'debitkaart',
+            'Betaalmethode' => 'Debitkaart',
             'IsActief' => 1,
             'Datumaangemaakt' => now(),
             'Datumgewijzigd' => now(),
         ]);
+
+        Log::info("Factuur {$factuurnummer} aangemaakt voor boeking Id: {$boekingId} en passagier Id: {$passagier->Id}");
 
         return $factuurnummer;
     }
