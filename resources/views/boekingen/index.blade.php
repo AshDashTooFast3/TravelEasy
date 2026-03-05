@@ -25,10 +25,12 @@
 
                     {{-- <!-- Controle: toon bericht als geen boekingen beschikbaar --> --}}
                     @if($boekingen->isEmpty())
-                        <div class="text-center text-gray-400 py-6">
-                            Geen boekingen gevonden.
-                        </div>
+                    <div class="text-center py-10 bg-gray-800 border border-gray-700 rounded-lg">
+                        <p class="text-gray-300 text-lg font-semibold">Er zijn momenteel geen boekingen beschikbaar.</p>
+                        <p class="text-gray-500 text-sm mt-2">Zodra er boekingen zijn, verschijnen ze hier automatisch.</p>
+                    </div>
                     @else
+
 
                         {{-- <!-- Scrollbare tabel container --> --}}
                         <div class="mt-5 overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
@@ -90,11 +92,13 @@
                                             --}}
                                             <td class="px-4 py-3 text-sm text-gray-100">
                                                 <span class="px-3 py-1 rounded-full text-xs text-white
-                                                            @if(strtolower($boeking->Boekingsstatus) === 'confirmed') bg-green-600
-                                                            @elseif(strtolower($boeking->Boekingsstatus) === 'pending') bg-yellow-600
-                                                            @else bg-gray-600 @endif">
-                                                    {{ ucfirst($boeking->Boekingsstatus) }}
+                                                    @if(strtolower($boeking->Boekingsstatus) === 'bevestigd') bg-green-600
+                                                    @elseif(strtolower($boeking->Boekingsstatus) === 'geannuleerd') bg-red-600
+                                                    @elseif(strtolower($boeking->Boekingsstatus) === 'in behandeling') bg-yellow-600
+                                                    @else bg-gray-600 @endif">
+                                                    {{ $boeking->Boekingsstatus }}
                                                 </span>
+
                                             </td>
 
                                             {{-- <!-- Totale prijs in euro met decimalen --> --}}
