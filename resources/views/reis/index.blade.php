@@ -10,7 +10,7 @@
             {{ session('success') }}
         </div>
     @endif
-    
+
     @if (session('error'))
         <div class="bg-red-600 text-white px-4 py-3 rounded-lg mb-4">
             {{ session('error') }}
@@ -30,11 +30,12 @@
         <div class="bg-gray-800 p-6 rounded-lg shadow">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-semibold text-white">Overzicht van mijn reizen</h3>
-
-                <a href="{{ route('reis.create') }}"
-                    class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md">
-                    Nieuwe Reis Boeken
-                </a>
+                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'manager']))
+                    <a href="{{ route('reis.create') }}"
+                        class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md">
+                        Nieuwe Reis Boeken
+                    </a>
+                @endif
             </div>
 
             <table class="w-full text-left text-white">
