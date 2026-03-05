@@ -18,4 +18,5 @@ class BoekingController extends Controller
     {
         return view('boekingen.index');
     }
+
 }

@@ -5,6 +5,18 @@
         </h2>
     </x-slot>
 
+    @if (session('success'))
+        <div class="bg-green-600 text-white px-4 py-3 rounded-lg mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+    
+    @if (session('error'))
+        <div class="bg-red-600 text-white px-4 py-3 rounded-lg mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="py-8 max-w-7xl mx-auto space-y-8">
 
         {{-- MAP SECTIE --}}
@@ -20,7 +32,7 @@
                 <h3 class="text-lg font-semibold text-white">Overzicht van mijn reizen</h3>
 
                 <a href="{{ route('reis.create') }}"
-                   class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md">
+                    class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md">
                     Nieuwe Reis Boeken
                 </a>
             </div>
@@ -54,18 +66,25 @@
                                 <div class="flex items-center gap-2">
 
                                     {{-- Verwijderen --}}
-                                    <form action="{{ route('reis.destroy', $reis->Id) }}"
-                                          method="POST"
-                                          onsubmit="return confirm('Weet je zeker dat je deze reis wilt verwijderen?');">
+                                    <form action="{{ route('reis.destroy', $reis->Id) }}" method="POST"
+                                        onsubmit="return confirm('Weet je zeker dat je deze reis wilt verwijderen?');">
                                         @csrf
                                         @method('DELETE')
 
-                                        <button
-                                            class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded-md text-sm">
-                                            Verwijderen
+                                        @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'manager']))
+                                            <button type="submit"
+                                                class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded-md text-sm">
+                                                Verwijderen
+                                            </button>
+                                        @endif
+                                    </form>
+                                    <form action="{{ route('reis.boeken', parameters: $reis->Id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit"
+                                            class="bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded-md text-sm">
+                                            Boeken
                                         </button>
                                     </form>
-
                                 </div>
                             </td>
                         </tr>
