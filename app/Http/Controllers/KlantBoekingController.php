@@ -104,7 +104,7 @@ class KlantBoekingController extends Controller
             ->where('VluchtId', $boeking->VluchtId)
             ->delete();
 
-        DB::table('factuur')->where('BoekingId', $id)->delete();
+        DB::table('Factuur')->where('BoekingId', $id)->delete();
 
         $boeking->delete();
 

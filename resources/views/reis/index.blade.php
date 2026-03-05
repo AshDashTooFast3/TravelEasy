@@ -77,7 +77,7 @@
                                         @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'manager']))
                                             <button type="submit"
                                                 class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded-md text-sm">
-                                                Verwijderen
+                                               Annuleren
                                             </button>
                                         @endif
                                     </form>

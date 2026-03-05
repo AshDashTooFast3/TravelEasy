@@ -9,7 +9,7 @@ use App\Http\Controllers\FactuurController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BoekingController;
 use App\Http\Controllers\TicketController;
-
+use App\Http\Controllers\AccommodatieController;
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
@@ -17,6 +17,16 @@ Route::get('/', [HomeController::class, 'index'])->name('welcome');
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified', 'role:'])->name('dashboard');
+
+Route::get('/accommodatie', [AccommodatieController::class, 'index'])->name('accommodatie.index');
+Route::get('/accommodatie/{id}/edit', [AccommodatieController::class, 'edit'])->name('accommodaties.edit');
+Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
+    Route::patch('/accommodatie/{id}', [AccommodatieController::class, 'update'])->name('accommodaties.update');
+});
+Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
+    Route::get('/accommodatie/create', [AccommodatieController::class, 'create'])->name('accommodaties.create');
+    Route::post('/accommodatie', [AccommodatieController::class, 'store'])->name('accommodaties.store');
+});
 
 // Alleen Administrators en Managers kunnen deze pagina zien
 Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
@@ -35,6 +45,7 @@ Route::middleware(['auth', 'verified', 'role:passagier,administrator,manager,fin
     Route::get('/reis/{id}', [KlantBoekingController::class, 'show'])->name('reis.show');
     // Ticket overzicht 
     Route::get('/tickets', [TicketController::class, 'index'])->name('ticket.index');
+    Route::get('/ticket/{id}', [TicketController::class, 'show'])->name('ticket.show');
     Route::post('/reis/{id}/boeken', [KlantBoekingController::class, 'ReisBoeken'])->name('reis.boeken');
     });
 
