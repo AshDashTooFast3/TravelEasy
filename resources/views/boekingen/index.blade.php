@@ -23,14 +23,6 @@
                     {{-- <!-- Verticale ruimte --> --}}
                     {!! str_repeat('<br>', 2) !!}
 
-                    {{-- <!-- Controle: toon bericht als geen boekingen beschikbaar --> --}}
-                    @if($boekingen->isEmpty())
-                    <div class="text-center py-10 bg-gray-800 border border-gray-700 rounded-lg">
-                        <p class="text-gray-300 text-lg font-semibold">Er zijn momenteel geen boekingen beschikbaar.</p>
-                        <p class="text-gray-500 text-sm mt-2">Zodra er boekingen zijn, verschijnen ze hier automatisch.</p>
-                    </div>
-                    @else
-
 
                         {{-- <!-- Scrollbare tabel container --> --}}
                         <div class="mt-5 overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
@@ -51,7 +43,7 @@
 
                                 {{-- <!-- Tabelrijen met boekingsgegevens --> --}}
                                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                    @foreach($boekingen as $boeking)
+                                    @forelse($boekingen as $boeking)
                                         {{-- <!-- Elke rij vertegenwoordigt één boeking --> --}}
                                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
 
@@ -107,12 +99,16 @@
                                             </td>
 
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="7" class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 text-center">
+                                                Geen boekingen gevonden.
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
-
-                    @endif
 
                 </div>
             </div>

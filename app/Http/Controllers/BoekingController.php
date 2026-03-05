@@ -30,13 +30,6 @@ class BoekingController extends Controller
 }
 
 
-//  php artisan tinker
-    /*
-    DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-    DB::table('Boeking')->truncate();
-    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-    */
-//    Boeking::factory()->count(5)->create();
 
 
 
