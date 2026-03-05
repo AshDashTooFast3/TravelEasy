@@ -16,7 +16,15 @@ class BoekingController extends Controller
 
     public function index()
     {
-        return view('boekingen.index');
+        // Ophalen van alle boekingen + alle benodigde relaties
+        $boekingen = Boeking::with([
+            'vlucht.bestemming',
+            'vlucht.vertrek',
+            'accommodatie'
+        ])->get();
+
+        // Doorsturen naar de view
+        return view('boekingen.index', compact('boekingen'));
     }
 
 }

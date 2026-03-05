@@ -114,6 +114,15 @@ class KlantBoekingController extends Controller
 
     public function ReisBoeken(Request $request, $id)
     {
+        $passagier = Passagier::whereHas('persoon', function ($query) {
+            $query->where('GebruikerId', Auth::id());
+        })->first();
+
+        if (! $passagier) {
+            Log::info("geen passagier gevonden voor gebruiker Id: " . Auth::id());
+            return redirect()->route('reis.index')
+                ->with('error', 'Geen passagier gevonden voor deze gebruiker.');
+        }
         // Haal de bestaande reis/boeking op via het ID uit de URL
         $boeking = Boeking::with(['vlucht', 'accommodatie'])->findOrFail($id);
 
@@ -125,7 +134,7 @@ class KlantBoekingController extends Controller
             'Boekingsstatus' => 'Bevestigd',
             'Datumgewijzigd' => now(),
         ]);
-        
+
         Log::info("BoekingId: {$boeking->Id} is bevestigd. Factuurnummer: {$factuurId}");
 
         return redirect()->route('reis.index')
@@ -142,9 +151,6 @@ class KlantBoekingController extends Controller
         })->first();
 
         // kijkt of het echt een passagier is als rol
-        if (! $passagier) {
-            throw new \Exception('Geen passagier gevonden voor deze gebruiker.');
-        }
 
         $factuurnummer = 'FAC-'.now()->format('YmdHis').'-'.$boekingId;
 
