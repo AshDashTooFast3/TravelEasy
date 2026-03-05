@@ -31,12 +31,12 @@
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Overzicht van mijn reizen</h3>
-                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'manager']))
-                    <a href="{{ route('reis.create') }}"
-                        class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md">
-                        Nieuwe Reis Boeken
-                    </a>
-                @endif
+@auth
+    <a href="{{ route('reis.create') }}"
+       class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md">
+        Nieuwe Reis Boeken
+    </a>
+@endauth
             </div>
 
             <div class="overflow-x-auto">
@@ -73,22 +73,11 @@
                                         @csrf
                                         @method('DELETE')
 
-                                        @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'manager']))
                                             <button type="submit"
                                                 class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded-md text-sm">
                                                 Annuleren
                                             </button>
-                                        @endif
-                                    </form>
-                                    <form action="{{ route('reis.boeken', parameters: $reis->Id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit"
-                                            class="bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded-md text-sm">
-                                            Boeken
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
+                                  
                         @empty
                             <tr>
                                 <td colspan="5" class="py-4 text-center text-gray-500 dark:text-gray-400">
