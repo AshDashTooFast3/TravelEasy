@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KlantBoekingController;
@@ -7,6 +8,8 @@ use App\Http\Controllers\MedewerkerController;
 use App\Http\Controllers\FactuurController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BoekingController;
+use App\Http\Controllers\TicketController;
+
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
@@ -23,12 +26,18 @@ Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(fun
 });
 
 Route::middleware(['auth', 'verified', 'role:passagier'])->group(function () {
+    // Reis overzicht
     Route::get('/reis', [KlantBoekingController::class, 'index'])->name('reis.index');
     Route::get('/reis/map', [KlantBoekingController::class, 'map'])->name('reis.map');
     Route::get('/reis/nieuw', [KlantBoekingController::class, 'create'])->name('reis.create');
     Route::post('/reis', [KlantBoekingController::class, 'store'])->name('reis.store');
     Route::delete('/reis/{id}', [KlantBoekingController::class, 'destroy'])->name('reis.destroy');
-});
+    // Ticket overzicht 
+    Route::get('/tickets', [TicketController::class, 'index'])->name('ticket.index');
+    Route::get('/tickets/{id}', [TicketController::class, 'show'])->name('ticket.show');
+
+    });
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

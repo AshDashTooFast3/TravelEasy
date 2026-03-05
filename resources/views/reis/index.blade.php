@@ -19,12 +19,12 @@
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-semibold text-white">Overzicht van mijn reizen</h3>
 
-                {{-- FIXED ROUTE --}}
                 <a href="{{ route('reis.create') }}"
                    class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md">
                     Nieuwe Reis Boeken
                 </a>
             </div>
+
             <table class="w-full text-left text-white">
                 <thead>
                     <tr class="border-b border-gray-700">
@@ -51,21 +51,22 @@
                             <td>€{{ number_format($reis->TotaalPrijs, 2, ',', '.') }}</td>
 
                             <td class="flex gap-3 py-2">
+                                <div class="flex items-center gap-2">
 
-                                {{-- FIXED ROUTE --}}
+                                    {{-- Verwijderen --}}
+                                    <form action="{{ route('reis.destroy', $reis->Id) }}"
+                                          method="POST"
+                                          onsubmit="return confirm('Weet je zeker dat je deze reis wilt verwijderen?');">
+                                        @csrf
+                                        @method('DELETE')
 
+                                        <button
+                                            class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded-md text-sm">
+                                            Verwijderen
+                                        </button>
+                                    </form>
 
-                                {{-- FIXED ROUTE --}}
-                                <form action="{{ route('reis.destroy', $reis->Id) }}"
-                                      method="POST"
-                                      onsubmit="return confirm('Weet je zeker dat je deze reis wilt verwijderen?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="text-red-400 hover:text-red-300">
-                                        Verwijderen
-                                    </button>
-                                </form>
-
+                                </div>
                             </td>
                         </tr>
                     @empty
