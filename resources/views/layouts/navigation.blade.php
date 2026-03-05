@@ -12,6 +12,19 @@
                 </div>
 
                 <!-- Navigation Links -->
+                @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'financieelmedewerker', 'manager', 'reisadviseur', 'passagier']))
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
+                            {{ _('Homepagina') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('reis.index')" :active="request()->routeIs('reis.index')">
+                            {{ _('Reis Overzicht') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('ticket.index')" :active="request()->routeIs('ticket.index')">
+                            {{ _('Ticket Overzicht') }}
+                        </x-nav-link>
+                    </div>
+                @endif
 
 
                 @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'financieelmedewerker', 'manager', 'reisadviseur']))
@@ -92,10 +105,10 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
 
-        @if (Auth::check() && in_array(Auth::user()->RolNaam, ['']))
+        @if (Auth::check() && in_array(Auth::user()->RolNaam, ['passagier']))
             <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('')" :active="request()->routeIs('')">
-                    {{ _('') }}
+                <x-responsive-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
+                    {{ _('Home') }}
                 </x-responsive-nav-link>
             </div>
         @endif
