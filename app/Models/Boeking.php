@@ -46,27 +46,27 @@ class Boeking extends Model
     }
 
     // Stored procedure om het totaal aantal boekingen op te halen
-    public function sp_getBoekingenCount(): int
+    public function sp_PakBoekingenAantal(): int
     {
         try {
-            $result = DB::select('CALL sp_getBoekingenCount()');
+            $result = DB::select('CALL sp_PakBoekingenAantal()');
             if (empty($result)) {
-                Log::info('sp_getBoekingenCount retourneerde een lege result omdat er geen data kon worden opgehaald.');
+                Log::info('sp_PakBoekingenAantal retourneerde een lege result omdat er geen data kon worden opgehaald.');
 
                 return -1;
             }
-            Log::info('sp_getBoekingenCount retourneerde een count van '.$result[0]->count.'.');
+            Log::info('sp_PakBoekingenAantal retourneerde een count van '.$result[0]->count.'.');
             return $result[0]->count ?? -1;
 
         } catch (\Exception $e) {
-            Log::error('Fout in sp_getBoekingenCount: '.$e->getMessage());
+            Log::error('Fout in sp_PakBoekingenAantal: '.$e->getMessage());
 
             return -1;
         }
     }
 
     // Stored procedure om de meest voorkomende reis op te halen
-    public function sp_getMeestVoorkomendeReis()
+    public function sp_MeestVoorkomendeReis()
     {
         try {
             $result = DB::select('CALL sp_MeestVoorkomendReis()');

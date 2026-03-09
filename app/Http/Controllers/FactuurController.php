@@ -14,7 +14,7 @@ class FactuurController extends Controller
     }
     public function index()
     {
-        $facturen = $this->FactuurModel->sp_getAllFactuurs();
+        $facturen = $this->FactuurModel->sp_PakAlleFacturen();
 
 
         return view('facturatie.index',  [

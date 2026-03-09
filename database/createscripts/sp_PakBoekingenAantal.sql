@@ -1,10 +1,10 @@
 USE TravelEasy;
 
-DROP PROCEDURE IF EXISTS sp_getBoekingenCount;
+DROP PROCEDURE IF EXISTS sp_PakBoekingenAantal;
 
 DELIMITER $$
 
-CREATE PROCEDURE sp_getBoekingenCount()
+CREATE PROCEDURE sp_PakBoekingenAantal()
 BEGIN
     SELECT COUNT(*) AS count
     FROM Boeking
@@ -13,4 +13,4 @@ END $$
 
 DELIMITER ;
 
-CALL sp_getBoekingenCount();
+CALL sp_PakBoekingenAantal();
