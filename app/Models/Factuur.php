@@ -46,22 +46,22 @@ class Factuur extends Model
         return $this->belongsTo(Passagier::class, 'PassagierId', 'Id');
     }
 
-    public function sp_getAllFactuurs()
+    public function sp_PakAlleFacturen()
     {
         try {
-            $result = DB::select('CALL sp_getAllFactuurs()');
+            $result = DB::select('CALL sp_PakAlleFacturen()');
 
             if (empty($result)) {
-                Log::info('sp_getAllFactuurs retourneerde een lege result omdat er geen data kon worden opgehaald.');
+                Log::info('sp_PakAlleFacturen retourneerde een lege result omdat er geen data kon worden opgehaald.');
 
                 return [];
             }
-            Log::info('sp_getAllFactuurs retourneerde '.count($result).' resultaten.');
+            Log::info('sp_PakAlleFacturen retourneerde '.count($result).' resultaten.');
 
             return $result;
 
         } catch (\Exception $e) {
-            Log::error('Fout in sp_getAllFactuurs: '.$e->getMessage());
+            Log::error('Fout in sp_PakAlleFacturen: '.$e->getMessage());
 
             return [];
         }

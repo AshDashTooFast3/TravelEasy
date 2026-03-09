@@ -1,10 +1,10 @@
 USE TravelEasy;
 
-DROP PROCEDURE IF EXISTS sp_getAllFactuurs;
+DROP PROCEDURE IF EXISTS sp_PakAlleFacturen;
 
 DELIMITER $$
 
-CREATE PROCEDURE sp_getAllFactuurs()
+CREATE PROCEDURE sp_PakAlleFacturen()
 BEGIN
     SELECT 
         f.Id
@@ -30,4 +30,4 @@ END$$
 
 DELIMITER ;
 
-CALL sp_getAllFactuurs();
+CALL sp_PakAlleFacturen();
