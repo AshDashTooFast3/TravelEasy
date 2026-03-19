@@ -92,7 +92,7 @@ class MedewerkerController extends Controller
     {
         try {
             $grafiekOpties = [
-                'chart_title' => 'Aantal boekingen per maand',
+                'chart_title' => 'Aantal boekingen per jaar',
                 'report_type' => 'group_by_date',
                 'model' => Boeking::class,
                 'group_by_field' => 'Boekingsdatum',
@@ -100,9 +100,15 @@ class MedewerkerController extends Controller
                 'chart_type' => 'bar',
                 'aggregate_function' => 'count',
                 'aggregate_field' => 'Id',
+                'boekingencount' => Boeking::count(),
             ];
 
+            // dd($grafiekOpties['boekingencount']);
+
+            Log::info('Grafiekopties: '.json_encode($grafiekOpties).'. zijn succesvol opgehaald. Grafiek kan worden gegenereerd.');
+
             return new LaravelChart($grafiekOpties);
+
         } catch (\Exception $e) {
             Log::error('Fout bij maken van de grafiek: '.$e->getMessage());
 

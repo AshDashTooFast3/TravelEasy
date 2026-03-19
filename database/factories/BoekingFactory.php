@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Vlucht;
 use App\Models\Accommodatie;
+use App\Models\Vlucht;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Boeking>
@@ -22,7 +22,7 @@ class BoekingFactory extends Factory
             'VluchtId' => Vlucht::factory(),
             'AccommodatieId' => Accommodatie::factory(),
             'Boekingsnummer' => $this->faker->unique()->numerify('BN-######'),
-            'Boekingsdatum' => $this->faker->date(),
+            'Boekingsdatum' => $this->faker->dateTimeBetween('2000-01-01', 'now'),
             'Boekingstijd' => $this->faker->time(),
             'Boekingsstatus' => $this->faker->randomElement(['In behandeling', 'Bevestigd', 'Geannuleerd']),
             'TotaalPrijs' => $this->faker->randomFloat(2, 100, 5000),

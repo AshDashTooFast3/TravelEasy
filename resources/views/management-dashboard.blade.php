@@ -78,19 +78,19 @@
                             <div class="col-md-8">
                                 <div class="card">
                                     <div class="card-body">
-                                    @if ($chart1)
-                                        <h1>{{ $chart1->options['chart_title'] }}</h1>
-                                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-                                            {!! $chart1->renderHtml() !!}
-                                            {!! $chart1->renderChartJsLibrary() !!}
-                                            {!! $chart1->renderJs() !!}
-                                        </div>
-                                    @else
-                                        <div
-                                            class="p-4 bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-lg text-red-800 dark:text-red-200">
-                                            Er is een fout opgetreden bij het laden van de grafiek.
-                                        </div>
-                                    @endif
+                                        @if ($chart1 !== null)
+                                            <h1>{{ $chart1->options['chart_title'] }}</h1>
+                                            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                                                {!! $chart1->renderHtml() !!}
+                                                {!! $chart1->renderChartJsLibrary() !!}
+                                                {!! $chart1->renderJs() !!}
+                                            </div>
+                                        @else
+                                            <div
+                                                class="p-4 bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-lg text-red-800 dark:text-red-200">
+                                                Geen grafiekgegevens beschikbaar. Maak enkele boekingen om grafieken te genereren.
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
