@@ -138,7 +138,7 @@ class MedewerkerController extends Controller
             ];
 
             // Log of de grafiekopties correct zijn ingesteld en succesvol zijn opgehaald
-            Log::info('Grafiekopties: '.json_encode($grafiekOpties).'. zijn succesvol opgehaald. Grafiek kan worden gegenereerd.');
+            Log::info('Grafiekopties succesvol ingesteld. Grafiek wordt gegenereerd.', $grafiekOpties);
 
             // Retourneer de LaravelChart instantie met de ingestelde opties
             return new LaravelChart($grafiekOpties);
