@@ -66,4 +66,6 @@ class Factuur extends Model
             return [];
         }
     }
+
+    
 }
