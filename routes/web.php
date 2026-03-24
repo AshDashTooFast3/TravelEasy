@@ -32,8 +32,9 @@ Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(fun
 Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
     Route::get('/management-dashboard', [MedewerkerController::class, 'ManagementDashboard'])->name('management-dashboard');
     Route::get('/facturatie', [FactuurController::class, 'index'])->name('facturatie.index');
+    Route::get('/facturatie/{id}/bewerken', [FactuurController::class, 'bewerken'])->name('facturatie.bewerken');
+    Route::post('/facturatie/wijzigen', [FactuurController::class,'wijzigen'])->name('facturatie.wijzigen');
     Route::get('/boekingen', [BoekingController::class, 'index'])->name('boekingen.index');
-
 });
 
 Route::middleware(['auth', 'verified', 'role:passagier,administrator,manager,financieelmedewerker,reisadviseur'])->group(function () {

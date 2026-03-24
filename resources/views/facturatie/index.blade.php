@@ -38,6 +38,8 @@
                                     <th
                                         class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-32">
                                         Betaalmethode</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-32 text-center">
+                                        Wijzigen</th>
                                 </tr>
                             </thead>
 
@@ -65,6 +67,11 @@
                                         <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
                                             {{ $factuur->Betaalmethode }}
                                         </td>
+                                        <td class="px-4 py-3 text-xl text-center text-gray-900 dark:text-gray-100">
+                                            <a href="{{ route('facturatie.bewerken', ['id' => $factuur->Id]) }}">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
@@ -79,6 +86,5 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </x-app-layout>

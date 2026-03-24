@@ -67,5 +67,34 @@ class Factuur extends Model
         }
     }
 
-    
+    public function PakFactuurBijId($factuurId) {
+        
+        return DB::selectOne('CALL sp_PakFactuurBijId(?)', [$factuurId]);
+    }
+
+    public function sp_FactuurWijzigen($Id, $BoekingId, $PassagierId, $Factuurnummer, $Factuurdatum, $Factuurtijd, $TotaalBedrag, $Betaalstatus, $Betaalmethode, $Isactief, $Opmerking)
+    {
+        try {
+            DB::statement('CALL sp_WijzigFactuur(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+                $Id,
+                $BoekingId,
+                $PassagierId,
+                $Factuurnummer,
+                $Factuurdatum,
+                $Factuurtijd,
+                $TotaalBedrag,
+                $Betaalstatus,
+                $Betaalmethode,
+                $Isactief,
+                $Opmerking,
+            ]);
+            Log::info('sp_WijzigFactuur succesvol uitgevoerd voor FactuurId: '.$Id);
+
+            return $Id;
+        } catch (\Exception $e) {
+            Log::error('Fout in sp_WijzigFactuur: '.$e->getMessage());
+
+            return -1;
+        }
+    }
 }
