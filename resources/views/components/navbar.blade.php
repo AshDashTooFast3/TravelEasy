@@ -69,6 +69,12 @@
                         Registreren
                     </a>
                 @else
+                    @if (Auth::user()->RolNaam === 'administrator' || Auth::user()->RolNaam === 'manager')
+                        <a href="{{ route('management-dashboard') }}"
+                            class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-900">
+                            Dashboard
+                        </a>
+                    @endif
                     <form method="POST" action="{{ route('logout') }}" class="mb-0">
                         @csrf
                         <button type="submit"
