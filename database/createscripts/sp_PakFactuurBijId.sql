@@ -13,10 +13,10 @@ BEGIN
         PassagierId,
         Factuurdatum,
         TotaalBedrag AS Bedrag,
-        Betaalmethode
+        Betaalmethode,
+        Betaalstatus
     FROM Factuur
-    WHERE Id = p_FactuurId
-    AND IsActief = 1;
+    WHERE Id = p_FactuurId;
 END$$
 
 DELIMITER ;

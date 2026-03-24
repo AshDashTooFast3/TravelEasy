@@ -49,16 +49,38 @@ class FactuurController extends Controller
             'Factuurdatum' => 'required|date',
             'TotaalBedrag' => 'required|numeric|min:0',
             'Betaalmethode' => 'required|string|in:Creditcard,Bankoverschrijving,Contant',
+            'Betaalstatus' => 'required|string',
         ]);
 
-        $this->FactuurModel->sp_WijzigFactuur(
-            $validatedData['Id'],
-            $validatedData['PassagierId'],
-            $validatedData['Factuurdatum'],
-            $validatedData['TotaalBedrag'],
-            $validatedData['Betaalmethode']
-        );
+        $facturen = $this->FactuurModel->sp_PakAlleFacturen();
 
-        return redirect()->route('facturatie.index')->with('success', 'Factuur succesvol bijgewerkt.');
+
+        switch ($validatedData['Betaalstatus']) {
+            case 'Verzonden':
+                return redirect()->route('facturatie.index')->with([
+                    'title' => 'Facturen overzicht',
+                    'error' => 'Kan de factuur niet wijzigen, omdat de factuur al is verzonden',
+                    'facturen' => $facturen,
+                ]);
+
+            case 'Betaald':
+                return redirect()->route('facturatie.index')->with([
+                    'title' => 'Facturen overzicht',
+                    'error' => 'Kan de factuur niet wijzigen, omdat de factuur al is betaald',
+                    'facturen' => $facturen,
+                ]);
+
+            default:
+                $this->FactuurModel->sp_WijzigFactuur(
+                    $validatedData['Id'],
+                    $validatedData['PassagierId'],
+                    $validatedData['Factuurdatum'],
+                    $validatedData['TotaalBedrag'],
+                    $validatedData['Betaalmethode']
+                );
+
+                return redirect()->route('facturatie.index')->with('success', 'Factuur succesvol bijgewerkt.');
+        }
+
     }
 }

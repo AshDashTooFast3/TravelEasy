@@ -13,6 +13,22 @@
 
                     {!! str_repeat('<br>', 2) !!}
 
+                    @if(session('success'))
+                        <div
+                            class="p-4 mb-4 text-sm text-green-800 bg-green-100 border border-green-300 rounded-lg dark:bg-green-900 dark:text-green-100 dark:border-green-700">
+                            {{ session('success') }}
+                            <meta http-equiv="refresh" content="3;url={{ route('facturatie.index') }}">
+                        </div>
+                    @endif
+                    
+                    @if (session('error'))
+                        <div
+                            class="p-4 mb-4 text-sm text-red-800 bg-red-100 border border-red-300 rounded-lg dark:bg-red-900 dark:text-red-100 dark:border-red-700">
+                            {{ session('error') }}
+                            <meta http-equiv="refresh" content="3;url={{ route('facturatie.index') }}">
+                        </div>
+                    @endif
+
                     <div class="mt-5 overflow-x-auto rounded-lg shadow border border-gray-200 dark:border-gray-700">
                         <table class="min-w-full table-fixed border-collapse">
                             <thead class="bg-gray-200 dark:bg-gray-700">
@@ -38,7 +54,8 @@
                                     <th
                                         class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-32">
                                         Betaalmethode</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-32 text-center">
+                                    <th
+                                        class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-32 text-center">
                                         Wijzigen</th>
                                 </tr>
                             </thead>

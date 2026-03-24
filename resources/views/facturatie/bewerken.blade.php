@@ -19,6 +19,7 @@
                         @method('PUT')
 
                         <input type="number" name="Id" value="{{ $factuur->Id }}" hidden>
+                        <input type="text" name="Betaalstatus" id="Betaalstatus" value="{{ $factuur->Betaalstatus }}" hidden>
 
                         <div>
                             <label for="PassagierId"
