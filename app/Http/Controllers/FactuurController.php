@@ -96,18 +96,7 @@ class FactuurController extends Controller
 
             // Controleer de betaalstatus en handel dienovereenkomstig
             switch ($validatedData['Betaalstatus']) {
-
-                // Factuur is al verzonden: blokkeer wijziging
-                case 'Verzonden':
-                    Log::warning('Poging om verzonden factuur aan te passen: '.$validatedData['Id']);
-
-                    return redirect()->route('facturatie.index')->with([
-                        'title' => 'Facturen overzicht',
-                        'error' => 'Kan de factuur niet wijzigen, omdat de factuur al is verzonden',
-                        'facturen' => $facturen,
-                    ]);
-
-                    // Factuur is al betaald: blokkeer wijziging
+                // Factuur is al betaald: blokkeer wijziging
                 case 'Betaald':
                     Log::warning('Poging om betaalde factuur aan te passen: '.$validatedData['Id']);
 
