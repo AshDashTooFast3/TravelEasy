@@ -19,7 +19,7 @@
                         @method('PUT')
 
                         <input type="number" name="Id" value="{{ $factuur->Id }}" hidden>
-                        <input type="text" name="Betaalstatus" id="Betaalstatus" value="{{ $factuur->Betaalstatus }}" hidden>
+                        <input type="text" name="Betaalstatus" id="Betaalstatus" value="{{ $factuur->Betaalstatus }}"hidden>
 
                         <div>
                             <label for="PassagierId"
@@ -32,7 +32,7 @@
                                 <option value="">Selecteer een passagier</option>
                                 @foreach($passagiers as $passagier)
                                     <option value="{{ $passagier->Id }}" {{ old('PassagierId', $factuur->PassagierId) == $passagier->Id ? 'selected' : '' }}>
-                                        {{ $passagier->Voornaam }} 
+                                        {{ $passagier->Voornaam }}
                                         {{ $passagier->Tussenvoegsel ?? '' }}
                                         {{ $passagier->Achternaam }}
                                     </option>
@@ -58,13 +58,14 @@
                         </div>
 
                         <div>
-                            <label for="TotaalBedrag" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <label for="TotaalBedrag"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Totaal Bedrag
                             </label>
                             <input type="number" step="0.01" inputmode="decimal"
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white @error('TotaalBedrag') border-red-500 @enderror"
-                                id="TotaalBedrag" name="TotaalBedrag" value="{{ old('TotaalBedrag', $factuur->Bedrag) }}" required
-                                min="0">
+                                id="TotaalBedrag" name="TotaalBedrag"
+                                value="{{ old('TotaalBedrag', $factuur->Bedrag) }}" required min="0">
                             @error('TotaalBedrag')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -80,7 +81,8 @@
                                 id="Betaalmethode" name="Betaalmethode" required>
                                 <option value="">Selecteer een betaalmethode</option>
                                 <option value="Creditcard" {{ old('Betaalmethode', $factuur->Betaalmethode) == 'Creditcard' ? 'selected' : '' }}>Creditcard</option>
-                                <option value="Bankoverschrijving" {{ old('Betaalmethode', $factuur->Betaalmethode) == 'Bankoverschrijving' ? 'selected' : '' }}>Bankoverschrijving</option>
+                                <option value="Bankoverschrijving" {{ old('Betaalmethode', $factuur->Betaalmethode) == 'Bankoverschrijving' ? 'selected' : '' }}>
+                                    Bankoverschrijving</option>
                                 <option value="Contant" {{ old('Betaalmethode', $factuur->Betaalmethode) == 'Contant' ? 'selected' : '' }}>Contant</option>
                             </select>
                             @error('Betaalmethode')
