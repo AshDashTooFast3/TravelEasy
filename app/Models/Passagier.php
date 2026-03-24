@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Passagier extends Model
 {
@@ -39,5 +40,10 @@ class Passagier extends Model
     public function persoon()
     {
         return $this->belongsTo(Persoon::class, 'PersoonId');
+    }
+
+    public function PakAllePassagiers()
+    {
+        return DB::select('CALL sp_PakAllePassagiers()');
     }
 }

@@ -1,15 +1,14 @@
 <?php
 
-
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AccommodatieController;
+use App\Http\Controllers\BoekingController;
+use App\Http\Controllers\FactuurController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KlantBoekingController;
 use App\Http\Controllers\MedewerkerController;
-use App\Http\Controllers\FactuurController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\BoekingController;
 use App\Http\Controllers\TicketController;
-use App\Http\Controllers\AccommodatieController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
@@ -32,23 +31,24 @@ Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(fun
 Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
     Route::get('/management-dashboard', [MedewerkerController::class, 'ManagementDashboard'])->name('management-dashboard');
     Route::get('/facturatie', [FactuurController::class, 'index'])->name('facturatie.index');
+    Route::get('/facturatie/{id}/bewerken', [FactuurController::class, 'bewerken'])->name('facturatie.bewerken');
+    Route::put('/facturatie/wijzigen', [FactuurController::class, 'wijzigen'])->name('facturatie.wijzigen');
     Route::get('/boekingen', [BoekingController::class, 'index'])->name('boekingen.index');
-
 });
 
 Route::middleware(['auth', 'verified', 'role:passagier,administrator,manager,financieelmedewerker,reisadviseur'])->group(function () {
     // Reis overzicht
     Route::get('/reis', [KlantBoekingController::class, 'index'])->name('reis.index');
-        Route::get('/reis/nieuw', [KlantBoekingController::class, 'create'])->name('reis.create');
+    Route::get('/reis/nieuw', [KlantBoekingController::class, 'create'])->name('reis.create');
     Route::get('/reis/map', [KlantBoekingController::class, 'map'])->name('reis.map');
     Route::get('/reis/{id}', [KlantBoekingController::class, 'show'])->name('reis.show');
-        Route::post('/reis', [KlantBoekingController::class, 'store'])->name('reis.store');
+    Route::post('/reis', [KlantBoekingController::class, 'store'])->name('reis.store');
     Route::delete('/reis/{id}', [KlantBoekingController::class, 'destroy'])->name('reis.destroy');
-    // Ticket overzicht 
+    // Ticket overzicht
     Route::get('/tickets', [TicketController::class, 'index'])->name('ticket.index');
     Route::get('/ticket/{id}', [TicketController::class, 'show'])->name('ticket.show');
     Route::post('/reis/{id}/boeken', [KlantBoekingController::class, 'ReisBoeken'])->name('reis.boeken');
-    });
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
