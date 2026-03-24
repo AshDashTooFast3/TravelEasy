@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KlantBoekingController;
@@ -30,25 +29,32 @@ Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(fun
 
 // Alleen Administrators en Managers kunnen deze pagina zien
 Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
+
     Route::get('/management-dashboard', [MedewerkerController::class, 'ManagementDashboard'])->name('management-dashboard');
     Route::get('/facturatie', [FactuurController::class, 'index'])->name('facturatie.index');
+
+    // 📌 Boekingen overzicht
     Route::get('/boekingen', [BoekingController::class, 'index'])->name('boekingen.index');
 
+    // 📌 ➕ TOEGEVOEGD: Boeking aanmaken
+    Route::get('/boekingen/create', [BoekingController::class, 'create'])->name('boekingen.create');
+    Route::post('/boekingen', [BoekingController::class, 'store'])->name('boekingen.store');
 });
 
 Route::middleware(['auth', 'verified', 'role:passagier,administrator,manager,financieelmedewerker,reisadviseur'])->group(function () {
     // Reis overzicht
     Route::get('/reis', [KlantBoekingController::class, 'index'])->name('reis.index');
-        Route::get('/reis/nieuw', [KlantBoekingController::class, 'create'])->name('reis.create');
+    Route::get('/reis/nieuw', [KlantBoekingController::class, 'create'])->name('reis.create');
     Route::get('/reis/map', [KlantBoekingController::class, 'map'])->name('reis.map');
     Route::get('/reis/{id}', [KlantBoekingController::class, 'show'])->name('reis.show');
-        Route::post('/reis', [KlantBoekingController::class, 'store'])->name('reis.store');
+    Route::post('/reis', [KlantBoekingController::class, 'store'])->name('reis.store');
     Route::delete('/reis/{id}', [KlantBoekingController::class, 'destroy'])->name('reis.destroy');
+
     // Ticket overzicht 
     Route::get('/tickets', [TicketController::class, 'index'])->name('ticket.index');
     Route::get('/ticket/{id}', [TicketController::class, 'show'])->name('ticket.show');
     Route::post('/reis/{id}/boeken', [KlantBoekingController::class, 'ReisBoeken'])->name('reis.boeken');
-    });
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
