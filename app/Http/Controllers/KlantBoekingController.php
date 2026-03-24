@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Accommodatie;
 use App\Models\Boeking;
+use App\Models\Factuur;
+use App\Models\Gebruiker;
 use App\Models\KlantBoekingen;
 use App\Models\Passagier;
 use App\Models\Ticket;
@@ -16,74 +18,115 @@ use Illuminate\Support\Facades\Log;
 class KlantBoekingController extends Controller
 {
     // Reis overzicht
-    public function index()
-    {
-        $boekingen = KlantBoekingen::get();
 
-        return view('reis.index', compact('boekingen'));
+public function index()
+{
+    $gebruiker = auth()->user();
+
+    // Vluchten + accommodaties voor reisplan
+    $vluchten = Vlucht::all();
+    $accommodaties = Accommodatie::all();
+
+    // Zoek passagier van deze gebruiker
+    $passagier = Passagier::whereHas('persoon', function ($q) use ($gebruiker) {
+        $q->where('GebruikerId', $gebruiker->Id);
+    })->first();
+
+    if (!$passagier) {
+        $boekingen = collect();
+    } else {
+        $boekingen = KlantBoekingen::with(['vlucht', 'accommodatie'])
+            ->where('PassagierId', $passagier->Id)
+            ->get();
     }
 
+    return view('reis.index', compact('boekingen', 'vluchten', 'accommodaties'));
+}
     // Nieuwe reis boeken
-    public function create()
-    {
-        return view('reis.create', [
-            'vluchten' => Vlucht::all(),
-            'accommodaties' => Accommodatie::all(),
-        ]);
-    }
+public function create(Request $request)
+{
+    $vlucht = Vlucht::findOrFail($request->VluchtId);
+    $accommodatie = Accommodatie::findOrFail($request->AccommodatieId);
 
-    // Opslaan
+    return view('reis.create', compact('vlucht', 'accommodatie'));
+}
     public function store(Request $request)
-    {
-        $request->validate([
-            'VluchtId' => 'required',
-            'AccommodatieId' => 'required',
-            'AantalPassagiers' => 'required|integer|min:1|max:10',
-        ], [
-            'AantalPassagiers.max' => 'Je kunt maximaal 10 passagiers per boeking aanmaken.',
+{
+$request->validate([
+   
+    'VluchtId' => 'required',
+    'AccommodatieId' => 'required',
+    'AantalPassagiers' => 'required|integer|min:1|max:10',
+], [
+    'AantalPassagiers.max' => 'Je kunt maximaal 10 passagiers per boeking aanmaken.',
+]);
+
+    $gebruiker = Auth::user();
+
+    // 1. Persoon ophalen of aanmaken
+    $persoon = \App\Models\Persoon::firstOrCreate(
+        ['GebruikerId' => $gebruiker->Id],
+        [
+            'Voornaam' => $gebruiker->Gebruikersnaam,
+            'Achternaam' => 'Onbekend',
+            'Geboortedatum' => '2000-01-01',
+            'Isactief' => true,
+        ]
+    );
+
+    // 2. Passagier ophalen of aanmaken
+    $passagier = \App\Models\Passagier::firstOrCreate(
+        ['PersoonId' => $persoon->Id],
+        [
+            'Nummer' => 'P-' . $persoon->Id,
+            'PassagierType' => 'Standaard',
+            'Isactief' => true,
+        ]
+    );
+
+    // Vlucht + accommodatie ophalen
+    $acc = Accommodatie::findOrFail($request->AccommodatieId);
+    $vlucht = Vlucht::findOrFail($request->VluchtId);
+
+    // Prijs per persoon + totaal
+    $prijsPerPersoon = $acc->TotaalPrijs;
+    $totaalPrijs = $prijsPerPersoon * $request->AantalPassagiers;
+
+    // 3. Boeking aanmaken
+$boeking = Boeking::create([
+    'PassagierId' => $passagier->Id,   // <-- DIT IS DE FIX
+    'VluchtId' => $request->VluchtId,
+    'AccommodatieId' => $request->AccommodatieId,
+    'Boekingsnummer' => 'BK-' . now()->format('YmdHis'),
+    'Boekingsdatum' => now()->toDateString(),
+    'Boekingstijd' => now()->toTimeString(),
+    'Boekingsstatus' => 'In behandeling',
+    'TotaalPrijs' => $totaalPrijs,
+    'IsActief' => 1,
+]);
+
+    // 4. Tickets aanmaken
+    for ($i = 1; $i <= $request->AantalPassagiers; $i++) {
+        $stoelnummer = $this->genereerStoelnummer($i);
+
+        Ticket::create([
+            'PassagierId' => $passagier->Id,   // <-- BELANGRIJK: Passagier.Id, NIET Gebruiker.Id
+            'VluchtId' => $boeking->VluchtId,
+            'Stoelnummer' => $stoelnummer,
+            'Aankoopdatum' => now()->toDateString(),
+            'Aankooptijd' => now()->toTimeString(),
+            'Aantal' => 1,
+            'BedragInclBtw' => $prijsPerPersoon,
+            'Isactief' => true,
+            'Opmerking' => null,
+            'Datumaangemaakt' => now(),
+            'Datumgewijzigd' => now(),
         ]);
-
-        $acc = Accommodatie::findOrFail($request->AccommodatieId);
-        $vlucht = Vlucht::findOrFail($request->VluchtId);
-
-        // Prijs per persoon + totaal
-        $prijsPerPersoon = $acc->TotaalPrijs;
-        $totaalPrijs = $prijsPerPersoon * $request->AantalPassagiers;
-
-        // Boeking aanmaken
-        $boeking = Boeking::create([
-            'VluchtId' => $request->VluchtId,
-            'AccommodatieId' => $request->AccommodatieId,
-            'Boekingsnummer' => 'BK-'.now()->format('YmdHis'),
-            'Boekingsdatum' => now()->toDateString(),
-            'Boekingstijd' => now()->toTimeString(),
-            'Boekingsstatus' => 'In behandeling',
-            'TotaalPrijs' => $totaalPrijs,
-            'IsActief' => 1,
-        ]);
-
-        // Voor elke passagier een eigen stoel + ticket
-        for ($i = 1; $i <= $request->AantalPassagiers; $i++) {
-            $stoelnummer = $this->genereerStoelnummer($i);
-
-            Ticket::create([
-                'PassagierId' => Auth::user()->Id,
-                'VluchtId' => $boeking->VluchtId,
-                'Stoelnummer' => $stoelnummer,          // één stoel per ticket
-                'Aankoopdatum' => now()->toDateString(),
-                'Aankooptijd' => now()->toTimeString(),
-                'Aantal' => 1,                     // 1 per ticket
-                'BedragInclBtw' => $prijsPerPersoon,      // prijs per persoon
-                'Isactief' => true,
-                'Opmerking' => null,
-                'Datumaangemaakt' => now(),
-                'Datumgewijzigd' => now(),
-            ]);
-        }
-
-        return redirect()->route('reis.index')
-            ->with('success', 'Reis succesvol geboekt!');
     }
+
+    return redirect()->route('reis.index')
+        ->with('success', 'Reis succesvol geboekt!');
+}
 
     // Stoelnummer generator
     private function genereerStoelnummer($index)

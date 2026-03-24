@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Vlucht;
 use App\Models\Accommodatie;
 
+
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Boeking>
  */
@@ -33,3 +34,4 @@ class BoekingFactory extends Factory
         ];
     }
 }
+

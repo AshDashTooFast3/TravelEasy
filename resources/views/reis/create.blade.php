@@ -8,76 +8,51 @@
     <div class="py-8 max-w-4xl mx-auto">
 
         <div class="bg-gray-800 p-6 rounded-lg shadow text-white">
-            <h3 class="text-lg font-semibold mb-4">Boek een nieuwe reis</h3>
+            <h3 class="text-lg font-semibold mb-4">Bevestig je reis</h3>
 
-            {{-- FOUTMELDING (met kruisje + fade-out) --}}
+            {{-- FOUTMELDING --}}
             @if ($errors->any())
-                <div id="errorAlert"
-                     class="flex items-start gap-3 bg-red-600 text-white p-4 rounded-md shadow-lg mb-4 transition-opacity duration-500">
-
-                    
-
+                <div id="errorAlert" class="bg-red-600 text-white p-4 rounded-md mb-4">
                     <ul class="list-disc ml-2">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
                 </div>
-
-                <script>
-                    setTimeout(() => {
-                        const alert = document.getElementById('errorAlert');
-                        if (alert) {
-                            alert.style.opacity = '0';
-                            setTimeout(() => alert.remove(), 500);
-                        }
-                    }, 5000);
-                </script>
             @endif
 
             <form action="{{ route('reis.store') }}" method="POST">
                 @csrf
 
-                {{-- Vlucht --}}
+                {{-- Gekozen vlucht --}}
                 <div class="mb-4">
-                    <label class="block mb-1">Kies een vlucht</label>
-                    <select name="VluchtId" class="w-full bg-gray-700 text-white p-2 rounded">
-                        @foreach ($vluchten as $vlucht)
-                            <option value="{{ $vlucht->Id }}">
-                                {{ $vlucht->Vluchtnummer }} — {{ $vlucht->Vertrekdatum }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <label class="block mb-1">Gekozen vlucht</label>
+                    <p class="font-semibold">
+                        Vlucht {{ $vlucht->Vluchtnummer }}
+                    </p>
+                    <input type="hidden" name="VluchtId" value="{{ $vlucht->Id }}">
                 </div>
 
-                {{-- Accommodatie --}}
+                {{-- Gekozen accommodatie --}}
                 <div class="mb-4">
-                    <label class="block mb-1">Kies een accommodatie</label>
-                    <select id="accSelect" name="AccommodatieId" class="w-full bg-gray-700 text-white p-2 rounded">
-                        @foreach ($accommodaties as $acc)
-                            <option value="{{ $acc->Id }}" data-price="{{ $acc->TotaalPrijs }}">
-                                {{ $acc->Naam }} — {{ $acc->Stad }}, {{ $acc->Land }}
-                                (Prijs per persoon: €{{ number_format($acc->TotaalPrijs, 2, ',', '.') }})
-                            </option>
-                        @endforeach
-                    </select>
+                    <label class="block mb-1">Gekozen accommodatie</label>
+                    <p class="font-semibold">
+                        {{ $accommodatie->Naam }} — {{ $accommodatie->Stad }}, {{ $accommodatie->Land }}
+                        (Prijs per persoon: €{{ number_format($accommodatie->TotaalPrijs, 2, ',', '.') }})
+                    </p>
+                    <input type="hidden" name="AccommodatieId" value="{{ $accommodatie->Id }}">
                 </div>
 
                 {{-- Aantal passagiers --}}
                 <div class="mb-4">
                     <label class="block mb-1">Aantal passagiers</label>
-
                     <input id="passagiersInput"
                            type="number"
                            name="AantalPassagiers"
                            min="1"
-                           value="{{ old('AantalPassagiers', 1) }}"
+                           value="1"
                            class="w-full bg-gray-700 text-white p-2 rounded"
                            required>
-
-                    @error('AantalPassagiers')
-                        <p class="text-red-400 text-sm mt-1">{{ $message }}</p>
-                    @enderror
                 </div>
 
                 {{-- Totale prijs --}}
@@ -97,20 +72,18 @@
 
     {{-- Live prijsberekening --}}
     <script>
-        const accSelect = document.getElementById('accSelect');
+        const prijsPerPersoon = {{ $accommodatie->TotaalPrijs }};
         const passagiersInput = document.getElementById('passagiersInput');
         const totaalPrijsEl = document.getElementById('totaalPrijs');
 
         function updatePrijs() {
-            const prijsPerPersoon = parseFloat(accSelect.selectedOptions[0].dataset.price);
             const aantal = parseInt(passagiersInput.value) || 0;
             const totaal = prijsPerPersoon * aantal;
-
             totaalPrijsEl.textContent = "€" + totaal.toFixed(2).replace('.', ',');
         }
 
-        accSelect.addEventListener('change', updatePrijs);
         passagiersInput.addEventListener('input', updatePrijs);
+        updatePrijs();
     </script>
 
 </x-app-layout>

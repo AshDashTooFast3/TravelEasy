@@ -2,10 +2,34 @@
 
 namespace App\Models;
 
-class KlantBoekingen
+use Illuminate\Database\Eloquent\Model;
+
+
+class KlantBoekingen extends Model
 {
-    public static function get()
+    protected $table = 'Boeking';
+    protected $primaryKey = 'Id';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'PassagierId',
+        'VluchtId',
+        'AccommodatieId',
+        'TotaalPrijs',
+        'Boekingsdatum',
+        'Boekingstijd',
+        'Boekingsstatus',
+        'IsActief',
+    ];
+
+    public function vlucht()
     {
-        return Boeking::with(['vlucht', 'accommodatie'])->get();
+        return $this->belongsTo(Vlucht::class, 'VluchtId');
+    }
+
+    public function accommodatie()
+    {
+        return $this->belongsTo(Accommodatie::class, 'AccommodatieId');
     }
 }

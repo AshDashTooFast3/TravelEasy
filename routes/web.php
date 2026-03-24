@@ -35,10 +35,10 @@ Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(fun
     Route::get('/boekingen', [BoekingController::class, 'index'])->name('boekingen.index');
 
 });
-
+   Route::get('/reis', [KlantBoekingController::class, 'index'])->name('reis.index');
 Route::middleware(['auth', 'verified', 'role:passagier,administrator,manager,financieelmedewerker,reisadviseur'])->group(function () {
     // Reis overzicht
-    Route::get('/reis', [KlantBoekingController::class, 'index'])->name('reis.index');
+ 
         Route::get('/reis/nieuw', [KlantBoekingController::class, 'create'])->name('reis.create');
     Route::get('/reis/map', [KlantBoekingController::class, 'map'])->name('reis.map');
     Route::get('/reis/{id}', [KlantBoekingController::class, 'show'])->name('reis.show');

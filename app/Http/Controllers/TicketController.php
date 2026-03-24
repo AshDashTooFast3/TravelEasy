@@ -9,7 +9,7 @@ class TicketController extends Controller
 public function index()
 {
     $tickets = Ticket::with(['vlucht'])
-        ->where('PassagierId', 1) // vaste passagier
+       ->where('PassagierId', auth()->user()->persoon->passagier->Id)
         ->orderBy('Datumaangemaakt', 'desc')
         ->get();
 

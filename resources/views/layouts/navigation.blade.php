@@ -34,11 +34,11 @@
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('facturatie.index')"
                             :active="request()->routeIs('facturatie.index')">
-                            {{ _('Facturatie') }}
+                            {{ __('Facturatie') }}
                         </x-nav-link>
 
                         <x-nav-link :href="route('boekingen.index')" :active="request()->routeIs('boekingen.index')">
-                            {{ _('Boekingen') }}
+                            {{ __('Boekingen') }}
                         </x-nav-link>
                     </div>
                 @endif
@@ -47,7 +47,7 @@
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('management-dashboard')"
                             :active="request()->routeIs('management-dashboard')">
-                            {{ _('Management Dashboard') }}
+                            {{ __('Management Dashboard') }}
                         </x-nav-link>
                     </div>
 
@@ -60,7 +60,7 @@
                     <x-slot name="trigger">
                         <button
                             class="inline-flex items-center px-3 py-2  text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->Gebruikersnaam }}</div>
+                           
 
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -122,8 +122,8 @@
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-base text-gray-800 dark:text-gray-200"></div>
+                <div class="font-medium text-sm text-gray-500"></div>
             </div>
 
             <div class="mt-3 space-y-1">

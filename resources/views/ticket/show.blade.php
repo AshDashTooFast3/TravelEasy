@@ -45,10 +45,12 @@
             {{-- Ticketgegevens --}}
             <div class="bg-gray-700 p-4 rounded">
                 <h4 class="font-semibold text-lg mb-2">Ticketgegevens</h4>
-
+                 <p><strong>Datum aangemaakt:</strong> {{ \Carbon\Carbon::parse($ticket->Datumaangemaakt)->format('d-m-Y') }}</p>
        
-                <p><strong>Prijs:</strong> €{{ number_format($ticket->Prijs, 2, ',', '.') }}</p>
-                <p><strong>Datum aangemaakt:</strong> {{ $ticket->Datumaangemaakt }}</p>
+                <p><strong>Prijs:</strong> 
+     €{{ number_format($ticket->BedragInclBtw, 2, ',', '.') }}
+</p>
+               
             </div>
 
             {{-- Terugknop --}}

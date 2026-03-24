@@ -131,6 +131,7 @@ return new class extends Migration
 
         Schema::create('Boeking', function (Blueprint $table) {
             $table->increments('Id');
+            $table->unsignedInteger('PassagierId')->nullable();
             $table->unsignedInteger('VluchtId');
             $table->unsignedInteger('AccommodatieId');
             $table->string('Boekingsnummer', 20);
@@ -144,6 +145,7 @@ return new class extends Migration
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
             $table->foreign('AccommodatieId')->references('Id')->on('Accommodatie');
             $table->foreign('VluchtId')->references('Id')->on('Vlucht');
+            $table->foreign('PassagierId')->references('Id')->on('Passagier');
         });
 
         Schema::create('Ticket', function (Blueprint $table) {
