@@ -72,21 +72,15 @@ class Factuur extends Model
         return DB::selectOne('CALL sp_PakFactuurBijId(?)', [$factuurId]);
     }
 
-    public function sp_FactuurWijzigen($Id, $BoekingId, $PassagierId, $Factuurnummer, $Factuurdatum, $Factuurtijd, $TotaalBedrag, $Betaalstatus, $Betaalmethode, $Isactief, $Opmerking)
+    public function sp_WijzigFactuur($Id, $PassagierId, $Factuurdatum, $TotaalBedrag, $Betaalmethode)
     {
         try {
-            DB::statement('CALL sp_WijzigFactuur(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+            DB::statement('CALL sp_WijzigFactuur(?, ?, ?, ?, ?)', [
                 $Id,
-                $BoekingId,
                 $PassagierId,
-                $Factuurnummer,
                 $Factuurdatum,
-                $Factuurtijd,
                 $TotaalBedrag,
-                $Betaalstatus,
                 $Betaalmethode,
-                $Isactief,
-                $Opmerking,
             ]);
             Log::info('sp_WijzigFactuur succesvol uitgevoerd voor FactuurId: '.$Id);
 
