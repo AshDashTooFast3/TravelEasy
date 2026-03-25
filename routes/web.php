@@ -33,6 +33,7 @@ Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(fun
     Route::get('/facturatie', [FactuurController::class, 'index'])->name('facturatie.index');
     Route::get('/facturatie/{id}/bewerken', [FactuurController::class, 'bewerken'])->name('facturatie.bewerken');
     Route::put('/facturatie/wijzigen', [FactuurController::class, 'wijzigen'])->name('facturatie.wijzigen');
+    Route::delete('/facturatie/{id}', [FactuurController::class, 'annuleren'])->name('facturatie.annuleren');
     Route::get('/boekingen', [BoekingController::class, 'index'])->name('boekingen.index');
 });
 

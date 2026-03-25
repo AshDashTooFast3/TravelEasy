@@ -20,7 +20,7 @@
                             <meta http-equiv="refresh" content="3;url={{ route('facturatie.index') }}">
                         </div>
                     @endif
-                    
+
                     @if (session('error'))
                         <div
                             class="p-4 mb-4 text-sm text-red-800 bg-red-100 border border-red-300 rounded-lg dark:bg-red-900 dark:text-red-100 dark:border-red-700">
@@ -57,6 +57,9 @@
                                     <th
                                         class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-32 text-center">
                                         Wijzigen</th>
+                                    <th
+                                        class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-32 text-center">
+                                        Annuleren</th>
                                 </tr>
                             </thead>
 
@@ -88,6 +91,18 @@
                                             <a href="{{ route('facturatie.bewerken', ['id' => $factuur->Id]) }}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
+                                        </td>
+                                        <td class="px-4 py-3 text-xl text-center text-gray-900 dark:text-gray-100">
+                                            <form action="{{ route('facturatie.annuleren', ['id' => $factuur->Id]) }}"
+                                                method="POST" style="display:inline;"
+                                                onsubmit="return confirm('Weet u zeker dat u deze factuur wilt annuleren?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
+                                                    <i class="bi bi-x-circle-fill"></i>
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @empty

@@ -135,4 +135,40 @@ class FactuurController extends Controller
             return redirect()->route('facturatie.index')->with('error', 'Fout bij het bijwerken van de factuur.');
         }
     }
+
+    public function annuleren($id)
+    {
+        try {
+            // Haal de factuur op voordat je deze annuleert
+            $factuur = $this->FactuurModel->PakFactuurBijId($id);
+
+            // Controleer of de factuur bestaat
+            if (! $factuur) {
+                Log::warning('Poging om niet-bestaande factuur te annuleren: '.$id);
+
+                return redirect()->route('facturatie.index')->with('error', 'Factuur niet gevonden.');
+            }
+
+            // Controleer of de factuur al betaald is
+            if ($factuur['Betaalstatus'] === 'Betaald') {
+                Log::warning('Poging om betaalde factuur te annuleren: '.$id);
+
+                return redirect()->route('facturatie.index')->with('error', 'Kan de factuur niet annuleren, omdat deze al is betaald.');
+            }
+
+            // Roep de stored procedure aan om de factuur te annuleren
+            $this->FactuurModel->sp_AnnuleerFactuur($id);
+
+            // Log de succesvolle annulering
+            Log::info('Factuur succesvol geannuleerd: '.$id);
+
+            // Redirect naar het overzicht met een succesmelding
+            return redirect()->route('facturatie.index')->with('success', 'Factuur succesvol geannuleerd.');
+        } catch (\Exception $e) {
+            // Vang alle onverwachte fouten op
+            Log::error('Fout bij annuleren factuur: '.$e->getMessage());
+
+            return redirect()->route('facturatie.index')->with('error', 'Fout bij het annuleren van de factuur.');
+        }
+    }
 }
