@@ -26,68 +26,72 @@
             <div id="reisMap" class="w-full h-96 rounded-lg"></div>
         </div>
 
-        {{-- MIJN BOEKINGEN --}}
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                Mijn geboekte reizen
-            </h3>
+{{-- MIJN BOEKINGEN --}}
+<div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        Mijn geboekte reizen
+    </h3>
 
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-gray-900 dark:text-gray-100">
-                    <thead>
-                        <tr class="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700">
-                            <th class="py-2 px-4">Bestemming</th>
-                            <th class="px-4">Vlucht</th>
-                            <th class="px-4">Datum</th>
-                            <th class="px-4">Prijs</th>
-                            <th class="px-4">Acties</th>
-                        </tr>
-                    </thead>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left text-gray-900 dark:text-gray-100">
+            <thead>
+                <tr class="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700">
+                    <th class="py-2 px-4">Bestemming</th>
+                    <th class="px-4">Vlucht</th>
+                    <th class="px-4">Datum</th>
+                    <th class="px-4">Prijs</th>
+                    <th class="px-4">Aantal passagiers</th>
+                    <th class="px-4">Status vlucht</th>
+                </tr>
+            </thead>
 
-                    <tbody>
-                        @forelse ($boekingen as $reis)
-                            <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <td class="py-2 px-4">
-                                    {{ $reis->accommodatie->Naam ?? 'Onbekend' }},
-                                    {{ $reis->accommodatie->Stad ?? '' }}
-                                </td>
+            <tbody>
+                @forelse ($boekingen as $reis)
+                    <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
 
-                                <td class="px-4">
-                                    Vlucht {{ $reis->vlucht->Vluchtnummer ?? 'Onbekend' }}
-                                </td>
+                        {{-- Bestemming --}}
+                        <td class="py-2 px-4">
+                            {{ $reis->accommodatie->Naam ?? 'Onbekend' }},
+                            {{ $reis->accommodatie->Stad ?? '' }}
+                        </td>
 
-                                <td class="px-4">
-                                    {{ $reis->Boekingsdatum }}
-                                </td>
+                        {{-- Vlucht --}}
+                        <td class="px-4">
+                            Vlucht {{ $reis->vlucht->Vluchtnummer ?? 'Onbekend' }}
+                        </td>
 
-                                <td class="px-4">
-                                    €{{ number_format($reis->TotaalPrijs, 2, ',', '.') }}
-                                </td>
+                        {{-- Datum --}}
+                        <td class="px-4">
+                            {{ $reis->Boekingsdatum }}
+                        </td>
 
-                                <td class="flex gap-3 py-2 px-4">
-                                    <form action="{{ route('reis.destroy', $reis->Id) }}" method="POST"
-                                          onsubmit="return confirm('Weet je zeker dat je deze reis wilt verwijderen?');">
-                                        @csrf
-                                        @method('DELETE')
+                        {{-- Prijs --}}
+                        <td class="px-4">
+                            €{{ number_format($reis->TotaalPrijs, 2, ',', '.') }}
+                        </td>
 
-                                        <button type="submit"
-                                            class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded-md text-sm">
-                                            Annuleren
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="py-4 text-center text-gray-500 dark:text-gray-400">
-                                    Je hebt nog geen reizen geboekt.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                        {{-- Aantal passagiers --}}
+                        <td class="px-4">
+                            {{ $reis->tickets->first()->Aantal ?? '1' }}
+                        </td>
+
+                        {{-- Status vlucht --}}
+                        <td class="px-4">
+                            {{ $reis->vlucht->Status ?? 'Onbekend' }}
+                        </td>
+
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6" class="py-4 text-center text-gray-500 dark:text-gray-400">
+                            Je hebt nog geen reizen geboekt.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
 
         {{-- BESCHIKBARE REIZEN --}}
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">

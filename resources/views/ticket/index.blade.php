@@ -17,6 +17,7 @@
                         <th>Vlucht</th>
                         <th>Datum</th>
                         <th>Prijs</th>
+                        <th>Aantal personen</th> <!-- ⭐ Nieuw -->
                         <th>Acties</th>
                     </tr>
                 </thead>
@@ -45,6 +46,10 @@
                                 €{{ number_format($ticket->BedragInclBtw, 2, ',', '.') }}
                             </td>
 
+                            <td>
+                                {{ $ticket->Aantal }} persoon{{ $ticket->Aantal > 1 ? 'en' : '' }}
+                            </td>
+
                             <td class="py-2">
                                 <a href="{{ route('ticket.show', $ticket->Id) }}"
                                     class="bg-green-600 hover:bg-green-500 dark:bg-green-500 dark:hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm">
@@ -54,7 +59,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="py-4 text-center text-gray-400 dark:text-gray-600">
+                            <td colspan="6" class="py-4 text-center text-gray-400 dark:text-gray-600">
                                 Je hebt nog geen tickets.
                             </td>
                         </tr>

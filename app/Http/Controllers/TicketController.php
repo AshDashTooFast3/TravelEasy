@@ -8,8 +8,24 @@ class TicketController extends Controller
 {
 public function index()
 {
+    $user = auth()->user();
+
+    
+    $persoon = $user->personen->first();
+
+    if (!$persoon) {
+        abort(403, 'Geen persoon gekoppeld aan dit account.');
+    }
+
+  
+    $passagier = $persoon->patient;
+
+    if (!$passagier) {
+        abort(403, 'Geen passagier gekoppeld aan dit account.');
+    }
+
     $tickets = Ticket::with(['vlucht'])
-       ->where('PassagierId', auth()->user()->persoon->passagier->Id)
+        ->where('PassagierId', $passagier->Id)
         ->orderBy('Datumaangemaakt', 'desc')
         ->get();
 
@@ -18,8 +34,12 @@ public function index()
 
 public function show($id)
 {
+    $user = auth()->user();
+    $persoon = $user->personen->first();
+    $passagier = $persoon->patient;
+
     $ticket = Ticket::with(['vlucht'])
-        ->where('PassagierId', 1) // vaste passagier
+        ->where('PassagierId', $passagier->Id)
         ->findOrFail($id);
 
     return view('ticket.show', compact('ticket'));

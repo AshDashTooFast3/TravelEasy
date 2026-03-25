@@ -150,12 +150,13 @@ return new class extends Migration
 
         Schema::create('Ticket', function (Blueprint $table) {
             $table->increments('Id');
+            $table->unsignedInteger('BoekingId')->nullable();
             $table->unsignedInteger('PassagierId');
             $table->unsignedInteger('VluchtId');
-            $table->string('Stoelnummer', 4);
+            $table->string('Stoelnummer', 255);
             $table->date('Aankoopdatum');
             $table->time('Aankooptijd');
-            $table->decimal('BedragInclBtw', 6, 2);
+            $table->decimal('BedragInclBtw', 12, 2);
             $table->tinyInteger('Aantal');
             $table->tinyInteger('Btw')->default(21);
             $table->boolean('Isactief')->default(true);
@@ -164,6 +165,7 @@ return new class extends Migration
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
             $table->foreign('PassagierId')->references('Id')->on('Passagier');
             $table->foreign('VluchtId')->references('Id')->on('Vlucht');
+            $table->foreign('BoekingId')->references('Id')->on('Boeking');
         });
 
         Schema::create('Factuur', function (Blueprint $table) {

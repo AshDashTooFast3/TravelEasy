@@ -23,11 +23,20 @@ public function index()
 {
     $gebruiker = auth()->user();
 
-    // Vluchten + accommodaties voor reisplan
+    // Vluchten + accommodaties altijd tonen
     $vluchten = Vlucht::all();
     $accommodaties = Accommodatie::all();
 
-    // Zoek passagier van deze gebruiker
+    // Als NIET ingelogd → geen boekingen tonen, maar wel pagina tonen
+    if (!$gebruiker) {
+        return view('reis.index', [
+            'boekingen' => collect(),
+            'vluchten' => $vluchten,
+            'accommodaties' => $accommodaties,
+        ]);
+    }
+
+    // Als WEL ingelogd → passagier ophalen via Persoon → Passagier
     $passagier = Passagier::whereHas('persoon', function ($q) use ($gebruiker) {
         $q->where('GebruikerId', $gebruiker->Id);
     })->first();
@@ -35,7 +44,7 @@ public function index()
     if (!$passagier) {
         $boekingen = collect();
     } else {
-        $boekingen = KlantBoekingen::with(['vlucht', 'accommodatie'])
+        $boekingen = KlantBoekingen::with(['vlucht', 'accommodatie', 'tickets'])
             ->where('PassagierId', $passagier->Id)
             ->get();
     }
@@ -105,24 +114,29 @@ $boeking = Boeking::create([
     'IsActief' => 1,
 ]);
 
-    // 4. Tickets aanmaken
-    for ($i = 1; $i <= $request->AantalPassagiers; $i++) {
-        $stoelnummer = $this->genereerStoelnummer($i);
+// 4. Eén ticket aanmaken met meerdere stoelen
+$stoelen = [];
 
-        Ticket::create([
-            'PassagierId' => $passagier->Id,   // <-- BELANGRIJK: Passagier.Id, NIET Gebruiker.Id
-            'VluchtId' => $boeking->VluchtId,
-            'Stoelnummer' => $stoelnummer,
-            'Aankoopdatum' => now()->toDateString(),
-            'Aankooptijd' => now()->toTimeString(),
-            'Aantal' => 1,
-            'BedragInclBtw' => $prijsPerPersoon,
-            'Isactief' => true,
-            'Opmerking' => null,
-            'Datumaangemaakt' => now(),
-            'Datumgewijzigd' => now(),
-        ]);
-    }
+for ($i = 1; $i <= $request->AantalPassagiers; $i++) {
+    $stoelen[] = $this->genereerStoelnummer($i);
+}
+
+$stoelString = implode('|', $stoelen);
+
+Ticket::create([
+    'BoekingId' => $boeking->Id, 
+    'PassagierId' => $passagier->Id,
+    'VluchtId' => $boeking->VluchtId,
+    'Stoelnummer' => $stoelString, // A1|A2|A3
+    'Aankoopdatum' => now()->toDateString(),
+    'Aankooptijd' => now()->toTimeString(),
+    'Aantal' => $request->AantalPassagiers, // totaal aantal personen
+    'BedragInclBtw' => $totaalPrijs, // prijs voor alle personen
+    'Isactief' => true,
+    'Opmerking' => null,
+    'Datumaangemaakt' => now(),
+    'Datumgewijzigd' => now(),
+]);
 
     return redirect()->route('reis.index')
         ->with('success', 'Reis succesvol geboekt!');
