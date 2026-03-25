@@ -95,7 +95,7 @@ class Factuur extends Model
     public function sp_AnnuleerFactuur($id)
     {
         try {
-            DB::statement('CALL sp_AnnuleerFactuur(?)', [$id]);
+            DB::selectOne('CALL sp_AnnuleerFactuur(?)', [$id]);
             Log::info('sp_AnnuleerFactuur succesvol uitgevoerd voor FactuurId: '.$id);
 
             return $id;

@@ -150,7 +150,7 @@ class FactuurController extends Controller
             }
 
             // Controleer of de factuur al betaald is
-            if ($factuur['Betaalstatus'] === 'Betaald') {
+            if ($factuur->Betaalstatus === 'Betaald') {
                 Log::warning('Poging om betaalde factuur te annuleren: '.$id);
 
                 return redirect()->route('facturatie.index')->with('error', 'Kan de factuur niet annuleren, omdat deze al is betaald.');
