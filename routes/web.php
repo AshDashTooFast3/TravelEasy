@@ -35,20 +35,36 @@ Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(fun
     Route::get('/boekingen', [BoekingController::class, 'index'])->name('boekingen.index');
 
 });
-   Route::get('/reis', [KlantBoekingController::class, 'index'])->name('reis.index');
+// Reis overzicht
+Route::get('/reis', [KlantBoekingController::class, 'index'])->name('reis.index');
+
 Route::middleware(['auth', 'verified', 'role:passagier,administrator,manager,financieelmedewerker,reisadviseur'])->group(function () {
+
     // Reis overzicht
- 
-        Route::get('/reis/nieuw', [KlantBoekingController::class, 'create'])->name('reis.create');
+    Route::get('/reis/nieuw', [KlantBoekingController::class, 'create'])->name('reis.create');
     Route::get('/reis/map', [KlantBoekingController::class, 'map'])->name('reis.map');
-    Route::get('/reis/{id}', [KlantBoekingController::class, 'show'])->name('reis.show');
-        Route::post('/reis', [KlantBoekingController::class, 'store'])->name('reis.store');
+
+    // Reis wijzigen
+    Route::get('/reis/{id}/edit', [KlantBoekingController::class, 'edit'])->name('reis.edit');
+    Route::put('/reis/{id}', [KlantBoekingController::class, 'update'])->name('reis.update');
+
+    // Reis opslaan
+    Route::post('/reis', [KlantBoekingController::class, 'store'])->name('reis.store');
+
+    // Reis verwijderen
     Route::delete('/reis/{id}', [KlantBoekingController::class, 'destroy'])->name('reis.destroy');
+
     // Ticket overzicht 
     Route::get('/tickets', [TicketController::class, 'index'])->name('ticket.index');
     Route::get('/ticket/{id}', [TicketController::class, 'show'])->name('ticket.show');
+    Route::delete('/ticket/{id}', [TicketController::class, 'destroy'])->name('ticket.destroy');
+
+    // Reis boeken
     Route::post('/reis/{id}/boeken', [KlantBoekingController::class, 'ReisBoeken'])->name('reis.boeken');
-    });
+
+    // Reis tonen 
+    Route::get('/reis/{id}', [KlantBoekingController::class, 'show'])->name('reis.show');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

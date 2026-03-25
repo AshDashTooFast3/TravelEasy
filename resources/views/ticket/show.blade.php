@@ -18,6 +18,7 @@
 
                 <p><strong>Vluchtnummer:</strong> {{ $ticket->vlucht->Vluchtnummer }}</p>
                 <p><strong>Vertrekdatum:</strong> {{ $ticket->vlucht->Vertrekdatum }}</p>
+                <p><strong>Vluchtstatus:</strong> {{ $ticket->Vluchtstatus ?? ($ticket->vlucht->Vluchtstatus ?? 'Onbekend') }}</p>
             </div>
 <div class="flex flex-wrap gap-2 mt-2">
     @foreach(explode('|', $ticket->Stoelnummer) as $stoel)
