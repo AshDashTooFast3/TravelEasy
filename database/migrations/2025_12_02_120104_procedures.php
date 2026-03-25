@@ -16,6 +16,8 @@ return new class extends Migration
         DB::statement('DROP PROCEDURE IF EXISTS sp_PakAllePassagiers');
         DB::statement('DROP PROCEDURE IF EXISTS sp_PakFactuurBijId');
         DB::statement('DROP PROCEDURE IF EXISTS sp_WijzigFactuur');
+        DB::statement('DROP PROCEDURE IF EXISTS sp_AnnuleerFactuur');
+
 
         DB::statement("
         CREATE PROCEDURE sp_PakBoekingenAantal()
@@ -126,6 +128,16 @@ return new class extends Migration
                 FROM Passagier p
                 INNER JOIN Persoon per ON p.PersoonId = per.Id
                 ORDER BY p.Nummer ASC;
+            END
+        ');
+
+        DB::statement('
+            CREATE PROCEDURE sp_AnnuleerFactuur(
+                IN p_FactuurId INT
+            )
+            BEGIN
+                DELETE FROM Factuur
+                WHERE id = p_FactuurId;
             END
         ');
     }
