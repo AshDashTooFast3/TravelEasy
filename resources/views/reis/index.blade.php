@@ -60,24 +60,24 @@
                             Vlucht {{ $reis->vlucht->Vluchtnummer ?? 'Onbekend' }}
                         </td>
 
-                        {{-- Datum --}}
+                        {{-- Datum (created_at van geboekte_reizen) --}}
                         <td class="px-4">
-                            {{ $reis->Boekingsdatum }}
+                            {{ $reis->created_at->format('Y-m-d') }}
                         </td>
 
                         {{-- Prijs --}}
                         <td class="px-4">
-                            €{{ number_format($reis->TotaalPrijs, 2, ',', '.') }}
+                            €{{ number_format($reis->totaal_prijs, 2, ',', '.') }}
                         </td>
 
-                        {{-- Aantal passagiers --}}
+                        {{-- Aantal passagiers (via ticket_id) --}}
                         <td class="px-4">
-                            {{ $reis->tickets->first()->Aantal ?? '1' }}
+                            {{ $reis->ticket->Aantal ?? 1 }}
                         </td>
 
                         {{-- Status vlucht --}}
                         <td class="px-4">
-                            {{ $reis->vlucht->Status ?? 'Onbekend' }}
+                            {{ $reis->Vluchtstatus }}
                         </td>
 
                     </tr>

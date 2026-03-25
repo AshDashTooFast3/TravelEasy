@@ -185,11 +185,34 @@ return new class extends Migration
             $table->foreign('BoekingId')->references('Id')->on('Boeking');
             $table->foreign('PassagierId')->references('Id')->on('Passagier');
         });
+        
+        Schema::create('geboekte_reizen', function (Blueprint $table) {
+           $table->increments('Id');
+           $table->unsignedInteger('GebruikerId');
+           $table->unsignedInteger('PersoonId');
+           $table->unsignedInteger('PassagierId');
+           $table->unsignedInteger('BoekingId');
+           $table->unsignedInteger('TicketId');
+           $table->unsignedInteger('VluchtId');
+           $table->unsignedInteger('AccommodatieId');
+           $table->string('Vluchtstatus', 20);
+           $table->string('Boekingsstatus', 20);
+           $table->decimal('TotaalPrijs', 10, 2);
+           $table->timestamps();
+           $table->foreign('GebruikerId')->references('Id')->on('Gebruiker');
+           $table->foreign('PersoonId')->references('Id')->on('Persoon');
+           $table->foreign('PassagierId')->references('Id')->on('Passagier');
+           $table->foreign('BoekingId')->references('Id')->on('Boeking');
+           $table->foreign('TicketId')->references('Id')->on('Ticket');
+           $table->foreign('VluchtId')->references('Id')->on('Vlucht');
+           $table->foreign('AccommodatieId')->references('Id')->on('Accommodatie');
+      });
     }
 
     public function down(): void
     {
         Schema::dropIfExists('Ticket');
+         Schema::dropIfExists('geboekte_reizen');   
         Schema::dropIfExists('Accommodatie');
         Schema::dropIfExists('Vlucht');
         Schema::dropIfExists('Bestemming');

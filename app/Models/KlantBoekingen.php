@@ -19,6 +19,7 @@ class KlantBoekingen extends Model
         'Boekingsdatum',
         'Boekingstijd',
         'Boekingsstatus',
+        'Vluchtstatus',
         'IsActief',
     ];
 
@@ -45,4 +46,14 @@ class KlantBoekingen extends Model
     {
         return $this->hasMany(Ticket::class, 'BoekingId', 'Id');
     }
+    public function getVluchtstatusColorAttribute()
+{
+    return match ($this->Vluchtstatus) {
+        'Gepland' => 'secondary',
+        'Vertrokken' => 'primary',
+        'Geland' => 'success',
+        'Geannuleerd' => 'danger',
+        default => 'secondary',
+    };
+}
 }

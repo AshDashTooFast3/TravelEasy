@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Accommodatie;
 use App\Models\Boeking;
+use App\Models\GeboekteReis;
 use App\Models\Factuur;
 use App\Models\Gebruiker;
 use App\Models\KlantBoekingen;
@@ -15,12 +16,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+
 class KlantBoekingController extends Controller
 {
     // Reis overzicht
 
 public function index()
 {
+    
     $gebruiker = auth()->user();
 
     // Vluchten + accommodaties altijd tonen
@@ -44,9 +47,9 @@ public function index()
     if (!$passagier) {
         $boekingen = collect();
     } else {
-        $boekingen = KlantBoekingen::with(['vlucht', 'accommodatie', 'tickets'])
-            ->where('PassagierId', $passagier->Id)
-            ->get();
+        $boekingen = GeboekteReis::with(['vlucht', 'accommodatie', 'ticket'])
+    ->where('PassagierId', $passagier->Id)
+    ->get();
     }
 
     return view('reis.index', compact('boekingen', 'vluchten', 'accommodaties'));
@@ -60,7 +63,9 @@ public function create(Request $request)
     return view('reis.create', compact('vlucht', 'accommodatie'));
 }
     public function store(Request $request)
+    
 {
+    
 $request->validate([
    
     'VluchtId' => 'required',
@@ -123,7 +128,7 @@ for ($i = 1; $i <= $request->AantalPassagiers; $i++) {
 
 $stoelString = implode('|', $stoelen);
 
-Ticket::create([
+$ticket = Ticket::create([
     'BoekingId' => $boeking->Id, 
     'PassagierId' => $passagier->Id,
     'VluchtId' => $boeking->VluchtId,
@@ -136,6 +141,19 @@ Ticket::create([
     'Opmerking' => null,
     'Datumaangemaakt' => now(),
     'Datumgewijzigd' => now(),
+]);
+// 5. boeking opslaan en doorsturen naar overzicht
+GeboekteReis::create([
+    'GebruikerId'   => $gebruiker->Id,
+    'PersoonId'     => $persoon->Id,
+    'PassagierId'   => $passagier->Id,
+    'BoekingId'     => $boeking->Id,
+    'TicketId'      => $ticket->Id,
+    'VluchtId'      => $vlucht->Id,
+    'AccommodatieId'=> $acc->Id,
+    'Vluchtstatus'  => $vlucht->Vluchtstatus,
+    'Boekingsstatus'=> $boeking->Boekingsstatus,
+    'TotaalPrijs'   => $totaalPrijs,
 ]);
 
     return redirect()->route('reis.index')
