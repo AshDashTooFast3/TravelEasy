@@ -89,7 +89,7 @@
                                         </td>
                                         <td class="px-4 py-3 text-xl text-center text-gray-900 dark:text-gray-100">
                                             <a href="{{ route('facturatie.bewerken', ['id' => $factuur->Id]) }}">
-                                                <i class="bi bi-pencil-square"></i>
+                                                <i class="bi bi-pencil-square text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"></i>
                                             </a>
                                         </td>
                                         <td class="px-4 py-3 text-xl text-center text-gray-900 dark:text-gray-100">
