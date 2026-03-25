@@ -168,23 +168,105 @@ GeboekteReis::create([
 
         return $rij.$stoel; // bijv. A1, A2, B1, B2
     }
+    // Bewerken
+public function edit($id)
+{
+    $reis = GeboekteReis::with(['vlucht', 'accommodatie', 'ticket'])
+        ->where('BoekingId', $id)
+        ->orWhere('Id', $id)
+        ->firstOrFail();
 
+    if (!in_array($reis->vlucht->Vluchtstatus, ['Gepland', 'Vertraagd'])) {
+        return redirect()->route('reis.index')
+            ->with('error', 'Deze boeking kan niet meer worden gewijzigd door de vluchtstatus.');
+    }
+
+    return view('reis.edit', ['boeking' => $reis]);
+}
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'AantalPassagiers' => 'required|integer|min:1|max:10',
+    ]);
+
+    // Haal geboekte reis + ticket + accommodatie op via BoekingId
+    $boeking = GeboekteReis::with(['ticket', 'accommodatie'])
+        ->where('BoekingId', $id)
+        ->orWhere('Id', $id)
+        ->firstOrFail();
+
+    $ticket = $boeking->ticket;
+
+    if (!$ticket) {
+        return back()->with('error', 'Geen ticket gevonden voor deze boeking.');
+    }
+
+    $nieuwAantal = (int) $request->AantalPassagiers;
+
+    // Stoelen opnieuw genereren
+    $stoelen = [];
+    for ($i = 1; $i <= $nieuwAantal; $i++) {
+        $stoelen[] = $this->genereerStoelnummer($i);
+    }
+    $stoelString = implode('|', $stoelen);
+
+    // Prijs opnieuw berekenen
+    $prijsPerPersoon = $boeking->accommodatie->TotaalPrijs;
+    $totaalPrijs = $prijsPerPersoon * $nieuwAantal;
+
+    // Ticket bijwerken
+    $ticket->update([
+        'Stoelnummer'   => $stoelString,
+        'Aantal'        => $nieuwAantal,
+        'BedragInclBtw' => $totaalPrijs,
+        'Datumgewijzigd'=> now(),
+    ]);
+
+    // Geboekte reis bijwerken
+    $boeking->update([
+        'TotaalPrijs'    => $totaalPrijs,
+        'Boekingsstatus' => 'In behandeling',
+    ]);
+
+    // Onderliggende boeking ook bijwerken zodat totalen overal gelijk blijven.
+    Boeking::where('Id', $boeking->BoekingId)->update([
+        'TotaalPrijs' => $totaalPrijs,
+        'Boekingsstatus' => 'In behandeling',
+        'Datumgewijzigd' => now(),
+    ]);
+
+    return redirect()->route('reis.index')
+        ->with('success', 'Boeking succesvol bijgewerkt!');
+}
     // Verwijderen
     public function destroy($id)
     {
-        $boeking = Boeking::findOrFail($id);
+        $reis = GeboekteReis::with(['vlucht'])
+            ->where('BoekingId', $id)
+            ->orWhere('Id', $id)
+            ->firstOrFail();
 
-        DB::table('Ticket')
-            ->where('PassagierId', Auth::user()->Id)
-            ->where('VluchtId', $boeking->VluchtId)
-            ->delete();
+        $status = strtolower(trim((string) ($reis->Vluchtstatus ?? $reis->vlucht->Vluchtstatus ?? '')));
 
-        DB::table('Factuur')->where('BoekingId', $id)->delete();
+        if (!in_array($status, ['geland', 'geannuleerd'])) {
+            return redirect()->route('reis.index')
+                ->with('error', 'Je kunt alleen boekingen verwijderen met status Geland of Geannuleerd.');
+        }
 
-        $boeking->delete();
+        DB::transaction(function () use ($reis) {
+            $boekingId = $reis->BoekingId;
+
+            DB::table('Factuur')->where('BoekingId', $boekingId)->delete();
+            GeboekteReis::where('BoekingId', $boekingId)->delete();
+            Ticket::where('BoekingId', $boekingId)->update([
+                'BoekingId' => null,
+                'Datumgewijzigd' => now(),
+            ]);
+            Boeking::where('Id', $boekingId)->delete();
+        });
 
         return redirect()->route('reis.index')
-            ->with('success', 'Reis en ticket verwijderd!');
+            ->with('success', 'Boeking verwijderd. Ticket kun je handmatig verwijderen via Tickets.');
     }
 
     public function ReisBoeken(Request $request, $id)
