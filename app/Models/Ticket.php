@@ -36,19 +36,19 @@ class Ticket extends Model
         'Datumgewijzigd' => 'datetime',
     ];
 
-    // ✔ Ticket hoort bij één passagier
+    //  Ticket hoort bij één passagier
     public function passagier()
     {
         return $this->belongsTo(Passagier::class, 'PassagierId', 'Id');
     }
 
-    // ✔ Ticket hoort bij één vlucht
+    //  Ticket hoort bij één vlucht
     public function vlucht()
     {
         return $this->belongsTo(Vlucht::class, 'VluchtId', 'Id');
     }
 
-    // ✔ Ticket hoort bij één boeking
+    //  Ticket hoort bij één boeking
     public function boeking()
     {
         return $this->belongsTo(Boeking::class, 'BoekingId', 'Id');
