@@ -66,6 +66,6 @@ class BoekingSeeder extends Seeder
                 'Datumaangemaakt' => now(),
                 'Datumgewijzigd' => now(),
             ]);
-            Boeking::factory()->count(30)->create();
+            Boeking::factory()->count(200)->create();
     }
 }

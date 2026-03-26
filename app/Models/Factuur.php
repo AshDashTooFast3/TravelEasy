@@ -66,4 +66,43 @@ class Factuur extends Model
             return [];
         }
     }
+
+    public function PakFactuurBijId($factuurId) {
+        
+        return DB::selectOne('CALL sp_PakFactuurBijId(?)', [$factuurId]);
+    }
+
+    public function sp_WijzigFactuur($Id, $PassagierId, $Factuurdatum, $TotaalBedrag, $Betaalmethode)
+    {
+        try {
+            DB::statement('CALL sp_WijzigFactuur(?, ?, ?, ?, ?)', [
+                $Id,
+                $PassagierId,
+                $Factuurdatum,
+                $TotaalBedrag,
+                $Betaalmethode,
+            ]);
+            Log::info('sp_WijzigFactuur succesvol uitgevoerd voor FactuurId: '.$Id);
+
+            return $Id;
+        } catch (\Exception $e) {
+            Log::error('Fout in sp_WijzigFactuur: '.$e->getMessage());
+
+            return -1;
+        }
+    }
+
+    public function sp_AnnuleerFactuur($id)
+    {
+        try {
+            DB::selectOne('CALL sp_AnnuleerFactuur(?)', [$id]);
+            Log::info('sp_AnnuleerFactuur succesvol uitgevoerd voor FactuurId: '.$id);
+
+            return $id;
+        } catch (\Exception $e) {
+            Log::error('Fout in sp_AnnuleerFactuur: '.$e->getMessage());
+
+            return -1;
+        }
+    }
 }

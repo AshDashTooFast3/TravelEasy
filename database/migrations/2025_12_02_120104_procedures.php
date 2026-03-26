@@ -13,6 +13,11 @@ return new class extends Migration
         DB::statement('DROP PROCEDURE IF EXISTS sp_PakBoekingenAantal');
         DB::statement('DROP PROCEDURE IF EXISTS sp_PakAlleFacturen');
         DB::statement('DROP PROCEDURE IF EXISTS sp_MeestVoorkomendReis');
+        DB::statement('DROP PROCEDURE IF EXISTS sp_PakAllePassagiers');
+        DB::statement('DROP PROCEDURE IF EXISTS sp_PakFactuurBijId');
+        DB::statement('DROP PROCEDURE IF EXISTS sp_WijzigFactuur');
+        DB::statement('DROP PROCEDURE IF EXISTS sp_AnnuleerFactuur');
+
 
         DB::statement("
         CREATE PROCEDURE sp_PakBoekingenAantal()
@@ -67,6 +72,74 @@ return new class extends Migration
             LIMIT 5;
         END
     ");
+
+        DB::statement('
+        CREATE PROCEDURE sp_PakFactuurBijId(
+            IN p_FactuurId INT UNSIGNED
+        )
+        BEGIN
+            SELECT 
+                Id,
+                PassagierId,
+                Factuurdatum,
+                TotaalBedrag AS Bedrag,
+                Betaalmethode,
+                Betaalstatus
+            FROM Factuur
+            WHERE Id = p_FactuurId;
+        END
+    ');
+
+        DB::statement('
+        CREATE PROCEDURE sp_WijzigFactuur(
+            IN p_FactuurId INT,
+            IN p_PassagierId INT,
+            IN p_Factuurdatum DATE,
+            IN p_TotaalBedrag DECIMAL(10, 2),
+            IN p_Betaalmethode VARCHAR(50)
+        )
+        BEGIN
+            UPDATE Factuur
+            SET 
+            PassagierId = p_PassagierId,
+            Factuurdatum = p_Factuurdatum,
+            TotaalBedrag = p_TotaalBedrag,
+            Betaalmethode = p_Betaalmethode,
+            Datumgewijzigd = NOW()
+            WHERE Id = p_FactuurId;
+        END
+        ');
+
+        DB::statement('
+            CREATE PROCEDURE sp_PakAllePassagiers()
+            BEGIN
+                SELECT 
+                    p.Id
+                    ,p.PersoonId
+                    ,per.Voornaam
+                    ,per.Tussenvoegsel
+                    ,per.Achternaam
+                    ,p.Nummer
+                    ,p.PassagierType
+                    ,p.IsActief
+                    ,p.Opmerking
+                    ,p.Datumaangemaakt
+                    ,p.Datumgewijzigd
+                FROM Passagier p
+                INNER JOIN Persoon per ON p.PersoonId = per.Id
+                ORDER BY p.Nummer ASC;
+            END
+        ');
+
+        DB::statement('
+            CREATE PROCEDURE sp_AnnuleerFactuur(
+                IN p_FactuurId INT
+            )
+            BEGIN
+                DELETE FROM Factuur
+                WHERE id = p_FactuurId;
+            END
+        ');
     }
 
     /**
