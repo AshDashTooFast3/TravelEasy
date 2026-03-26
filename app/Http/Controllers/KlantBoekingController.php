@@ -49,6 +49,7 @@ public function index()
             'boekingen' => collect(),
             'vluchten' => $vluchten,
             'accommodaties' => $accommodaties,
+            'kaartReizen' => collect(),
         ]);
     }
 
@@ -60,12 +61,24 @@ public function index()
     if (!$passagier) {
         $boekingen = collect();
     } else {
-        $boekingen = GeboekteReis::with(['vlucht', 'accommodatie', 'ticket'])
+        $boekingen = GeboekteReis::with(['vlucht.vertrek', 'vlucht.bestemming', 'accommodatie', 'ticket'])
     ->where('PassagierId', $passagier->Id)
     ->get();
     }
 
-    return view('reis.index', compact('boekingen', 'vluchten', 'accommodaties'));
+    $kaartReizen = $boekingen->map(function ($reis) {
+        return [
+            'vluchtnummer' => $reis->vlucht->Vluchtnummer ?? 'Onbekend',
+            'status' => $reis->Vluchtstatus ?? 'Gepland',
+            'vertrek' => $reis->vlucht->vertrek->Luchthaven ?? null,
+            'bestemming' => $reis->vlucht->bestemming->Luchthaven ?? null,
+            'accommodatie' => $reis->accommodatie->Naam ?? null,
+            'accommodatieLat' => $reis->accommodatie->Latitude ?? null,
+            'accommodatieLng' => $reis->accommodatie->Longitude ?? null,
+        ];
+    })->values();
+
+    return view('reis.index', compact('boekingen', 'vluchten', 'accommodaties', 'kaartReizen'));
 }
     // Nieuwe reis boeken
 public function create(Request $request)

@@ -42,7 +42,7 @@
                             <th class="px-4">Prijs</th>
                             <th class="px-4">Aantal Geboekte Reizigers</th>
                             <th class="px-4">Status vlucht</th>
-                            <th class="px-4">Acties</th> {{-- ⭐ TOEGEVOEGD --}}
+                            <th class="px-4">Acties</th> 
                         </tr>
                     </thead>
 
@@ -81,7 +81,7 @@
                                     {{ $reis->Vluchtstatus }}
                                 </td>
 
-                                {{-- ⭐ ACTIES --}}
+                                {{--  ACTIES --}}
                                 <td class="px-4">
                                     <div class="flex gap-2">
 
@@ -169,7 +169,13 @@
 
     {{-- KAART SCRIPT --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.fullscreen@3.0.0/Control.FullScreen.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="https://unpkg.com/leaflet.fullscreen@3.0.0/Control.FullScreen.js"></script>
+    <script src="https://unpkg.com/leaflet-polylinedecorator@1.6.0/dist/leaflet.polylineDecorator.min.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -179,13 +185,153 @@
                 maxZoom: 18,
             }).addTo(map);
 
-            @foreach ($boekingen as $reis)
-                @if(isset($reis->accommodatie->Latitude) && isset($reis->accommodatie->Longitude))
-                    L.marker([{{ $reis->accommodatie->Latitude }}, {{ $reis->accommodatie->Longitude }}])
-                        .addTo(map)
-                        .bindPopup("{{ $reis->accommodatie->Naam }}");
-                @endif
-            @endforeach
+            if (L.control.fullscreen) {
+                map.addControl(new L.Control.Fullscreen({ position: 'topleft' }));
+            }
+
+            const markerLayer = L.markerClusterGroup
+                ? L.markerClusterGroup({ disableClusteringAtZoom: 7 })
+                : L.layerGroup();
+
+            // Vaste routes met echte luchthavens (onafhankelijk van DB-luchthavennamen).
+            const fixedRoutes = [
+                {
+                    fromName: "Amsterdam Schiphol",
+                    from: [52.3105, 4.7683],
+                    toName: "Barcelona El Prat",
+                    to: [41.2974, 2.0833],
+                    toCity: "Barcelona",
+                },
+                {
+                    fromName: "Brussels Airport",
+                    from: [50.9010, 4.4844],
+                    toName: "Rome Fiumicino",
+                    to: [41.8003, 12.2389],
+                    toCity: "Rome",
+                },
+                {
+                    fromName: "Dusseldorf Airport",
+                    from: [51.2808, 6.7573],
+                    toName: "Athens International",
+                    to: [37.9364, 23.9475],
+                    toCity: "Athens",
+                },
+                {
+                    fromName: "Eindhoven Airport",
+                    from: [51.4501, 5.3745],
+                    toName: "Lisbon Humberto Delgado",
+                    to: [38.7742, -9.1342],
+                    toCity: "Lisbon",
+                },
+                {
+                    fromName: "Rotterdam The Hague",
+                    from: [51.9569, 4.4372],
+                    toName: "Paris Charles de Gaulle",
+                    to: [49.0097, 2.5479],
+                    toCity: "Paris",
+                },
+                {
+                    fromName: "Amsterdam Schiphol",
+                    from: [52.3105, 4.7683],
+                    toName: "London Heathrow",
+                    to: [51.4700, -0.4543],
+                    toCity: "London",
+                },
+            ];
+
+            const cityHighlights = {
+                "Barcelona": "Wist je dat: Barcelona heeft 9 UNESCO-werelderfgoedlocaties van Gaudi.",
+                "Rome": "Wist je dat: In Rome kun je in een paar minuten van het Colosseum naar het Forum lopen.",
+                "Athens": "Wist je dat: Athene is een van de oudste continu bewoonde steden ter wereld.",
+                "Lisbon": "Wist je dat: Lissabon is gebouwd op 7 heuvels en staat bekend om gele trams.",
+                "Paris": "Wist je dat: Parijs heeft meer dan 1.800 bakkerijen verspreid over de stad.",
+                "London": "Wist je dat: Londen heeft meer dan 170 musea, veel daarvan gratis toegankelijk.",
+            };
+
+            const statusColor = {
+                "Gepland": "#6b7280",
+                "Vertraagd": "#f59e0b",
+                "Vertrokken": "#3b82f6",
+                "Geland": "#10b981",
+                "Geannuleerd": "#ef4444",
+            };
+
+            const trips = @json($kaartReizen);
+
+            const bounds = [];
+
+            trips.forEach((trip) => {
+                // Koppel boeking stabiel aan een vaste route op basis van vluchtnummer.
+                const numberPart = parseInt(String(trip.vluchtnummer || '').replace(/\D/g, ''), 10);
+                const routeIndex = Number.isNaN(numberPart)
+                    ? Math.abs(String(trip.vluchtnummer || '').split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)) % fixedRoutes.length
+                    : numberPart % fixedRoutes.length;
+
+                const route = fixedRoutes[routeIndex];
+                const vertrekCoords = route.from;
+                const bestemmingCoords = route.to;
+                const color = statusColor[trip.status] || "#6b7280";
+
+                if (vertrekCoords) {
+                    markerLayer.addLayer(L.circleMarker(vertrekCoords, {
+                        radius: 6,
+                        color,
+                        weight: 2,
+                        fillColor: color,
+                        fillOpacity: 0.9,
+                    }).bindPopup(`Vertrek: ${route.fromName}`));
+                    bounds.push(vertrekCoords);
+                }
+
+                if (bestemmingCoords) {
+                    const cityFact = cityHighlights[route.toCity] || "";
+                    markerLayer.addLayer(L.circleMarker(bestemmingCoords, {
+                        radius: 6,
+                        color,
+                        weight: 2,
+                        fillColor: color,
+                        fillOpacity: 0.9,
+                    }).bindPopup(`Bestemming: ${route.toName}<br>${cityFact}`));
+                    bounds.push(bestemmingCoords);
+                }
+
+                if (vertrekCoords && bestemmingCoords) {
+                    const routeLine = L.polyline([vertrekCoords, bestemmingCoords], {
+                        color,
+                        weight: 3,
+                        opacity: 0.85,
+                        dashArray: trip.status === "Vertraagd" ? "8,6" : null,
+                    }).addTo(map).bindPopup(
+                        `Vlucht ${trip.vluchtnummer}<br>Route: ${route.fromName} -> ${route.toName}<br>Status: ${trip.status}<br>${cityHighlights[route.toCity] || ""}`
+                    );
+
+                    if (L.polylineDecorator) {
+                        L.polylineDecorator(routeLine, {
+                            patterns: [{
+                                offset: '50%',
+                                repeat: 0,
+                                symbol: L.Symbol.arrowHead({
+                                    pixelSize: 8,
+                                    pathOptions: { color, fillOpacity: 1, weight: 2 },
+                                }),
+                            }],
+                        }).addTo(map);
+                    }
+                }
+
+                if (trip.accommodatieLat && trip.accommodatieLng) {
+                    const accommodatieCoords = [trip.accommodatieLat, trip.accommodatieLng];
+                    markerLayer.addLayer(L.marker(accommodatieCoords)
+                        .bindPopup(`Accommodatie: ${trip.accommodatie || "Onbekend"}`));
+                    bounds.push(accommodatieCoords);
+                }
+            });
+
+            markerLayer.addTo(map);
+
+            if (bounds.length > 0) {
+                map.fitBounds(bounds, { padding: [40, 40] });
+            }
         });
     </script>
 
