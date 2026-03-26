@@ -52,7 +52,7 @@
                             </td>
 
                             <td>
-                                {{ $ticket->Vluchtstatus ?? 'Onbekend' }}
+                                <x-status-badge :status="$ticket->Vluchtstatus ?? 'Onbekend'" type="vluchtstatus" />
                             </td>
 
                             <td>

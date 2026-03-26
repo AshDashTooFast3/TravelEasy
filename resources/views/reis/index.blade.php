@@ -78,7 +78,7 @@
 
                                 {{-- Status --}}
                                 <td class="px-4">
-                                    {{ $reis->Vluchtstatus }}
+                                    <x-status-badge :status="$reis->Vluchtstatus" type="vluchtstatus" />
                                 </td>
 
                                 {{--  ACTIES --}}
@@ -136,8 +136,10 @@
                     </thead>
 
                     <tbody>
+                        @php($heeftBeschikbareReizen = false)
                         @foreach ($vluchten as $vlucht)
-                            @foreach ($accommodaties as $acc)
+                            @foreach ($vlucht->accommodaties as $acc)
+                                @php($heeftBeschikbareReizen = true)
                                 <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
                                     <td class="py-2 px-4">
                                         Vlucht {{ $vlucht->Vluchtnummer }}
@@ -160,6 +162,14 @@
                                 </tr>
                             @endforeach
                         @endforeach
+
+                        @if (!$heeftBeschikbareReizen)
+                            <tr>
+                                <td colspan="4" class="py-4 text-center text-gray-500 dark:text-gray-400">
+                                    Er zijn momenteel geen beschikbare reizen.
+                                </td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>

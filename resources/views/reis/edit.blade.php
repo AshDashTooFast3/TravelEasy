@@ -31,6 +31,14 @@
                     <p class="font-semibold">
                         Vlucht {{ $boeking->vlucht->Vluchtnummer }}
                     </p>
+
+                    {{-- Vluchtstatus --}}
+                    <div class="mb-4">
+                        <label class="block mb-1">Status</label>
+                        <div>
+                            <x-status-badge :status="$boeking->Vluchtstatus" type="vluchtstatus" />
+                        </div>
+                    </div>
                 </div>
 
                 {{-- Accommodatie --}}
