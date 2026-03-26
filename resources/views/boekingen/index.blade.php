@@ -1,7 +1,8 @@
+{{-- 🟢 Wrapper component voor de app layout --}}
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Boekingen') }}
+            Boekingen
         </h2>
     </x-slot>
 
@@ -16,7 +17,6 @@
                             Overzicht van alle boekingen
                         </span>
 
-                        {{-- ➕ Toevoegen-knop --}}
                         <a href="{{ route('boekingen.create') }}"
                            class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow transition">
                             + Boeking toevoegen
@@ -27,15 +27,17 @@
 
                     <div class="mt-5 overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
                         <table class="min-w-full table-fixed border-collapse">
-                            <thead class="bg-gray-100 dark:bg-gray-700">
+                            <thead class="bg-gray-200 dark:bg-gray-700">
                                 <tr>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-40">Boekingsnr</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-32">Boekingsnr</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-32">Vlucht</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-48">Bestemming</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-40">Bestemming</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-48">Accommodatie</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-40">Datum</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-32">Status</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-32">Prijs</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-40">Status</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-28">Prijs</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-20">Wijzigen</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white w-20">Verwijderen</th>
                                 </tr>
                             </thead>
 
@@ -85,10 +87,26 @@
                                             €{{ number_format($boeking->TotaalPrijs, 2, ',', '.') }}
                                         </td>
 
+                                        {{-- 🟢 Wijzigen --}}
+                                        <td class="px-4 py-3 text-center">
+                                            <a href="{{ route('boekingen.edit', $boeking->Id) }}"
+                                               class="text-blue-500 hover:text-blue-700">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                        </td>
+
+                                        {{-- 🟢 Verwijderen (modal trigger) --}}
+                                        <td class="px-4 py-3 text-center">
+                                            <button onclick="openDeleteModal({{ $boeking->Id }})"
+                                                    class="text-red-500 hover:text-red-700">
+                                                <i class="bi bi-trash3-fill"></i>
+                                            </button>
+                                        </td>
+
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 text-center">
+                                        <td colspan="9" class="px-4 py-3 text-center text-gray-900 dark:text-gray-100">
                                             Geen boekingen gevonden.
                                         </td>
                                     </tr>
@@ -102,4 +120,104 @@
 
         </div>
     </div>
+
+    {{-- 🟢 MODAL --}}
+    <div id="deleteModal"
+         class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96">
+
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                Verwijderen bevestigen
+            </h2>
+
+            <p class="text-gray-700 dark:text-gray-300 mb-3">
+                Voer de verwijdercode in om deze boeking definitief te verwijderen.
+            </p>
+
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                Code: <strong>VERWIJDEREN</strong>
+            </p>
+
+            {{-- Meldingen --}}
+            <div id="modalMessage" class="hidden mb-4 p-2 rounded text-sm"></div>
+
+            <input type="text" id="confirmCodeInput"
+                   class="w-full rounded bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white p-2 mb-4"
+                   placeholder="Voer de code in">
+
+            <div class="flex justify-end gap-3">
+                <button type="button"
+                        onclick="closeDeleteModal()"
+                        class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded">
+                    Annuleren
+                </button>
+
+                <button onclick="submitDelete()"
+                        class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded">
+                    Verwijderen
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    {{-- 🟢 Modal scripts --}}
+    <script>
+        let deleteId = null;
+
+        function openDeleteModal(id) {
+            deleteId = id;
+            document.getElementById('modalMessage').classList.add('hidden');
+            document.getElementById('confirmCodeInput').value = "";
+            const modal = document.getElementById('deleteModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function submitDelete() {
+            const code = document.getElementById('confirmCodeInput').value;
+            const messageBox = document.getElementById('modalMessage');
+
+            fetch(`/boekingen/${deleteId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({ confirm_code: code })
+            })
+            .then(async response => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    // ❌ Foutmelding
+                    messageBox.textContent = data.message;
+                    messageBox.className = "mb-4 p-2 rounded text-sm bg-red-600 text-white";
+                    messageBox.classList.remove("hidden");
+                    return;
+                }
+
+                // ✅ Succesmelding
+                messageBox.textContent = data.message;
+                messageBox.className = "mb-4 p-2 rounded text-sm bg-green-600 text-white";
+                messageBox.classList.remove("hidden");
+
+                // Modal sluiten + redirect
+                setTimeout(() => {
+                    closeDeleteModal();
+                    window.location.reload();
+                }, 2000);
+            })
+            .catch(error => console.error(error));
+        }
+    </script>
+
 </x-app-layout>

@@ -16,9 +16,9 @@ class BoekingController extends Controller
         $this->BoekingModel = new Boeking();
     }
 
+    // 📌 Overzicht
     public function index()
     {
-        // Ophalen van alle boekingen + alle benodigde relaties
         $boekingen = Boeking::with([
             'vlucht.bestemming',
             'vlucht.vertrek',
@@ -28,66 +28,111 @@ class BoekingController extends Controller
         return view('boekingen.index', compact('boekingen'));
     }
 
-    /**
-     * FORMULIER: Nieuwe boeking aanmaken
-     */
+    // 📌 Create formulier
     public function create()
     {
-        // Vluchten + bestemming laden
         $vluchten = Vlucht::with(['bestemming'])->get();
         $accommodaties = Accommodatie::all();
 
         return view('boekingen.create', compact('vluchten', 'accommodaties'));
     }
 
-    /**
-     * OPSLAAN: Nieuwe boeking verwerken
-     */
+    // 📌 Nieuwe boeking opslaan
     public function store(Request $request)
-{
-    // Validatie + Nederlandse foutmeldingen
-    $request->validate([
-        'Boekingsnummer' => 'nullable|unique:Boeking,Boekingsnummer',
-        'VluchtId' => 'required|exists:Vlucht,Id',
-        'AccommodatieId' => 'required|exists:Accommodatie,Id',
-        'Boekingsdatum' => 'required|date',
-        'Boekingstijd' => 'required',
-        'Boekingsstatus' => 'required|in:Bevestigd,Geannuleerd,In behandeling',
-        'TotaalPrijs' => 'required|numeric|min:0',
-    ], [
-        'Boekingsnummer.unique' => 'Dit boekingsnummer bestaat al.',
-        'VluchtId.required' => 'Selecteer een vlucht.',
-        'VluchtId.exists' => 'De geselecteerde vlucht bestaat niet.',
-        'AccommodatieId.required' => 'Selecteer een accommodatie.',
-        'AccommodatieId.exists' => 'De geselecteerde accommodatie bestaat niet.',
-        'Boekingsdatum.required' => 'Vul een boekingsdatum in.',
-        'Boekingsdatum.date' => 'De boekingsdatum is ongeldig.',
-        'Boekingstijd.required' => 'Vul een tijd in.',
-        'Boekingsstatus.required' => 'Selecteer een boekingsstatus.',
-        'Boekingsstatus.in' => 'De gekozen status is ongeldig.',
-        'TotaalPrijs.required' => 'Vul een totaalprijs in.',
-        'TotaalPrijs.numeric' => 'De totaalprijs moet een getal zijn.',
-        'TotaalPrijs.min' => 'De totaalprijs moet minimaal 0 zijn.',
-    ]);
+    {
+        $request->validate([
+            'Boekingsnummer' => 'nullable|unique:Boeking,Boekingsnummer',
+            'VluchtId' => 'required|exists:Vlucht,Id',
+            'AccommodatieId' => 'required|exists:Accommodatie,Id',
+            'Boekingsdatum' => 'required|date',
+            'Boekingstijd' => 'required',
+            'Boekingsstatus' => 'required|in:Bevestigd,Geannuleerd,In behandeling',
+            'TotaalPrijs' => 'required|numeric|min:0',
+        ]);
 
-    // Boekingsnummer: handmatig of automatisch
-    $boekingsnummer = $request->Boekingsnummer ?? 'BN-' . rand(100000, 999999);
+        $boekingsnummer = $request->Boekingsnummer ?? 'BN-' . rand(100000, 999999);
 
-    // Opslaan
-    Boeking::create([
-        'VluchtId' => $request->VluchtId,
-        'AccommodatieId' => $request->AccommodatieId,
-        'Boekingsnummer' => $boekingsnummer,
-        'Boekingsdatum' => $request->Boekingsdatum,
-        'Boekingstijd' => $request->Boekingstijd,
-        'Boekingsstatus' => $request->Boekingsstatus, // <-- FIXED
-        'TotaalPrijs' => $request->TotaalPrijs,
-        'IsActief' => 1,
-    ]);
+        Boeking::create([
+            'VluchtId' => $request->VluchtId,
+            'AccommodatieId' => $request->AccommodatieId,
+            'Boekingsnummer' => $boekingsnummer,
+            'Boekingsdatum' => $request->Boekingsdatum,
+            'Boekingstijd' => $request->Boekingstijd,
+            'Boekingsstatus' => $request->Boekingsstatus,
+            'TotaalPrijs' => $request->TotaalPrijs,
+            'IsActief' => 1,
+        ]);
 
-    return redirect()
-        ->route('boekingen.create')
-        ->with('success', 'Boeking succesvol toegevoegd!');
-}
+        return redirect()
+            ->route('boekingen.create')
+            ->with('success', 'De boeking is succesvol toegevoegd!');
+    }
 
+    // 📌 Edit formulier
+    public function edit($id)
+    {
+        $boeking = Boeking::findOrFail($id);
+        $vluchten = Vlucht::with('bestemming')->get();
+        $accommodaties = Accommodatie::all();
+
+        return view('boekingen.edit', compact('boeking', 'vluchten', 'accommodaties'));
+    }
+
+    // 📌 Update opslaan
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'Boekingsnummer' => 'required|unique:Boeking,Boekingsnummer,' . $id . ',Id',
+            'VluchtId' => 'required|exists:Vlucht,Id',
+            'AccommodatieId' => 'required|exists:Accommodatie,Id',
+            'Boekingsdatum' => 'required|date',
+            'Boekingstijd' => 'required',
+            'Boekingsstatus' => 'required|in:Bevestigd,Geannuleerd,In behandeling',
+            'TotaalPrijs' => 'required|numeric|min:0',
+        ]);
+
+        $boeking = Boeking::findOrFail($id);
+
+        $boeking->update([
+            'Boekingsnummer' => $request->Boekingsnummer,
+            'VluchtId' => $request->VluchtId,
+            'AccommodatieId' => $request->AccommodatieId,
+            'Boekingsdatum' => $request->Boekingsdatum,
+            'Boekingstijd' => $request->Boekingstijd,
+            'Boekingsstatus' => $request->Boekingsstatus,
+            'TotaalPrijs' => $request->TotaalPrijs,
+        ]);
+
+        return redirect()
+            ->back()
+            ->with('success', 'De boeking is succesvol bijgewerkt!');
+    }
+
+    // 📌 Verwijderen via AJAX + vaste code
+    public function destroy(Request $request, $id)
+    {
+        $request->validate([
+            'confirm_code' => 'required'
+        ], [
+            'confirm_code.required' => 'Je moet de verwijdercode invullen.'
+        ]);
+
+        // De vaste code die altijd gebruikt moet worden
+        $correctCode = "VERWIJDEREN";
+
+        if (strtoupper($request->confirm_code) !== $correctCode) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'De ingevoerde verwijdercode is onjuist.'
+            ], 400);
+        }
+
+        $boeking = Boeking::findOrFail($id);
+        $boeking->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'De boeking is succesvol verwijderd!'
+        ]);
+    }
 }

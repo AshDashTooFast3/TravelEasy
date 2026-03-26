@@ -19,9 +19,11 @@ Route::get('/dashboard', function () {
 
 Route::get('/accommodatie', [AccommodatieController::class, 'index'])->name('accommodatie.index');
 Route::get('/accommodatie/{id}/edit', [AccommodatieController::class, 'edit'])->name('accommodaties.edit');
+
 Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
     Route::patch('/accommodatie/{id}', [AccommodatieController::class, 'update'])->name('accommodaties.update');
 });
+
 Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
     Route::get('/accommodatie/create', [AccommodatieController::class, 'create'])->name('accommodaties.create');
     Route::post('/accommodatie', [AccommodatieController::class, 'store'])->name('accommodaties.store');
@@ -36,9 +38,16 @@ Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(fun
     // 📌 Boekingen overzicht
     Route::get('/boekingen', [BoekingController::class, 'index'])->name('boekingen.index');
 
-    // 📌 ➕ TOEGEVOEGD: Boeking aanmaken
+    // 📌 Boeking aanmaken
     Route::get('/boekingen/create', [BoekingController::class, 'create'])->name('boekingen.create');
     Route::post('/boekingen', [BoekingController::class, 'store'])->name('boekingen.store');
+
+    // 📌 ➕ Boeking wijzigen
+    Route::get('/boekingen/{id}/edit', [BoekingController::class, 'edit'])->name('boekingen.edit');
+    Route::put('/boekingen/{id}', [BoekingController::class, 'update'])->name('boekingen.update');
+
+    // 📌 ➕ Boeking verwijderen
+    Route::delete('/boekingen/{id}', [BoekingController::class, 'destroy'])->name('boekingen.destroy');
 });
 
 Route::middleware(['auth', 'verified', 'role:passagier,administrator,manager,financieelmedewerker,reisadviseur'])->group(function () {

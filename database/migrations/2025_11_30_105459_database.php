@@ -38,7 +38,7 @@ return new class extends Migration
             $table->string('Opmerking', 255)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
-            $table->foreign('GebruikerId')->references('Id')->on('Gebruiker');
+            $table->foreign('GebruikerId')->references('Id')->on('Gebruiker')->cascadeOnDelete();
         });
 
         Schema::create('Passagier', function (Blueprint $table) {
@@ -50,7 +50,7 @@ return new class extends Migration
             $table->string('Opmerking', 225)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
-            $table->foreign('PersoonId')->references('Id')->on('Persoon');
+            $table->foreign('PersoonId')->references('Id')->on('Persoon')->cascadeOnDelete();
         });
 
         Schema::create('Medewerker', function (Blueprint $table) {
@@ -64,7 +64,7 @@ return new class extends Migration
             $table->string('Opmerking', 255)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
-            $table->foreign('PersoonId')->references('Id')->on('Persoon');
+            $table->foreign('PersoonId')->references('Id')->on('Persoon')->cascadeOnDelete();
         });
 
         Schema::create('Vertrek', function (Blueprint $table) {
@@ -101,8 +101,8 @@ return new class extends Migration
             $table->string('Opmerking', 225)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
-            $table->foreign('VertrekId')->references('Id')->on('Vertrek');
-            $table->foreign('BestemmingId')->references('Id')->on('Bestemming');
+            $table->foreign('VertrekId')->references('Id')->on('Vertrek')->cascadeOnDelete();
+            $table->foreign('BestemmingId')->references('Id')->on('Bestemming')->cascadeOnDelete();
         });
 
         Schema::create('Accommodatie', function (Blueprint $table) {
@@ -126,7 +126,7 @@ return new class extends Migration
             $table->string('Opmerking', 225)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
-            $table->foreign('VluchtId')->references('Id')->on('Vlucht');
+            $table->foreign('VluchtId')->references('Id')->on('Vlucht')->cascadeOnDelete();
         });
 
         Schema::create('Boeking', function (Blueprint $table) {
@@ -142,8 +142,8 @@ return new class extends Migration
             $table->string('Opmerking', 225)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
-            $table->foreign('AccommodatieId')->references('Id')->on('Accommodatie');
-            $table->foreign('VluchtId')->references('Id')->on('Vlucht');
+            $table->foreign('AccommodatieId')->references('Id')->on('Accommodatie')->cascadeOnDelete();
+            $table->foreign('VluchtId')->references('Id')->on('Vlucht')->cascadeOnDelete();
         });
 
         Schema::create('Ticket', function (Blueprint $table) {
@@ -160,8 +160,8 @@ return new class extends Migration
             $table->string('Opmerking', 225)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
-            $table->foreign('PassagierId')->references('Id')->on('Passagier');
-            $table->foreign('VluchtId')->references('Id')->on('Vlucht');
+            $table->foreign('PassagierId')->references('Id')->on('Passagier')->cascadeOnDelete();
+            $table->foreign('VluchtId')->references('Id')->on('Vlucht')->cascadeOnDelete();
         });
 
         Schema::create('Factuur', function (Blueprint $table) {
@@ -178,14 +178,16 @@ return new class extends Migration
             $table->string('Opmerking', 225)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
-            $table->foreign('BoekingId')->references('Id')->on('Boeking');
-            $table->foreign('PassagierId')->references('Id')->on('Passagier');
+            $table->foreign('BoekingId')->references('Id')->on('Boeking')->cascadeOnDelete();
+            $table->foreign('PassagierId')->references('Id')->on('Passagier')->cascadeOnDelete();
         });
     }
 
     public function down(): void
     {
+        Schema::dropIfExists('Factuur');
         Schema::dropIfExists('Ticket');
+        Schema::dropIfExists('Boeking');
         Schema::dropIfExists('Accommodatie');
         Schema::dropIfExists('Vlucht');
         Schema::dropIfExists('Bestemming');
