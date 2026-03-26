@@ -93,16 +93,10 @@
                                             </a>
                                         </td>
                                         <td class="px-4 py-3 text-xl text-center text-gray-900 dark:text-gray-100">
-                                            <form action="{{ route('facturatie.annuleren', ['id' => $factuur->Id]) }}"
-                                                method="POST" style="display:inline;"
-                                                onsubmit="return confirm('Weet u zeker dat u deze factuur wilt annuleren?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
-                                                    <i class="bi bi-x-circle-fill"></i>
-                                                </button>
-                                            </form>
+                                            <button type="button" onclick="openDeleteModal({{ $factuur->Id }})"
+                                                class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
+                                                <i class="bi bi-x-circle-fill"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 @empty
@@ -119,4 +113,110 @@
             </div>
         </div>
     </div>
+
+    {{-- 🟢 MODAL voor Annuleren --}}
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    
+        {{-- 🟢 Modal box --}}
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96">
+    
+            {{-- 🟢 Titel --}}
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                Annuleren bevestigen
+            </h2>
+    
+            {{-- 🟢 Uitleg --}}
+            <p class="text-gray-700 dark:text-gray-300 mb-3">
+                Voer de annuleercode in om deze factuur definitief te annuleren.
+            </p>
+    
+            {{-- 🟢 Verwijdercode --}}
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                Code: <strong>ANNULEREN</strong>
+            </p>
+    
+            {{-- 🟢 Meldingen (success/fout) --}}
+            <div id="modalMessage" class="hidden mb-4 p-2 rounded text-sm"></div>
+    
+            {{-- 🟢 Input veld voor code --}}
+            <input type="text" id="confirmCodeInput"
+                class="w-full rounded bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white p-2 mb-4"
+                placeholder="Voer de code in">
+    
+            {{-- 🟢 Knoppen --}}
+            <div class="flex justify-end gap-3">
+                {{-- 🟢 Annuleren --}}
+                <button type="button" onclick="closeDeleteModal()"
+                    class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded">
+                    Terug
+                </button>
+    
+                {{-- 🟢 Annuleren bevestigen --}}
+                <button onclick="submitDelete()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded">
+                    Annuleren
+                </button>
+            </div>
+    
+        </div>
+    </div>
+    
+    {{-- 🟢 JavaScript voor modal + annuleren --}}
+    <script>
+        let deleteId = null; // 🟢 Slaat ID op van te annuleren factuur
+
+        function openDeleteModal(id) {
+            deleteId = id; // 🟢 Zet ID
+            document.getElementById('modalMessage').classList.add('hidden'); // 🟢 Reset melding
+            document.getElementById('confirmCodeInput').value = ""; // 🟢 Leeg input
+
+            const modal = document.getElementById('deleteModal');
+            modal.classList.remove('hidden'); // 🟢 Toon modal
+            modal.classList.add('flex');
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            modal.classList.add('hidden'); // 🟢 Verberg modal
+            modal.classList.remove('flex');
+        }
+
+        function submitDelete() {
+            const code = document.getElementById('confirmCodeInput').value; // 🟢 Haal ingevoerde code op
+            const messageBox = document.getElementById('modalMessage'); // 🟢 Meldingen box
+
+            // 🟢 Verstuur DELETE request naar backend
+            fetch(`/boekingen/${deleteId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}" // 🟢 Laravel CSRF beveiliging
+                },
+                body: JSON.stringify({ confirm_code: code }) // 🟢 Stuur code mee
+            })
+                .then(async response => {
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        // 🟢 Foutmelding tonen
+                        messageBox.textContent = data.message;
+                        messageBox.className = "mb-4 p-2 rounded text-sm bg-red-600 text-white";
+                        messageBox.classList.remove("hidden");
+                        return;
+                    }
+
+                    // 🟢 Succesmelding tonen
+                    messageBox.textContent = data.message;
+                    messageBox.className = "mb-4 p-2 rounded text-sm bg-green-600 text-white";
+                    messageBox.classList.remove("hidden");
+
+                    // 🟢 Sluit modal en refresh pagina
+                    setTimeout(() => {
+                        closeDeleteModal();
+                        window.location.reload();
+                    }, 2000);
+                })
+                .catch(error => console.error(error)); // 🟢 Error loggen
+        }
+    </script>
 </x-app-layout>

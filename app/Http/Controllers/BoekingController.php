@@ -171,9 +171,10 @@ class BoekingController extends Controller
         ]);
 
         try {
-            $correctCode = "VERWIJDEREN";
+            $correctCodes = ["VERWIJDEREN", "ANNULEREN"];
+            
 
-            if (strtoupper($request->confirm_code) !== $correctCode) {
+            if (!in_array(strtoupper($request->confirm_code), $correctCodes)) {
                 Log::warning('BoekingController@destroy: Onjuiste code voor ID ' . $id);
 
                 return response()->json([
@@ -190,9 +191,13 @@ class BoekingController extends Controller
 
             Log::info('BoekingController@destroy: Boeking verwijderd ID ' . $id);
 
+            $message = in_array(strtoupper($request->confirm_code), ["ANNULEREN"]) 
+                ? 'De factuur is succesvol geannuleerd!' 
+                : 'De boeking is succesvol verwijderd!';
+
             return response()->json([
                 'status' => 'success',
-                'message' => 'De boeking is succesvol verwijderd!'
+                'message' => $message
             ]);
 
         } catch (\Exception $e) {
