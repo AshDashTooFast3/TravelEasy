@@ -26,7 +26,7 @@ class FactuurFactory extends Factory
             'Factuurtijd' => $this->faker->time(),
             'TotaalBedrag' => $this->faker->randomFloat(2, 10, 1000),
             'Betaalstatus' => $this->faker->randomElement(['Betaald', 'Openstaand']),
-            'Betaalmethode' => $this->faker->randomElement(['Creditcard', 'Debitcard', 'Overschrijving', 'Pay later']),
+            'Betaalmethode' => $this->faker->randomElement(['Creditcard', 'Bankoverschrijving', 'Debitcard']),
             'Isactief' => $this->faker->boolean(),
             'Opmerking' => $this->faker->sentence(),
             'Datumaangemaakt' => $this->faker->dateTime(),

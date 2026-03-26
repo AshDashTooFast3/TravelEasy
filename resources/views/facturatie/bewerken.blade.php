@@ -81,9 +81,8 @@
                                 id="Betaalmethode" name="Betaalmethode" required>
                                 <option value="">Selecteer een betaalmethode</option>
                                 <option value="Creditcard" {{ old('Betaalmethode', $factuur->Betaalmethode) == 'Creditcard' ? 'selected' : '' }}>Creditcard</option>
-                                <option value="Bankoverschrijving" {{ old('Betaalmethode', $factuur->Betaalmethode) == 'Bankoverschrijving' ? 'selected' : '' }}>
-                                    Bankoverschrijving</option>
-                                <option value="Contant" {{ old('Betaalmethode', $factuur->Betaalmethode) == 'Contant' ? 'selected' : '' }}>Contant</option>
+                                <option value="Bankoverschrijving" {{ old('Betaalmethode', $factuur->Betaalmethode) == 'Bankoverschrijving' ? 'selected' : '' }}>Bankoverschrijving</option>
+                                <option value="Debitcard" {{ old('Betaalmethode', $factuur->Betaalmethode) == 'Debitcard' ? 'selected' : '' }}>Debitcard</option>
                             </select>
                             @error('Betaalmethode')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

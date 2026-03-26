@@ -34,11 +34,11 @@
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('facturatie.index')"
                             :active="request()->routeIs('facturatie.index')">
-                            {{ _('Facturatie') }}
+                            {{ __('Facturatie') }}
                         </x-nav-link>
 
                         <x-nav-link :href="route('boekingen.index')" :active="request()->routeIs('boekingen.index')">
-                            {{ _('Boekingen') }}
+                            {{ __('Boekingen') }}
                         </x-nav-link>
                     </div>
                 @endif
@@ -47,7 +47,7 @@
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('management-dashboard')"
                             :active="request()->routeIs('management-dashboard')">
-                            {{ _('Management Dashboard') }}
+                            {{ __('Management Dashboard') }}
                         </x-nav-link>
                     </div>
 

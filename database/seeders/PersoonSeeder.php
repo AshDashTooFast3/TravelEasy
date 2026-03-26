@@ -21,5 +21,6 @@ class PersoonSeeder extends Seeder
             'Geboortedatum' => '2006-01-01',
             'Isactief' => true,
         ]);
+        Persoon::factory()->count(5)->create();
     }
 }

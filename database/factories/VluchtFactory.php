@@ -26,7 +26,7 @@ class VluchtFactory extends Factory
             'Vertrektijd' => $this->faker->time(),
             'Aankomstdatum' => $this->faker->date(),
             'Aankomsttijd' => $this->faker->time(),
-            'Vluchtstatus' => $this->faker->randomElement(['Op Tijd', 'Vertraging', 'Geannuleerd']),
+            'Vluchtstatus' => $this->faker->randomElement(['Gepland','Vertrokken','Geannuleerd','Geland','Vertraagd',]),
             'IsActief' => $this->faker->boolean(90),
             'Opmerking' => $this->faker->sentence(),
             'Datumaangemaakt' => now(),

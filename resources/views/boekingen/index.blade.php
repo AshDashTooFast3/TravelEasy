@@ -94,17 +94,9 @@
                                             </span>
                                         </td>
 
-                                        {{-- <!-- Status badge met kleur (groen=bevestigd, geel=wachtend, grijs=anders) -->
-                                        --}}
-                                        <td class="px-4 py-3 text-sm text-gray-100">
-                                            <span class="px-3 py-1 rounded-full text-xs text-white
-                                                        @if(strtolower($boeking->Boekingsstatus) === 'bevestigd') bg-green-600
-                                                        @elseif(strtolower($boeking->Boekingsstatus) === 'geannuleerd') bg-red-600
-                                                        @elseif(strtolower($boeking->Boekingsstatus) === 'in behandeling') bg-yellow-600
-                                                        @else bg-gray-600 @endif">
-                                                {{ $boeking->Boekingsstatus }}
-                                            </span>
-
+                                        {{-- Status badge met kleur --}}
+                                        <td class="px-4 py-3 text-sm">
+                                            <x-status-badge :status="$boeking->Boekingsstatus" type="boekingsstatus" />
                                         </td>
 
                                         {{-- <!-- Totale prijs in euro met decimalen --> --}}

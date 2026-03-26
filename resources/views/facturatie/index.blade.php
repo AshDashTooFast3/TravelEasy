@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ _('Facturatie') }}
+            {{ __('Facturatie') }}
         </h2>
     </x-slot>
 
@@ -107,7 +107,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="8" class="px-4 py-6 text-center text-gray-500 dark:text-gray-400">Geen
+                                        <td colspan="9" class="px-4 py-6 text-center text-gray-500 dark:text-gray-400">Geen
                                             facturen gevonden.
                                         </td>
                                     </tr>

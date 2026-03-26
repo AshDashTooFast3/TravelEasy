@@ -131,6 +131,7 @@ return new class extends Migration
 
         Schema::create('Boeking', function (Blueprint $table) {
             $table->increments('Id');
+            $table->unsignedInteger('PassagierId')->nullable();
             $table->unsignedInteger('VluchtId');
             $table->unsignedInteger('AccommodatieId');
             $table->string('Boekingsnummer', 20);
@@ -144,16 +145,18 @@ return new class extends Migration
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
             $table->foreign('AccommodatieId')->references('Id')->on('Accommodatie')->cascadeOnDelete();
             $table->foreign('VluchtId')->references('Id')->on('Vlucht');
+            $table->foreign('PassagierId')->references('Id')->on('Passagier');
         });
 
         Schema::create('Ticket', function (Blueprint $table) {
             $table->increments('Id');
+            $table->unsignedInteger('BoekingId')->nullable();
             $table->unsignedInteger('PassagierId');
             $table->unsignedInteger('VluchtId');
-            $table->string('Stoelnummer', 4);
+            $table->string('Stoelnummer', 255);
             $table->date('Aankoopdatum');
             $table->time('Aankooptijd');
-            $table->decimal('BedragInclBtw', 6, 2);
+            $table->decimal('BedragInclBtw', 12, 2);
             $table->tinyInteger('Aantal');
             $table->tinyInteger('Btw')->default(21);
             $table->boolean('Isactief')->default(true);
@@ -162,6 +165,7 @@ return new class extends Migration
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
             $table->foreign('PassagierId')->references('Id')->on('Passagier');
             $table->foreign('VluchtId')->references('Id')->on('Vlucht');
+            $table->foreign('BoekingId')->references('Id')->on('Boeking');
         });
 
         Schema::create('Factuur', function (Blueprint $table) {
@@ -181,11 +185,34 @@ return new class extends Migration
             $table->foreign('BoekingId')->references('Id')->on('Boeking')->cascadeOnDelete();
             $table->foreign('PassagierId')->references('Id')->on('Passagier');
         });
+        
+        Schema::create('geboekte_reizen', function (Blueprint $table) {
+           $table->increments('Id');
+           $table->unsignedInteger('GebruikerId');
+           $table->unsignedInteger('PersoonId');
+           $table->unsignedInteger('PassagierId');
+           $table->unsignedInteger('BoekingId');
+           $table->unsignedInteger('TicketId');
+           $table->unsignedInteger('VluchtId');
+           $table->unsignedInteger('AccommodatieId');
+           $table->string('Vluchtstatus', 20);
+           $table->string('Boekingsstatus', 20);
+           $table->decimal('TotaalPrijs', 10, 2);
+           $table->timestamps();
+           $table->foreign('GebruikerId')->references('Id')->on('Gebruiker');
+           $table->foreign('PersoonId')->references('Id')->on('Persoon');
+           $table->foreign('PassagierId')->references('Id')->on('Passagier');
+           $table->foreign('BoekingId')->references('Id')->on('Boeking');
+           $table->foreign('TicketId')->references('Id')->on('Ticket');
+           $table->foreign('VluchtId')->references('Id')->on('Vlucht');
+           $table->foreign('AccommodatieId')->references('Id')->on('Accommodatie');
+      });
     }
 
     public function down(): void
     {
         Schema::dropIfExists('Ticket');
+         Schema::dropIfExists('geboekte_reizen');   
         Schema::dropIfExists('Accommodatie');
         Schema::dropIfExists('Vlucht');
         Schema::dropIfExists('Bestemming');

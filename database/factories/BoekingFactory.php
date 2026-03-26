@@ -33,3 +33,4 @@ class BoekingFactory extends Factory
         ];
     }
 }
+
