@@ -30,7 +30,7 @@
                         <th>Status vlucht</th>
                         <th>Datum</th>
                         <th>Prijs</th>
-                        <th>Aantal personen</th> <!-- ⭐ Nieuw -->
+                        <th>Aantal personen</th> 
                         <th>Acties</th>
                     </tr>
                 </thead>
