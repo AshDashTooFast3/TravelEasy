@@ -51,6 +51,19 @@
 
     <body>
         <div class="container mt-5">
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ $message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+            @if ($message = Session::get('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ $message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <h1 class="page-header">Accommodaties</h1>
             @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'manager']))
                 <a href="{{ route('accommodaties.create') }}" class="btn btn-warning btn-sm mb-4">Nieuwe
@@ -119,7 +132,8 @@
                 @forelse($accommodaties as $accommodatie)
                     <div class="col-lg-6 col-xl-4 accommodatie-card" data-naam="{{ strtolower($accommodatie->Naam) }}"
                         data-type="{{ $accommodatie->Type }}" data-land="{{ $accommodatie->Land }}"
-                        data-price="{{ $accommodatie->PrijsPerNacht }}" data-kamers="{{ $accommodatie->AantalKamers }}">
+                        data-price="{{ $accommodatie->PrijsPerNacht }}"
+                        data-kamers="{{ $accommodatie->AantalKamers }}">
                         <div class="card h-100 shadow-sm">
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title">{{ $accommodatie->Naam }}</h5>
@@ -159,7 +173,8 @@
                                             <button type="submit" class="btn btn-warning btn-sm">Edit</button>
                                         </form>
                                         <form action="{{ route('accommodaties.delete', $accommodatie->Id) }}"
-                                            method="POST" style="display:inline;">
+                                            method="POST" style="display:inline;"
+                                            onsubmit="return checkCode('{{ $code }}')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -181,6 +196,17 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
+            function checkCode(correctCode) {
+                const input = prompt("Voer de bevestigingscode in om te verwijderen:");
+
+                if (input === correctCode) {
+                    return true;
+                } else {
+                    alert("Code klopt niet.");
+                    return false;
+                }
+            }
+
             function filterAccommodaties() {
                 const naam = document.getElementById('filterNaam').value.toLowerCase();
                 const type = document.getElementById('filterType').value;

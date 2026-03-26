@@ -22,6 +22,13 @@
                     </div>
                 @endif
 
+                @if ($message = Session::get('error'))
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{ $message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
+
                 <div class="card shadow-lg border-0">
                     <div class="card-header bg-primary text-white py-4">
                         <h4 class="mb-0">Accommodatie Bewerken</h4>
