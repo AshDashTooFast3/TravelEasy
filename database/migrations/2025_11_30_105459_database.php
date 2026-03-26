@@ -142,7 +142,7 @@ return new class extends Migration
             $table->string('Opmerking', 225)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
-            $table->foreign('AccommodatieId')->references('Id')->on('Accommodatie');
+            $table->foreign('AccommodatieId')->references('Id')->on('Accommodatie')->cascadeOnDelete();
             $table->foreign('VluchtId')->references('Id')->on('Vlucht');
         });
 
@@ -178,7 +178,7 @@ return new class extends Migration
             $table->string('Opmerking', 225)->nullable();
             $table->dateTime('Datumaangemaakt', 6)->default(DB::raw('NOW(6)'));
             $table->dateTime('Datumgewijzigd', 6)->nullable()->default(DB::raw('NOW(6)'));
-            $table->foreign('BoekingId')->references('Id')->on('Boeking');
+            $table->foreign('BoekingId')->references('Id')->on('Boeking')->cascadeOnDelete();
             $table->foreign('PassagierId')->references('Id')->on('Passagier');
         });
     }
