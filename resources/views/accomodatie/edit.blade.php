@@ -51,9 +51,9 @@
 
                             <div class="col-12 mt-3">
                                 <label class="form-label fw-semibold">Straat</label>
-                                <input type="text" class="form-control @error('straat') is-invalid @enderror"
-                                    name="straat" value="{{ old('straat', $accommodatie->Straat) }}" required>
-                                @error('straat')
+                                <input type="text" class="form-control @error('Straat') is-invalid @enderror"
+                                    name="Straat" value="{{ old('straat', $accommodatie->Straat) }}" required>
+                                @error('Straat')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>

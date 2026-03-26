@@ -104,4 +104,12 @@ class AccommodatieController extends Controller
         return redirect()->route('accommodatie.index')->with('success', 'Accommodatie toegevoegd!');
     }
 
+    public function delete($id)
+    {
+        $accommodatie = Accommodatie::findOrFail($id);
+        $accommodatie->delete();
+
+        return redirect()->route('accommodatie.index')->with('success', 'Accommodatie verwijderd!');
+    }
+
 }

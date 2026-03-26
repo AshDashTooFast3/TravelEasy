@@ -27,6 +27,10 @@ Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(fun
     Route::post('/accommodatie', [AccommodatieController::class, 'store'])->name('accommodaties.store');
 });
 
+Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
+    Route::delete('/accommodatie/{id}', [AccommodatieController::class, 'delete'])->name('accommodaties.delete');
+});
+
 // Alleen Administrators en Managers kunnen deze pagina zien
 Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
     Route::get('/management-dashboard', [MedewerkerController::class, 'ManagementDashboard'])->name('management-dashboard');

@@ -9,7 +9,6 @@
         <title>Accommodaties - TravelEasy</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <style>
-            
             .page-header {
                 color: #0066cc;
                 font-weight: 600;
@@ -54,7 +53,8 @@
         <div class="container mt-5">
             <h1 class="page-header">Accommodaties</h1>
             @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'manager']))
-                <a href="{{ route('accommodaties.create') }}" class="btn btn-warning btn-sm mb-4">Nieuwe Accommodatie</a>
+                <a href="{{ route('accommodaties.create') }}" class="btn btn-warning btn-sm mb-4">Nieuwe
+                    Accommodatie</a>
             @endif
 
             <!-- Filter Section -->
@@ -154,8 +154,16 @@
 
                                 <div class="d-flex gap-2 mt-auto">
                                     @if (Auth::check() && in_array(Auth::user()->RolNaam, ['administrator', 'manager']))
-                                        <a href="{{ route('accommodaties.edit', $accommodatie->Id) }}"
-                                            class="btn btn-warning btn-sm">Edit</a>
+                                        <form action="{{ route('accommodaties.edit', $accommodatie->Id) }}"
+                                            method="GET" style="display:inline;">
+                                            <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                                        </form>
+                                        <form action="{{ route('accommodaties.delete', $accommodatie->Id) }}"
+                                            method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
                                     @endif
                                 </div>
                             </div>
