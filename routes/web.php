@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccommodatieController;
 use App\Http\Controllers\BoekingController;
 use App\Http\Controllers\FactuurController;
@@ -8,7 +9,6 @@ use App\Http\Controllers\KlantBoekingController;
 use App\Http\Controllers\MedewerkerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TicketController;
-use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
@@ -19,9 +19,11 @@ Route::get('/dashboard', function () {
 
 Route::get('/accommodatie', [AccommodatieController::class, 'index'])->name('accommodatie.index');
 Route::get('/accommodatie/{id}/edit', [AccommodatieController::class, 'edit'])->name('accommodaties.edit');
+
 Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
     Route::patch('/accommodatie/{id}', [AccommodatieController::class, 'update'])->name('accommodaties.update');
 });
+
 Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
     Route::get('/accommodatie/create', [AccommodatieController::class, 'create'])->name('accommodaties.create');
     Route::post('/accommodatie', [AccommodatieController::class, 'store'])->name('accommodaties.store');
@@ -33,12 +35,25 @@ Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(fun
 
 // Alleen Administrators en Managers kunnen deze pagina zien
 Route::middleware(['auth', 'verified', 'role:administrator,manager'])->group(function () {
+
     Route::get('/management-dashboard', [MedewerkerController::class, 'ManagementDashboard'])->name('management-dashboard');
     Route::get('/facturatie', [FactuurController::class, 'index'])->name('facturatie.index');
     Route::get('/facturatie/{id}/bewerken', [FactuurController::class, 'bewerken'])->name('facturatie.bewerken');
     Route::put('/facturatie/wijzigen', [FactuurController::class, 'wijzigen'])->name('facturatie.wijzigen');
     Route::delete('/facturatie/{id}', [FactuurController::class, 'annuleren'])->name('facturatie.annuleren');
+    // 📌 Boekingen overzicht
     Route::get('/boekingen', [BoekingController::class, 'index'])->name('boekingen.index');
+
+    // 📌 Boeking aanmaken
+    Route::get('/boekingen/create', [BoekingController::class, 'create'])->name('boekingen.create');
+    Route::post('/boekingen', [BoekingController::class, 'store'])->name('boekingen.store');
+
+    // 📌 ➕ Boeking wijzigen
+    Route::get('/boekingen/{id}/edit', [BoekingController::class, 'edit'])->name('boekingen.edit');
+    Route::put('/boekingen/{id}', [BoekingController::class, 'update'])->name('boekingen.update');
+
+    // 📌 ➕ Boeking verwijderen
+    Route::delete('/boekingen/{id}', [BoekingController::class, 'destroy'])->name('boekingen.destroy');
 });
 // Reis overzicht
 Route::get('/reis', [KlantBoekingController::class, 'index'])->name('reis.index');
@@ -62,7 +77,7 @@ Route::middleware(['auth', 'verified', 'role:passagier,administrator,manager,fin
     // Reis tonen
     Route::get('/reis/{id}', [KlantBoekingController::class, 'show'])->name('reis.show');
 
-    // Ticket overzicht
+    // Ticket overzicht 
     Route::get('/tickets', [TicketController::class, 'index'])->name('ticket.index');
     Route::get('/ticket/{id}', [TicketController::class, 'show'])->name('ticket.show');
     Route::delete('/ticket/{id}', [TicketController::class, 'destroy'])->name('ticket.destroy');
