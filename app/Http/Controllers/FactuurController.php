@@ -87,7 +87,7 @@ class FactuurController extends Controller
                 'PassagierId' => 'required|integer',
                 'Factuurdatum' => 'required|date',
                 'TotaalBedrag' => 'required|numeric|min:0',             // Bedrag mag niet negatief zijn
-                'Betaalmethode' => 'required|string|in:Creditcard,Bankoverschrijving,Contant', // Alleen toegestane waarden
+                'Betaalmethode' => 'required|string|in:Creditcard,Bankoverschrijving,Debitcard', // Alleen toegestane waarden
                 'Betaalstatus' => 'required|string',
             ]);
 

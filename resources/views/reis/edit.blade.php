@@ -1,14 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-white leading-tight">
-            Nieuwe Reis Boeken
+            Reis Wijzigen
         </h2>
     </x-slot>
 
     <div class="py-8 max-w-4xl mx-auto">
 
         <div class="bg-gray-800 p-6 rounded-lg shadow text-white">
-            <h3 class="text-lg font-semibold mb-4">Bevestig je reis</h3>
+            <h3 class="text-lg font-semibold mb-4">Wijzig je reis</h3>
 
             {{-- FOUTMELDING --}}
             @if ($errors->any())
@@ -21,26 +21,35 @@
                 </div>
             @endif
 
-            <form action="{{ route('reis.store') }}" method="POST">
+            <form action="{{ route('reis.update', $boeking->BoekingId) }}" method="POST">
                 @csrf
+                @method('PUT')
 
-                {{-- Gekozen vlucht --}}
+                {{-- Vlucht --}}
                 <div class="mb-4">
-                    <label class="block mb-1">Gekozen vlucht</label>
+                    <label class="block mb-1">Vlucht</label>
                     <p class="font-semibold">
-                        Vlucht {{ $vlucht->Vluchtnummer }}
+                        Vlucht {{ $boeking->vlucht->Vluchtnummer }}
                     </p>
-                    <input type="hidden" name="VluchtId" value="{{ $vlucht->Id }}">
+
+                    {{-- Vluchtstatus --}}
+                    <div class="mb-4">
+                        <label class="block mb-1">Status</label>
+                        <div>
+                            <x-status-badge :status="$boeking->Vluchtstatus" type="vluchtstatus" />
+                        </div>
+                    </div>
                 </div>
 
-                {{-- Gekozen accommodatie --}}
+                {{-- Accommodatie --}}
                 <div class="mb-4">
-                    <label class="block mb-1">Gekozen accommodatie</label>
+                    <label class="block mb-1">Accommodatie</label>
                     <p class="font-semibold">
-                        {{ $accommodatie->Naam }} — {{ $accommodatie->Stad }}, {{ $accommodatie->Land }}
-                        (Prijs per persoon: €{{ number_format($accommodatie->TotaalPrijs, 2, ',', '.') }})
+                        {{ $boeking->accommodatie->Naam }} — 
+                        {{ $boeking->accommodatie->Stad }}, 
+                        {{ $boeking->accommodatie->Land }}
+                        (Prijs per persoon: €{{ number_format($boeking->accommodatie->TotaalPrijs, 2, ',', '.') }})
                     </p>
-                    <input type="hidden" name="AccommodatieId" value="{{ $accommodatie->Id }}">
                 </div>
 
                 {{-- Aantal passagiers --}}
@@ -50,7 +59,8 @@
                            type="number"
                            name="AantalPassagiers"
                            min="1"
-                           value="1"
+                           max="10"
+                           value="{{ $boeking->ticket->Aantal }}"
                            class="w-full bg-gray-700 text-white p-2 rounded"
                            required>
                 </div>
@@ -58,11 +68,13 @@
                 {{-- Totale prijs --}}
                 <div class="mb-4">
                     <p class="text-gray-300 text-sm">Totale prijs:</p>
-                    <p id="totaalPrijs" class="text-xl font-bold text-green-400">€0,00</p>
+                    <p id="totaalPrijs" class="text-xl font-bold text-green-400">
+                        €{{ number_format($boeking->TotaalPrijs, 2, ',', '.') }}
+                    </p>
                 </div>
 
                 <button class="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded text-white">
-                    Reis Boeken
+                    Wijzigingen Opslaan
                 </button>
 
             </form>
@@ -72,7 +84,7 @@
 
     {{-- Live prijsberekening --}}
     <script>
-        const prijsPerPersoon = {{ $accommodatie->TotaalPrijs }};
+        const prijsPerPersoon = {{ $boeking->accommodatie->TotaalPrijs }};
         const passagiersInput = document.getElementById('passagiersInput');
         const totaalPrijsEl = document.getElementById('totaalPrijs');
 
