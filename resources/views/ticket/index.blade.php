@@ -11,16 +11,30 @@
             <h3 class="text-lg font-semibold mb-4">Overzicht van mijn tickets</h3>
 
             @if (session('success'))
-                <div class="bg-green-600 text-white px-4 py-3 rounded-lg mb-4">
+                <div data-flash-message class="bg-green-600 text-white px-4 py-3 rounded-lg mb-4">
                     {{ session('success') }}
                 </div>
             @endif
 
             @if (session('error'))
-                <div class="bg-red-600 text-white px-4 py-3 rounded-lg mb-4">
+                <div data-flash-message class="bg-red-600 text-white px-4 py-3 rounded-lg mb-4">
                     {{ session('error') }}
                 </div>
             @endif
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.querySelectorAll('[data-flash-message]').forEach(function (el) {
+                        setTimeout(function () {
+                            el.style.transition = 'opacity 0.35s ease';
+                            el.style.opacity = '0';
+                            setTimeout(function () {
+                                el.remove();
+                            }, 350);
+                        }, 5000);
+                    });
+                });
+            </script>
 
             <table class="w-full text-left">
                 <thead>

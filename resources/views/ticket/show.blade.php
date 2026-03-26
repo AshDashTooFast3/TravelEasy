@@ -12,6 +12,32 @@
             {{-- Titel --}}
             <h3 class="text-2xl font-semibold">Jouw Ticket</h3>
 
+            @if (session('success'))
+                <div data-flash-message class="bg-green-600 text-white px-4 py-3 rounded-lg mb-4">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div data-flash-message class="bg-red-600 text-white px-4 py-3 rounded-lg mb-4">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.querySelectorAll('[data-flash-message]').forEach(function (el) {
+                        setTimeout(function () {
+                            el.style.transition = 'opacity 0.35s ease';
+                            el.style.opacity = '0';
+                            setTimeout(function () {
+                                el.remove();
+                            }, 350);
+                        }, 5000);
+                    });
+                });
+            </script>
+
             {{-- Vluchtinformatie --}}
             <div class="bg-gray-700 p-4 rounded">
                 <h4 class="font-semibold text-lg mb-2">Vluchtinformatie</h4>

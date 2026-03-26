@@ -80,7 +80,7 @@
 
                                 {{-- Status --}}
                                 <td class="px-4">
-                                    <x-status-badge :status="$reis->Vluchtstatus" type="vluchtstatus" />
+                                        <x-status-badge :status="$reis->Vluchtstatus" type="vluchtstatus" />
                                 </td>
 
                                 {{--  ACTIES --}}
@@ -131,6 +131,7 @@
                     <thead>
                         <tr class="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700">
                             <th class="py-2 px-4">Vlucht</th>
+                             <th class="py-2 px-4">VluchtStatus</th>
                             <th class="px-4">Accommodatie</th>
                             <th class="px-4">Prijs p.p.</th>
                             <th class="px-4">Acties</th>
@@ -146,6 +147,10 @@
                                     <td class="py-2 px-4">
                                         Vlucht {{ $vlucht->Vluchtnummer }}
                                     </td>
+                                
+                                <td class="px-4">
+                                    <x-status-badge :status="$vlucht->Vluchtstatus" type="vluchtstatus" />
+                                </td>
 
                                     <td class="px-4">
                                         {{ $acc->Naam }} — {{ $acc->Stad }}
