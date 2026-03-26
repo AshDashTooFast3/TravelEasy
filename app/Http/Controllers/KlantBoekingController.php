@@ -5,9 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Accommodatie;
 use App\Models\Boeking;
 use App\Models\GeboekteReis;
-use App\Models\Factuur;
-use App\Models\Gebruiker;
-use App\Models\KlantBoekingen;
 use App\Models\Passagier;
 use App\Models\Ticket;
 use App\Models\Vlucht;
@@ -15,10 +12,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 
 class KlantBoekingController extends Controller
 {
+    // MVC/Security: helper om de passagier te koppelen aan de ingelogde gebruiker.
+    // Dit is de basis voor autorisatie op boeking-acties.
+    private function resolvePassagierForCurrentUser(): ?Passagier
+    {
+        $gebruiker = Auth::user();
+
+        if (!$gebruiker) {
+            return null;
+        }
+
+        return Passagier::whereHas('persoon', function ($q) use ($gebruiker) {
+            $q->where('GebruikerId', $gebruiker->Id);
+        })->first();
+    }
+
     // Reis overzicht
 
 public function index()
@@ -39,7 +52,7 @@ public function index()
         ]);
     }
 
-    // Als WEL ingelogd → passagier ophalen via Persoon → Passagier
+    // Join via Eloquent-relatie (whereHas): Passagier -> Persoon -> Gebruiker.
     $passagier = Passagier::whereHas('persoon', function ($q) use ($gebruiker) {
         $q->where('GebruikerId', $gebruiker->Id);
     })->first();
@@ -66,16 +79,21 @@ public function create(Request $request)
     
 {
     
+// Server-side validatie (naast client-side in Blade en DB-constraints).
 $request->validate([
    
-    'VluchtId' => 'required',
-    'AccommodatieId' => 'required',
+    'VluchtId' => 'required|integer|exists:Vlucht,Id',
+    'AccommodatieId' => 'required|integer|exists:Accommodatie,Id',
     'AantalPassagiers' => 'required|integer|min:1|max:10',
 ], [
     'AantalPassagiers.max' => 'Je kunt maximaal 10 passagiers per boeking aanmaken.',
 ]);
 
     $gebruiker = Auth::user();
+
+    // Try/catch + transaction: alle writes slagen samen of rollen samen terug.
+    try {
+        DB::transaction(function () use ($request, $gebruiker) {
 
     // 1. Persoon ophalen of aanmaken
     $persoon = \App\Models\Persoon::firstOrCreate(
@@ -155,6 +173,18 @@ GeboekteReis::create([
     'Boekingsstatus'=> $boeking->Boekingsstatus,
     'TotaalPrijs'   => $totaalPrijs,
 ]);
+        });
+    } catch (Throwable $e) {
+        // Technische log voor troubleshooting/audit.
+        Log::error('Fout bij aanmaken van een reisboeking', [
+            'gebruiker_id' => $gebruiker?->Id,
+            'error' => $e->getMessage(),
+        ]);
+
+        // Functionele terugkoppeling voor eindgebruiker.
+        return redirect()->route('reis.index')
+            ->with('error', 'Er is iets misgegaan bij het opslaan van de boeking. Probeer opnieuw.');
+    }
 
     return redirect()->route('reis.index')
         ->with('success', 'Reis succesvol geboekt!');
@@ -171,9 +201,20 @@ GeboekteReis::create([
     // Bewerken
 public function edit($id)
 {
+    // Security: alleen eigen boekingen mogen gewijzigd worden.
+    $passagier = $this->resolvePassagierForCurrentUser();
+
+    if (!$passagier) {
+        return redirect()->route('reis.index')
+            ->with('error', 'Geen passagier gevonden voor deze gebruiker.');
+    }
+
     $reis = GeboekteReis::with(['vlucht', 'accommodatie', 'ticket'])
-        ->where('BoekingId', $id)
-        ->orWhere('Id', $id)
+        ->where(function ($query) use ($id) {
+            $query->where('BoekingId', $id)
+                ->orWhere('Id', $id);
+        })
+        ->where('PassagierId', $passagier->Id)
         ->firstOrFail();
 
     if (!in_array($reis->vlucht->Vluchtstatus, ['Gepland', 'Vertraagd'])) {
@@ -185,14 +226,25 @@ public function edit($id)
 }
 public function update(Request $request, $id)
 {
+    // Server-side validatie van wijziging.
     $request->validate([
         'AantalPassagiers' => 'required|integer|min:1|max:10',
     ]);
 
+    $passagier = $this->resolvePassagierForCurrentUser();
+
+    if (!$passagier) {
+        return redirect()->route('reis.index')
+            ->with('error', 'Geen passagier gevonden voor deze gebruiker.');
+    }
+
     // Haal geboekte reis + ticket + accommodatie op via BoekingId
     $boeking = GeboekteReis::with(['ticket', 'accommodatie'])
-        ->where('BoekingId', $id)
-        ->orWhere('Id', $id)
+        ->where(function ($query) use ($id) {
+            $query->where('BoekingId', $id)
+                ->orWhere('Id', $id);
+        })
+        ->where('PassagierId', $passagier->Id)
         ->firstOrFail();
 
     $ticket = $boeking->ticket;
@@ -214,26 +266,42 @@ public function update(Request $request, $id)
     $prijsPerPersoon = $boeking->accommodatie->TotaalPrijs;
     $totaalPrijs = $prijsPerPersoon * $nieuwAantal;
 
-    // Ticket bijwerken
-    $ticket->update([
-        'Stoelnummer'   => $stoelString,
-        'Aantal'        => $nieuwAantal,
-        'BedragInclBtw' => $totaalPrijs,
-        'Datumgewijzigd'=> now(),
-    ]);
+    // Try/catch + transaction voor consistente update van ticket/boeking/reis.
+    try {
+        DB::transaction(function () use ($ticket, $stoelString, $nieuwAantal, $totaalPrijs, $boeking) {
+            // Ticket bijwerken
+            $ticket->update([
+                'Stoelnummer'   => $stoelString,
+                'Aantal'        => $nieuwAantal,
+                'BedragInclBtw' => $totaalPrijs,
+                'Datumgewijzigd'=> now(),
+            ]);
 
-    // Geboekte reis bijwerken
-    $boeking->update([
-        'TotaalPrijs'    => $totaalPrijs,
-        'Boekingsstatus' => 'In behandeling',
-    ]);
+            // Geboekte reis bijwerken
+            $boeking->update([
+                'TotaalPrijs'    => $totaalPrijs,
+                'Boekingsstatus' => 'In behandeling',
+            ]);
 
-    // Onderliggende boeking ook bijwerken zodat totalen overal gelijk blijven.
-    Boeking::where('Id', $boeking->BoekingId)->update([
-        'TotaalPrijs' => $totaalPrijs,
-        'Boekingsstatus' => 'In behandeling',
-        'Datumgewijzigd' => now(),
-    ]);
+            // Onderliggende boeking ook bijwerken zodat totalen overal gelijk blijven.
+            Boeking::where('Id', $boeking->BoekingId)->update([
+                'TotaalPrijs' => $totaalPrijs,
+                'Boekingsstatus' => 'In behandeling',
+                'Datumgewijzigd' => now(),
+            ]);
+        });
+    } catch (Throwable $e) {
+        // Technische log voor foutanalyse.
+        Log::error('Fout bij wijzigen van boeking', [
+            'boeking_id' => $boeking->BoekingId,
+            'passagier_id' => $passagier->Id,
+            'error' => $e->getMessage(),
+        ]);
+
+        // Functionele melding voor eindgebruiker.
+        return redirect()->route('reis.index')
+            ->with('error', 'Wijzigen is mislukt. Probeer het opnieuw.');
+    }
 
     return redirect()->route('reis.index')
         ->with('success', 'Boeking succesvol bijgewerkt!');
@@ -241,29 +309,55 @@ public function update(Request $request, $id)
     // Verwijderen
     public function destroy($id)
     {
+        // Security: verwijdering alleen binnen eigen passagier-context.
+        $passagier = $this->resolvePassagierForCurrentUser();
+
+        if (!$passagier) {
+            return redirect()->route('reis.index')
+                ->with('error', 'Geen passagier gevonden voor deze gebruiker.');
+        }
+
         $reis = GeboekteReis::with(['vlucht'])
-            ->where('BoekingId', $id)
-            ->orWhere('Id', $id)
+            ->where(function ($query) use ($id) {
+                $query->where('BoekingId', $id)
+                    ->orWhere('Id', $id);
+            })
+            ->where('PassagierId', $passagier->Id)
             ->firstOrFail();
 
         $status = strtolower(trim((string) ($reis->Vluchtstatus ?? $reis->vlucht->Vluchtstatus ?? '')));
 
+        // Business rule: alleen annuleren/verwijderen bij Geland of Geannuleerd.
         if (!in_array($status, ['geland', 'geannuleerd'])) {
             return redirect()->route('reis.index')
                 ->with('error', 'Je kunt alleen boekingen verwijderen met status Geland of Geannuleerd.');
         }
 
-        DB::transaction(function () use ($reis) {
-            $boekingId = $reis->BoekingId;
+        // Try/catch + transaction voor consistente database-mutaties.
+        try {
+            DB::transaction(function () use ($reis) {
+                $boekingId = $reis->BoekingId;
 
-            DB::table('Factuur')->where('BoekingId', $boekingId)->delete();
-            GeboekteReis::where('BoekingId', $boekingId)->delete();
-            Ticket::where('BoekingId', $boekingId)->update([
-                'BoekingId' => null,
-                'Datumgewijzigd' => now(),
+                DB::table('Factuur')->where('BoekingId', $boekingId)->delete();
+                GeboekteReis::where('BoekingId', $boekingId)->delete();
+                Ticket::where('BoekingId', $boekingId)->update([
+                    'BoekingId' => null,
+                    'Datumgewijzigd' => now(),
+                ]);
+                Boeking::where('Id', $boekingId)->delete();
+            });
+        } catch (Throwable $e) {
+            // Technische log voor operations/debugging.
+            Log::error('Fout bij verwijderen van boeking', [
+                'boeking_id' => $reis->BoekingId,
+                'passagier_id' => $passagier->Id,
+                'error' => $e->getMessage(),
             ]);
-            Boeking::where('Id', $boekingId)->delete();
-        });
+
+            // Functionele melding voor eindgebruiker.
+            return redirect()->route('reis.index')
+                ->with('error', 'Verwijderen is mislukt. Probeer het opnieuw.');
+        }
 
         return redirect()->route('reis.index')
             ->with('success', 'Boeking verwijderd. Ticket kun je handmatig verwijderen via Tickets.');
