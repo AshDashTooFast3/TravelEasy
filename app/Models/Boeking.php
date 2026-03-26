@@ -45,43 +45,37 @@ class Boeking extends Model
         return $this->belongsTo(Accommodatie::class, 'AccommodatieId');
     }
 
-    // Stored procedure om het totaal aantal boekingen op te halen
     public function sp_PakBoekingenAantal(): int
     {
+        Log::info('sp_PakBoekingenAantal: Start');
         try {
             $result = DB::select('CALL sp_PakBoekingenAantal()');
             if (empty($result)) {
-                Log::info('sp_PakBoekingenAantal retourneerde een lege result omdat er geen data kon worden opgehaald.');
-
+                Log::info('sp_PakBoekingenAantal: Lege result ontvangen');
                 return -1;
             }
-            Log::info('sp_PakBoekingenAantal retourneerde een count van '.$result[0]->count.'.');
-            return $result[0]->count ?? -1;
-
+            $count = $result[0]->count ?? -1;
+            Log::info('sp_PakBoekingenAantal: Resultaat='.$count);
+            return $count;
         } catch (\Exception $e) {
-            Log::error('Fout in sp_PakBoekingenAantal: '.$e->getMessage());
-
+            Log::error('sp_PakBoekingenAantal: Exception='.$e->getMessage());
             return -1;
         }
     }
 
-    // Stored procedure om de meest voorkomende reis op te halen
     public function sp_MeestVoorkomendeReis()
     {
+        Log::info('sp_MeestVoorkomendeReis: Start');
         try {
             $result = DB::select('CALL sp_MeestVoorkomendReis()');
-
             if (empty($result)) {
-                Log::info('sp_MeestVoorkomendReis retourneerde een lege result omdat er geen data kon worden opgehaald.');
-
+                Log::info('sp_MeestVoorkomendeReis: Lege result ontvangen');
                 return [];
             }
-            Log::info('sp_MeestVoorkomendReis retourneerde '.count($result).' resultaten.');
+            Log::info('sp_MeestVoorkomendeReis: Aantal resultaten='.count($result));
             return $result;
-
         } catch (\Exception $e) {
-            Log::error('Fout in sp_MeestVoorkomendReis: '.$e->getMessage());
-
+            Log::error('sp_MeestVoorkomendeReis: Exception='.$e->getMessage());
             return [];
         }
     }
