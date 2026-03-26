@@ -1,22 +1,26 @@
 <x-app-layout>
+    {{-- 🟢 Header sectie --}}
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             Boeking wijzigen
         </h2>
     </x-slot>
 
+    {{-- 🟢 Hoofdcontainer met padding --}}
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
 
+            {{-- 🟢 Witte kaart met schaduw --}}
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
 
-                    {{-- 🟢 Succesmelding --}}
+                    {{-- 🟢 Succesmelding tonen en auto-redirect --}}
                     @if(session('success'))
                         <div id="successMessage" class="mb-4 p-3 bg-green-600 text-white rounded">
                             {{ session('success') }}
                         </div>
 
+                        {{-- 🟢 Script dat na 2.5 seconden terugnavigateert --}}
                         <script>
                             setTimeout(function() {
                                 window.location.href = "{{ route('boekingen.index') }}";
@@ -24,7 +28,7 @@
                         </script>
                     @endif
 
-                    {{-- 🔴 Foutmeldingen --}}
+                    {{-- 🟢 Validatiefouten weergeven --}}
                     @if ($errors->any())
                         <div class="mb-4 p-3 bg-red-600 text-white rounded">
                             <ul class="list-disc ml-4">
@@ -35,15 +39,17 @@
                         </div>
                     @endif
 
+                    {{-- 🟢 Titel met boekingnummer --}}
                     <h3 class="text-lg font-semibold text-gray-200 mb-4">
                         Wijzig boeking: {{ $boeking->Boekingsnummer }}
                     </h3>
 
+                    {{-- 🟢 Formulier voor boeking bijwerken --}}
                     <form method="POST" action="{{ route('boekingen.update', $boeking->Id) }}">
                         @csrf
                         @method('PUT')
 
-                        {{-- Boekingsnummer --}}
+                        {{-- 🟢 Boekingsnummer invoerveld --}}
                         <div class="mb-4">
                             <label class="block text-gray-300 mb-1">Boekingsnummer</label>
                             <input type="text" name="Boekingsnummer"
@@ -51,7 +57,7 @@
                                    class="w-full rounded-lg bg-gray-700 text-white border-gray-600">
                         </div>
 
-                        {{-- Vlucht --}}
+                        {{-- 🟢 Vlucht selectie dropdown --}}
                         <div class="mb-4">
                             <label class="block text-gray-300 mb-1">Vlucht</label>
                             <select name="VluchtId"
@@ -65,7 +71,7 @@
                             </select>
                         </div>
 
-                        {{-- Accommodatie --}}
+                        {{-- 🟢 Accommodatie selectie dropdown --}}
                         <div class="mb-4">
                             <label class="block text-gray-300 mb-1">Accommodatie</label>
                             <select name="AccommodatieId"
@@ -79,7 +85,7 @@
                             </select>
                         </div>
 
-                        {{-- Datum --}}
+                        {{-- 🟢 Boekingsdatum invoerveld --}}
                         <div class="mb-4">
                             <label class="block text-gray-300 mb-1">Boekingsdatum</label>
                             <input type="date" name="Boekingsdatum"
@@ -87,7 +93,7 @@
                                    class="w-full rounded-lg bg-gray-700 text-white border-gray-600">
                         </div>
 
-                        {{-- Tijd --}}
+                        {{-- 🟢 Boekingstijd invoerveld --}}
                         <div class="mb-4">
                             <label class="block text-gray-300 mb-1">Boekingstijd</label>
                             <input type="time" name="Boekingstijd"
@@ -95,7 +101,7 @@
                                    class="w-full rounded-lg bg-gray-700 text-white border-gray-600">
                         </div>
 
-                        {{-- Status --}}
+                        {{-- 🟢 Boekingsstatus dropdown --}}
                         <div class="mb-4">
                             <label class="block text-gray-300 mb-1">Boekingsstatus</label>
                             <select name="Boekingsstatus"
@@ -106,7 +112,7 @@
                             </select>
                         </div>
 
-                        {{-- Prijs --}}
+                        {{-- 🟢 Totaalprijs invoerveld --}}
                         <div class="mb-4">
                             <label class="block text-gray-300 mb-1">Totaalprijs (€)</label>
                             <input type="number" step="0.01" name="TotaalPrijs"
@@ -114,7 +120,7 @@
                                    class="w-full rounded-lg bg-gray-700 text-white border-gray-600">
                         </div>
 
-                        {{-- Buttons --}}
+                        {{-- 🟢 Annuleren en Opslaan knoppen --}}
                         <div class="flex justify-between mt-6">
                             <a href="{{ route('boekingen.index') }}"
                                class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
