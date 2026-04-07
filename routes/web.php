@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KlantBoekingController;
 use App\Http\Controllers\MedewerkerController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\NumberGuessController;
 use App\Http\Controllers\TicketController;
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
@@ -93,3 +94,8 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// Number guessing game
+Route::get('/numbergame', [NumberGuessController::class, 'index'])->name('numbergame.index');
+Route::post('/numbergame', [NumberGuessController::class, 'guess'])->name('numbergame.guess');
+
